@@ -54,6 +54,22 @@ public class Caki {
                     System.out.println("Please specify a valid task number.");
                 }
                 System.out.println(separator);
+            } else if (command.startsWith("unmark ")) {
+                String taskNumberText = command.substring("unmark ".length()).trim();
+                try {
+                    int taskNumber = Integer.parseInt(taskNumberText);
+                    if (taskNumber >= 1 && taskNumber <= taskCount) {
+                        int taskIndex = taskNumber - 1;
+                        completed[taskIndex] = false;
+                        System.out.println("OK, I've marked this task as not done yet:");
+                        System.out.println("  [ ] " + tasks[taskIndex]);
+                    } else {
+                        System.out.println("That task number does not exist.");
+                    }
+                } catch (NumberFormatException exception) {
+                    System.out.println("Please specify a valid task number.");
+                }
+                System.out.println(separator);
             } else if (taskCount < MAX_TASKS) {
                 tasks[taskCount] = command;
                 taskCount++;
