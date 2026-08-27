@@ -9,6 +9,7 @@ public class Caki {
     public static void main(String[] args) {
         String separator = "____________________________________________________________";
         String[] tasks = new String[MAX_TASKS];
+        boolean[] completed = new boolean[MAX_TASKS];
         int taskCount = 0;
 
         System.out.println(separator);
@@ -31,8 +32,26 @@ public class Caki {
                 System.out.println(separator);
                 break;
             } else if (command.equals("list")) {
+                System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < taskCount; i++) {
-                    System.out.println((i + 1) + ". " + tasks[i]);
+                    String status = completed[i] ? "X" : " ";
+                    System.out.println((i + 1) + ".[" + status + "] " + tasks[i]);
+                }
+                System.out.println(separator);
+            } else if (command.startsWith("mark ")) {
+                String taskNumberText = command.substring("mark ".length()).trim();
+                try {
+                    int taskNumber = Integer.parseInt(taskNumberText);
+                    if (taskNumber >= 1 && taskNumber <= taskCount) {
+                        int taskIndex = taskNumber - 1;
+                        completed[taskIndex] = true;
+                        System.out.println("Nice! I've marked this task as done:");
+                        System.out.println("  [X] " + tasks[taskIndex]);
+                    } else {
+                        System.out.println("That task number does not exist.");
+                    }
+                } catch (NumberFormatException exception) {
+                    System.out.println("Please specify a valid task number.");
                 }
                 System.out.println(separator);
             } else if (taskCount < MAX_TASKS) {
