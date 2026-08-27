@@ -8,8 +8,7 @@ public class Caki {
 
     public static void main(String[] args) {
         String separator = "____________________________________________________________";
-        String[] tasks = new String[MAX_TASKS];
-        boolean[] completed = new boolean[MAX_TASKS];
+        Task[] tasks = new Task[MAX_TASKS];
         int taskCount = 0;
 
         System.out.println(separator);
@@ -34,8 +33,8 @@ public class Caki {
             } else if (command.equals("list")) {
                 System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < taskCount; i++) {
-                    String status = completed[i] ? "X" : " ";
-                    System.out.println((i + 1) + ".[" + status + "] " + tasks[i]);
+                    System.out.println((i + 1) + ".[" + tasks[i].getStatusIcon() + "] "
+                            + tasks[i].getDescription());
                 }
                 System.out.println(separator);
             } else if (command.startsWith("mark ")) {
@@ -44,9 +43,9 @@ public class Caki {
                     int taskNumber = Integer.parseInt(taskNumberText);
                     if (taskNumber >= 1 && taskNumber <= taskCount) {
                         int taskIndex = taskNumber - 1;
-                        completed[taskIndex] = true;
+                        tasks[taskIndex].markAsDone();
                         System.out.println("Nice! I've marked this task as done:");
-                        System.out.println("  [X] " + tasks[taskIndex]);
+                        System.out.println("  [X] " + tasks[taskIndex].getDescription());
                     } else {
                         System.out.println("That task number does not exist.");
                     }
@@ -60,9 +59,9 @@ public class Caki {
                     int taskNumber = Integer.parseInt(taskNumberText);
                     if (taskNumber >= 1 && taskNumber <= taskCount) {
                         int taskIndex = taskNumber - 1;
-                        completed[taskIndex] = false;
+                        tasks[taskIndex].markAsNotDone();
                         System.out.println("OK, I've marked this task as not done yet:");
-                        System.out.println("  [ ] " + tasks[taskIndex]);
+                        System.out.println("  [ ] " + tasks[taskIndex].getDescription());
                     } else {
                         System.out.println("That task number does not exist.");
                     }
@@ -71,7 +70,7 @@ public class Caki {
                 }
                 System.out.println(separator);
             } else if (taskCount < MAX_TASKS) {
-                tasks[taskCount] = command;
+                tasks[taskCount] = new Task(command);
                 taskCount++;
                 System.out.println("added: " + command);
                 System.out.println(separator);
