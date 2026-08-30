@@ -13,9 +13,9 @@ public class Storage {
     }
 
     /** Saves the current tasks, replacing the previous file contents. */
-    public void save(ArrayList<Task> tasks) throws HomeHubException {
+    public void save(TaskList taskList) throws HomeHubException {
         ArrayList<String> lines = new ArrayList<>();
-        for (Task task : tasks) {
+        for (Task task : taskList.asArrayList()) {
             lines.add(task.toStorageString());
         }
         try {

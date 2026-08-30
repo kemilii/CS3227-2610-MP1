@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /** Handles HomeHub's interaction with the command-line user. */
@@ -41,7 +40,7 @@ public class Ui {
     }
 
     /** Displays all tasks. */
-    public void showTaskList(ArrayList<Task> tasks) {
+    public void showTaskList(TaskList tasks) {
         System.out.println("Here are the household tasks in your HomeHub:");
         for (int i = 0; i < tasks.size(); i++) {
             System.out.println((i + 1) + "." + tasks.get(i).toDisplayString());

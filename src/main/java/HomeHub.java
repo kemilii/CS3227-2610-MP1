@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * A simple command-line household task manager that accepts commands until the
  * user says bye.
@@ -8,11 +6,11 @@ public class HomeHub {
     public static void main(String[] args) {
         Ui ui = new Ui();
         Storage storage = new Storage("data/homehub.txt");
-        ArrayList<Task> tasks;
+        TaskList tasks;
         try {
-            tasks = storage.load();
+            tasks = new TaskList(storage.load());
         } catch (HomeHubException exception) {
-            tasks = new ArrayList<>();
+            tasks = new TaskList();
             ui.showError(exception.getMessage());
         }
 
@@ -53,7 +51,7 @@ public class HomeHub {
         }
     }
 
-    private static void markTask(ArrayList<Task> tasks, String command, boolean markAsDone,
+    private static void markTask(TaskList tasks, String command, boolean markAsDone,
             Storage storage)
             throws HomeHubException {
         String action = markAsDone ? "mark" : "unmark";
@@ -87,7 +85,7 @@ public class HomeHub {
         }
     }
 
-    private static void deleteTask(ArrayList<Task> tasks, String command, Storage storage)
+    private static void deleteTask(TaskList tasks, String command, Storage storage)
             throws HomeHubException {
         String taskNumberText = command.substring("delete".length()).trim();
         if (taskNumberText.isEmpty()) {
@@ -113,7 +111,7 @@ public class HomeHub {
         }
     }
 
-    private static void addTodo(ArrayList<Task> tasks, String command, Storage storage)
+    private static void addTodo(TaskList tasks, String command, Storage storage)
             throws HomeHubException {
         String description = command.substring("todo".length()).trim();
         if (description.isEmpty()) {
@@ -123,7 +121,7 @@ public class HomeHub {
         addTask(tasks, new Todo(description), storage);
     }
 
-    private static void addDeadline(ArrayList<Task> tasks, String command, Storage storage)
+    private static void addDeadline(TaskList tasks, String command, Storage storage)
             throws HomeHubException {
         String content = command.substring("deadline".length()).trim();
         int byMarker = content.indexOf(" /by ");
@@ -138,7 +136,7 @@ public class HomeHub {
         addTask(tasks, new Deadline(description, by), storage);
     }
 
-    private static void addEvent(ArrayList<Task> tasks, String command, Storage storage)
+    private static void addEvent(TaskList tasks, String command, Storage storage)
             throws HomeHubException {
         String content = command.substring("event".length()).trim();
         int fromMarker = content.indexOf(" /from ");
@@ -157,7 +155,7 @@ public class HomeHub {
         addTask(tasks, new Event(description, from, to), storage);
     }
 
-    private static void addTask(ArrayList<Task> tasks, Task task, Storage storage)
+    private static void addTask(TaskList tasks, Task task, Storage storage)
             throws HomeHubException {
         tasks.add(task);
         try {
