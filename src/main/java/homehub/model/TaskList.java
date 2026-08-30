@@ -1,3 +1,4 @@
+package homehub.model;
 import java.util.ArrayList;
 
 /** Owns the in-memory collection of household tasks. */

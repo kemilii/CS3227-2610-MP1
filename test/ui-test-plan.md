@@ -1,13 +1,19 @@
 # HomeHub UI test plan
 
+### Test session record — 2026-08-30 (package organisation)
+
+- Java 25 compilation succeeded with `javac --release 25 -d <compiled-classes> $(find src/main/java -name '*.java')`.
+- The documented input blocks for UI-001 through UI-010 were executed in order using `homehub.HomeHub` from fresh temporary working directories where applicable.
+- All ten processes exited with status 0 and produced empty stderr. The complete captured console records were retained during this verification run; no UI behavior or expected output changed.
+
 ## Scope and execution information
 
 This plan tests HomeHub through its command-line interface. Each test case is an
 end-to-end process test and must start with the stated task-file precondition.
 
 - Required Java version: JDK 25. Verify both `java --version` and `javac --version`; a run using another JDK is not a valid pass.
-- Compile command: `javac --release 25 -d <compiled-classes> src/main/java/*.java`
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <compiled-classes> HomeHub`
+- Compile command: `javac --release 25 -d <compiled-classes> $(find src/main/java -name '*.java')`
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <compiled-classes> homehub.HomeHub`
 - Input: provide every line shown in the test case, including a final newline after the last command.
 - Output comparison: for cases with an `Expected output` block, compare stdout exactly after normalising only CRLF to LF. Preserve all other whitespace, blank lines, and the final newline. Assertion-based cases must still retain the complete actual stdout and check every stated result.
 - Error output: stderr must be empty unless a test case explicitly says otherwise.

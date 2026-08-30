@@ -1,3 +1,4 @@
+package homehub.exception;
 /**
  * Represents an error caused by invalid input to HomeHub.
  */

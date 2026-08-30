@@ -1,3 +1,4 @@
+package homehub.model;
 /** Represents the supported categories of household tasks. */
 public enum TaskType {
     TODO("T"), DEADLINE("D"), EVENT("E");

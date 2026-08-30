@@ -1,3 +1,4 @@
+package homehub.model;
 /** Represents the completion state of a household task. */
 public enum TaskStatus {
     PENDING(" "), DONE("X");

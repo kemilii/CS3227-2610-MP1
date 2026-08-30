@@ -1,3 +1,4 @@
+package homehub.command;
 /** Interprets raw user input as a supported HomeHub command. */
 public class Parser {
     /** Parses the command keyword and the text following it. */
@@ -15,6 +16,3 @@ public class Parser {
         return new ParsedCommand(CommandType.UNKNOWN, "");
     }
 }
-
-/** Represents a parsed command and its normalized argument text. */
-record ParsedCommand(CommandType type, String arguments) { }

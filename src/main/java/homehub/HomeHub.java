@@ -1,3 +1,6 @@
+package homehub;
+import homehub.command.*; import homehub.exception.*; import homehub.model.*; import homehub.storage.*; import homehub.ui.*;
+import homehub.command.*; import homehub.exception.HomeHubException; import homehub.model.*; import homehub.storage.Storage; import homehub.ui.Ui;
 /**
  * A simple command-line household task manager that accepts commands until the
  * user says bye.
@@ -68,7 +71,7 @@ public class HomeHub {
                 throw new HomeHubException("That task number does not exist.");
             }
             Task task = tasks.get(taskNumber - 1);
-            TaskStatus previousStatus = task.status;
+            TaskStatus previousStatus = task.getStatus();
             if (markAsDone) {
                 task.markAsDone();
                 System.out.println("Nice! I've marked this household task as done:");
@@ -79,7 +82,7 @@ public class HomeHub {
             try {
                 storage.save(tasks);
             } catch (HomeHubException exception) {
-                task.status = previousStatus;
+                task.setStatus(previousStatus);
                 throw exception;
             }
             System.out.println("  " + task.toDisplayString());
@@ -115,3 +118,4 @@ public class HomeHub {
     }
 
 }
+

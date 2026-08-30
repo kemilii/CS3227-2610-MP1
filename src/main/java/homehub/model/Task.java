@@ -1,3 +1,5 @@
+package homehub.model;
+import homehub.exception.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -43,6 +45,10 @@ public class Task {
         status = TaskStatus.PENDING;
     }
 
+    public TaskStatus getStatus() { return status; }
+
+    public void setStatus(TaskStatus status) { this.status = status; }
+
     /**
      * Returns the task description.
      *
@@ -87,73 +93,6 @@ public class Task {
     }
 }
 
-/** Represents a task without an attached date or time. */
-class Todo extends Task {
-    Todo(String description) {
-        super(description);
-    }
-}
-
-/** Represents a task that must be completed before a specified date or time. */
-class Deadline extends Task {
-    private final LocalDateTime by;
-    private final boolean hasTime;
-
-    Deadline(String description, String by) throws HomeHubException {
-        super(description);
-        this.by = DateTimeParser.parse(by);
-        this.hasTime = DateTimeParser.hasTime(by);
-    }
-
-    @Override
-    public String getTypeIcon() {
-        return TaskType.DEADLINE.getIcon();
-    }
-
-    @Override
-    public String getDateDescription() {
-        return " (by: " + DateTimeParser.display(by, hasTime) + ")";
-    }
-
-    @Override
-    public String toStorageString() {
-        return super.toStorageString() + " | " + DateTimeParser.storage(by, hasTime);
-    }
-}
-
-/** Represents a task with a starting and ending date or time. */
-class Event extends Task {
-    private final LocalDateTime from;
-    private final LocalDateTime to;
-    private final boolean fromHasTime;
-    private final boolean toHasTime;
-
-    Event(String description, String from, String to) throws HomeHubException {
-        super(description);
-        this.from = DateTimeParser.parse(from);
-        this.to = DateTimeParser.parse(to);
-        this.fromHasTime = DateTimeParser.hasTime(from);
-        this.toHasTime = DateTimeParser.hasTime(to);
-    }
-
-    @Override
-    public String getTypeIcon() {
-        return TaskType.EVENT.getIcon();
-    }
-
-    @Override
-    public String getDateDescription() {
-        return " (from: " + DateTimeParser.display(from, fromHasTime) + " to: "
-                + DateTimeParser.display(to, toHasTime) + ")";
-    }
-
-    @Override
-    public String toStorageString() {
-        return super.toStorageString() + " | " + DateTimeParser.storage(from, fromHasTime)
-                + " | " + DateTimeParser.storage(to, toHasTime);
-    }
-}
-
 /** Parses and formats date/time values accepted by HomeHub. */
 final class DateTimeParser {
     private static final DateTimeFormatter DATE = DateTimeFormatter.ofPattern("uuuu-MM-dd")
@@ -185,3 +124,4 @@ final class DateTimeParser {
         return value.format(includeTime ? DATE_TIME : DATE);
     }
 }
+
