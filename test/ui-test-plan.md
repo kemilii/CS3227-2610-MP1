@@ -75,9 +75,9 @@ Inputs:
 todo
 todo mop floor
 deadline pay bill
-deadline pay bill /by Friday
-event meeting /from 2pm
-event meeting /from 2pm /to 4pm
+deadline pay bill /by 2026-09-01
+event meeting /from 2026-09-02
+event meeting /from 2026-09-02 14:00 /to 2026-09-02 16:00
 blah
 list
 mark 9
@@ -107,7 +107,7 @@ Oops! Use: deadline <description> /by <date or time>.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-  [D][ ] pay bill (by: Friday)
+  [D][ ] pay bill (by: Sept 01 2026)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -115,7 +115,7 @@ Oops! Use: event <description> /from <start> /to <end>.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-  [E][ ] meeting (from: 2pm to: 4pm)
+  [E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
 Now you have 3 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -124,8 +124,8 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the household tasks in your HomeHub:
 1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Friday)
-3.[E][ ] meeting (from: 2pm to: 4pm)
+2.[D][ ] pay bill (by: Sept 01 2026)
+3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
 ____________________________________________________________
 ____________________________________________________________
 Oops! That task number does not exist.
@@ -133,8 +133,8 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the household tasks in your HomeHub:
 1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Friday)
-3.[E][ ] meeting (from: 2pm to: 4pm)
+2.[D][ ] pay bill (by: Sept 01 2026)
+3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
 ____________________________________________________________
 ____________________________________________________________
 Nice! I've marked this household task as done:
@@ -143,8 +143,8 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the household tasks in your HomeHub:
 1.[T][X] mop floor
-2.[D][ ] pay bill (by: Friday)
-3.[E][ ] meeting (from: 2pm to: 4pm)
+2.[D][ ] pay bill (by: Sept 01 2026)
+3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
@@ -206,6 +206,15 @@ ____________________________________________________________
 ```
 
 ## Test session record
+
+### Session: 2026-08-30 (dates and times)
+
+- Java requested: 25 (`sdk use java 25.0.3.fx-zulu` was unavailable; Java 17.0.14 was used)
+- Compile command: `javac -d <temporary-directory> src/main/java/*.java`
+- Launch command: `java -cp <temporary-directory> HomeHub`
+- UI-001 through UI-004: PASS; exact stdout matched the corresponding expected output, stderr was empty, and all processes exited with status 0.
+- Additional date/time input: `deadline report /by 2019-10-15`, `event meeting /from 2019-10-15 14:00 /to 2019-10-15 16:00`, `list`, `bye`: PASS.
+- Reload verification: started HomeHub again with `list`, `bye`; both parsed tasks were restored with formatted dates/times.
 
 ### Session: 2026-08-30
 

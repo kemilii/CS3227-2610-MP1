@@ -51,7 +51,7 @@ public class TaskStorage {
         }
     }
 
-    private static Task parseTask(String line) {
+    private static Task parseTask(String line) throws HomeHubException {
         if (line == null || line.trim().isEmpty()) {
             return null;
         }

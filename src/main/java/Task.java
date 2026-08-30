@@ -1,3 +1,7 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 /**
  * Represents a household task stored by HomeHub.
  */
@@ -91,11 +95,13 @@ class Todo extends Task {
 
 /** Represents a task that must be completed before a specified date or time. */
 class Deadline extends Task {
-    private final String by;
+    private final LocalDateTime by;
+    private final boolean hasTime;
 
-    Deadline(String description, String by) {
+    Deadline(String description, String by) throws HomeHubException {
         super(description);
-        this.by = by;
+        this.by = DateTimeParser.parse(by);
+        this.hasTime = DateTimeParser.hasTime(by);
     }
 
     @Override
@@ -105,24 +111,28 @@ class Deadline extends Task {
 
     @Override
     public String getDateDescription() {
-        return " (by: " + by + ")";
+        return " (by: " + DateTimeParser.display(by, hasTime) + ")";
     }
 
     @Override
     public String toStorageString() {
-        return super.toStorageString() + " | " + by;
+        return super.toStorageString() + " | " + DateTimeParser.storage(by, hasTime);
     }
 }
 
 /** Represents a task with a starting and ending date or time. */
 class Event extends Task {
-    private final String from;
-    private final String to;
+    private final LocalDateTime from;
+    private final LocalDateTime to;
+    private final boolean fromHasTime;
+    private final boolean toHasTime;
 
-    Event(String description, String from, String to) {
+    Event(String description, String from, String to) throws HomeHubException {
         super(description);
-        this.from = from;
-        this.to = to;
+        this.from = DateTimeParser.parse(from);
+        this.to = DateTimeParser.parse(to);
+        this.fromHasTime = DateTimeParser.hasTime(from);
+        this.toHasTime = DateTimeParser.hasTime(to);
     }
 
     @Override
@@ -132,11 +142,44 @@ class Event extends Task {
 
     @Override
     public String getDateDescription() {
-        return " (from: " + from + " to: " + to + ")";
+        return " (from: " + DateTimeParser.display(from, fromHasTime) + " to: "
+                + DateTimeParser.display(to, toHasTime) + ")";
     }
 
     @Override
     public String toStorageString() {
-        return super.toStorageString() + " | " + from + " | " + to;
+        return super.toStorageString() + " | " + DateTimeParser.storage(from, fromHasTime)
+                + " | " + DateTimeParser.storage(to, toHasTime);
+    }
+}
+
+/** Parses and formats date/time values accepted by HomeHub. */
+final class DateTimeParser {
+    private static final DateTimeFormatter DATE = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+    private static final DateTimeFormatter DATE_TIME = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm");
+    private static final DateTimeFormatter DISPLAY_DATE = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    private static final DateTimeFormatter DISPLAY_DATE_TIME = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
+
+    private DateTimeParser() { }
+
+    static LocalDateTime parse(String value) throws HomeHubException {
+        try {
+            String trimmed = value.trim();
+            if (trimmed.contains("T")) return LocalDateTime.parse(trimmed);
+            if (trimmed.length() > 10) return LocalDateTime.parse(trimmed, DATE_TIME);
+            return java.time.LocalDate.parse(trimmed, DATE).atStartOfDay();
+        } catch (DateTimeParseException exception) {
+            throw new HomeHubException("Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.");
+        }
+    }
+
+    static boolean hasTime(String value) { return value.trim().length() > 10; }
+
+    static String display(LocalDateTime value, boolean includeTime) {
+        return value.format(includeTime ? DISPLAY_DATE_TIME : DISPLAY_DATE);
+    }
+
+    static String storage(LocalDateTime value, boolean includeTime) {
+        return value.format(includeTime ? DATE_TIME : DATE);
     }
 }
