@@ -1,5 +1,5 @@
 /**
- * Represents a task stored by the chatbot.
+ * Represents a household task stored by HomeHub.
  */
 public class Task {
     protected String description;

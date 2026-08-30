@@ -1,9 +1,10 @@
 import java.util.Scanner;
 
 /**
- * A simple command-line chatbot that echoes commands until the user says bye.
+ * A simple command-line household task manager that accepts commands until the
+ * user says bye.
  */
-public class Caki {
+public class HomeHub {
     private static final int MAX_TASKS = 100;
 
     public static void main(String[] args) {
@@ -12,13 +13,8 @@ public class Caki {
         int taskCount = 0;
 
         System.out.println(separator);
-        System.out.println("   ____      _    _      ");
-        System.out.println("  / ___|__ _| | _(_)     ");
-        System.out.println(" | |   / _` | |/ / |     ");
-        System.out.println(" | |__| (_| |   <| |     ");
-        System.out.println("  \\____\\__,_|_|\\_\\_|     ");
-        System.out.println("Hello! I'm Caki.");
-        System.out.println("What can I do for you?");
+        System.out.println("Welcome to HomeHub!");
+        System.out.println("Manage your household tasks here.");
         System.out.println(separator);
 
         Scanner scanner = new Scanner(System.in);
@@ -31,7 +27,7 @@ public class Caki {
                 System.out.println(separator);
                 break;
             } else if (command.equals("list")) {
-                System.out.println("Here are the tasks in your list:");
+                System.out.println("Here are the household tasks in your HomeHub:");
                 for (int i = 0; i < taskCount; i++) {
                     System.out.println((i + 1) + ".[" + tasks[i].getStatusIcon() + "] "
                             + tasks[i].getDescription());
@@ -44,7 +40,7 @@ public class Caki {
                     if (taskNumber >= 1 && taskNumber <= taskCount) {
                         int taskIndex = taskNumber - 1;
                         tasks[taskIndex].markAsDone();
-                        System.out.println("Nice! I've marked this task as done:");
+                        System.out.println("Nice! I've marked this household task as done:");
                         System.out.println("  [X] " + tasks[taskIndex].getDescription());
                     } else {
                         System.out.println("That task number does not exist.");
