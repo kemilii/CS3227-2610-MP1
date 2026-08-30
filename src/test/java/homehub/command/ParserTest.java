@@ -66,4 +66,13 @@ class ParserTest {
                 () -> assertEquals(new ParsedCommand(CommandType.UNKNOWN, ""), parser.parse("TODO task"))
         );
     }
+
+    @Test
+    void fromInput_supportedAndUnknownCommands_returnsCorrespondingTypes() {
+        assertAll(
+                () -> assertEquals(CommandType.BYE, CommandType.fromInput("bye")),
+                () -> assertEquals(CommandType.TODO, CommandType.fromInput("todo clean room")),
+                () -> assertEquals(CommandType.UNKNOWN, CommandType.fromInput("not-a-command"))
+        );
+    }
 }
