@@ -35,6 +35,17 @@ SE-EDU basic and intermediate Java coding standard. Use that skill when writing,
 reviewing, or refactoring Java code, including formatting, naming, imports,
 braces, encapsulation, and public API Javadocs.
 
+## Git coding standard
+
+All future commits in this project MUST follow the project skill at
+`.codex/skills/seedu-git-standard/SKILL.md`, which is based on the SE-EDU Git
+conventions. Use that skill whenever creating or reviewing commit messages or
+branch names. Commit subjects MUST be imperative, capitalized, free of a
+trailing period, and no longer than 72 characters; non-trivial commits MUST
+have a blank-line-separated body wrapped at 72 characters that explains WHAT
+changed and WHY. Branch names MUST be meaningful kebab case, using the issue
+number format when applicable.
+
 ## Java version:
 
 Ensure that Java 25 is used when running the application or build tasks. On macOS, use `sdk use java 25.0.3.fx-zulu` to switch to Java 25 if needed.
