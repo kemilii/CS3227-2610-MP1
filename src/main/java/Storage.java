@@ -3,43 +3,37 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
-/** Reads and writes HomeHub tasks to the local data file. */
-public class TaskStorage {
-    private static final Path FILE_PATH = Path.of("data", "homehub.txt");
+/** Reads and writes HomeHub tasks to a configured local data file. */
+public class Storage {
+    private final Path filePath;
 
-    /**
-     * Saves the current tasks, replacing the previous file contents.
-     *
-     * @param tasks tasks to save
-     * @throws HomeHubException if the file cannot be written
-     */
-    public static void save(ArrayList<Task> tasks) throws HomeHubException {
+    /** Creates storage backed by the supplied file path. */
+    public Storage(String filePath) {
+        this.filePath = Path.of(filePath);
+    }
+
+    /** Saves the current tasks, replacing the previous file contents. */
+    public void save(ArrayList<Task> tasks) throws HomeHubException {
         ArrayList<String> lines = new ArrayList<>();
         for (Task task : tasks) {
             lines.add(task.toStorageString());
         }
         try {
-            Files.createDirectories(FILE_PATH.getParent());
-            Files.write(FILE_PATH, lines);
+            Files.createDirectories(filePath.getParent());
+            Files.write(filePath, lines);
         } catch (IOException | SecurityException exception) {
             throw new HomeHubException("I couldn't save your tasks to disk.");
         }
     }
 
-    /**
-     * Loads tasks from the local data file. A missing file represents an empty
-     * task list, which is the normal state on the first launch.
-     *
-     * @return tasks reconstructed from the save file
-     * @throws HomeHubException if the existing file cannot be read
-     */
-    public static ArrayList<Task> load() throws HomeHubException {
+    /** Loads tasks from the local data file; a missing file means no tasks. */
+    public ArrayList<Task> load() throws HomeHubException {
         ArrayList<Task> tasks = new ArrayList<>();
         try {
-            if (!Files.exists(FILE_PATH)) {
+            if (!Files.exists(filePath)) {
                 return tasks;
             }
-            for (String line : Files.readAllLines(FILE_PATH)) {
+            for (String line : Files.readAllLines(filePath)) {
                 Task task = parseTask(line);
                 if (task != null) {
                     tasks.add(task);
@@ -51,7 +45,7 @@ public class TaskStorage {
         }
     }
 
-    private static Task parseTask(String line) throws HomeHubException {
+    private Task parseTask(String line) throws HomeHubException {
         if (line == null || line.trim().isEmpty()) {
             return null;
         }

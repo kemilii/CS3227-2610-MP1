@@ -7,9 +7,10 @@ import java.util.ArrayList;
 public class HomeHub {
     public static void main(String[] args) {
         Ui ui = new Ui();
+        Storage storage = new Storage("data/homehub.txt");
         ArrayList<Task> tasks;
         try {
-            tasks = TaskStorage.load();
+            tasks = storage.load();
         } catch (HomeHubException exception) {
             tasks = new ArrayList<>();
             ui.showError(exception.getMessage());
@@ -29,17 +30,17 @@ public class HomeHub {
                 } else if (commandType == CommandType.LIST) {
                     ui.showTaskList(tasks);
                 } else if (commandType == CommandType.MARK) {
-                    markTask(tasks, command, true);
+                    markTask(tasks, command, true, storage);
                 } else if (commandType == CommandType.UNMARK) {
-                    markTask(tasks, command, false);
+                    markTask(tasks, command, false, storage);
                 } else if (commandType == CommandType.DELETE) {
-                    deleteTask(tasks, command);
+                    deleteTask(tasks, command, storage);
                 } else if (commandType == CommandType.TODO) {
-                    addTodo(tasks, command);
+                    addTodo(tasks, command, storage);
                 } else if (commandType == CommandType.DEADLINE) {
-                    addDeadline(tasks, command);
+                    addDeadline(tasks, command, storage);
                 } else if (commandType == CommandType.EVENT) {
-                    addEvent(tasks, command);
+                    addEvent(tasks, command, storage);
                 } else {
                     throw new HomeHubException("I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.");
                 }
@@ -52,7 +53,8 @@ public class HomeHub {
         }
     }
 
-    private static void markTask(ArrayList<Task> tasks, String command, boolean markAsDone)
+    private static void markTask(ArrayList<Task> tasks, String command, boolean markAsDone,
+            Storage storage)
             throws HomeHubException {
         String action = markAsDone ? "mark" : "unmark";
         String taskNumberText = command.substring(action.length()).trim();
@@ -74,7 +76,7 @@ public class HomeHub {
                 System.out.println("I've marked this household task as not done:");
             }
             try {
-                TaskStorage.save(tasks);
+                storage.save(tasks);
             } catch (HomeHubException exception) {
                 task.status = previousStatus;
                 throw exception;
@@ -85,7 +87,8 @@ public class HomeHub {
         }
     }
 
-    private static void deleteTask(ArrayList<Task> tasks, String command) throws HomeHubException {
+    private static void deleteTask(ArrayList<Task> tasks, String command, Storage storage)
+            throws HomeHubException {
         String taskNumberText = command.substring("delete".length()).trim();
         if (taskNumberText.isEmpty()) {
             throw new HomeHubException("Please provide a task number after delete.");
@@ -97,7 +100,7 @@ public class HomeHub {
             }
             Task removedTask = tasks.remove(taskNumber - 1);
             try {
-                TaskStorage.save(tasks);
+                storage.save(tasks);
             } catch (HomeHubException exception) {
                 tasks.add(taskNumber - 1, removedTask);
                 throw exception;
@@ -110,16 +113,18 @@ public class HomeHub {
         }
     }
 
-    private static void addTodo(ArrayList<Task> tasks, String command) throws HomeHubException {
+    private static void addTodo(ArrayList<Task> tasks, String command, Storage storage)
+            throws HomeHubException {
         String description = command.substring("todo".length()).trim();
         if (description.isEmpty()) {
             throw new HomeHubException("A todo description cannot be empty.");
         }
         validateText(description, "A todo description");
-        addTask(tasks, new Todo(description));
+        addTask(tasks, new Todo(description), storage);
     }
 
-    private static void addDeadline(ArrayList<Task> tasks, String command) throws HomeHubException {
+    private static void addDeadline(ArrayList<Task> tasks, String command, Storage storage)
+            throws HomeHubException {
         String content = command.substring("deadline".length()).trim();
         int byMarker = content.indexOf(" /by ");
         if (byMarker <= 0 || content.indexOf(" /by ", byMarker + 1) >= 0
@@ -130,10 +135,11 @@ public class HomeHub {
         String by = content.substring(byMarker + 5).trim();
         validateText(description, "A deadline description");
         validateText(by, "A deadline date or time");
-        addTask(tasks, new Deadline(description, by));
+        addTask(tasks, new Deadline(description, by), storage);
     }
 
-    private static void addEvent(ArrayList<Task> tasks, String command) throws HomeHubException {
+    private static void addEvent(ArrayList<Task> tasks, String command, Storage storage)
+            throws HomeHubException {
         String content = command.substring("event".length()).trim();
         int fromMarker = content.indexOf(" /from ");
         int toMarker = content.indexOf(" /to ");
@@ -148,13 +154,14 @@ public class HomeHub {
         validateText(description, "An event description");
         validateText(from, "An event start date or time");
         validateText(to, "An event end date or time");
-        addTask(tasks, new Event(description, from, to));
+        addTask(tasks, new Event(description, from, to), storage);
     }
 
-    private static void addTask(ArrayList<Task> tasks, Task task) throws HomeHubException {
+    private static void addTask(ArrayList<Task> tasks, Task task, Storage storage)
+            throws HomeHubException {
         tasks.add(task);
         try {
-            TaskStorage.save(tasks);
+            storage.save(tasks);
         } catch (HomeHubException exception) {
             tasks.remove(tasks.size() - 1);
             throw exception;

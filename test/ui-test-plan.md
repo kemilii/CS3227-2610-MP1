@@ -1700,6 +1700,15 @@ ____________________________________________________________
 
 Status: PASS
 
+### Session: 2026-08-30 (Storage extraction)
+
+- Java version: `openjdk 25.0.3`; compiler: `javac 25.0.3`.
+- Compile command: `javac --release 25 -d <temporary-directory> src/main/java/*.java`
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-directory> HomeHub`
+- Fresh temporary working directory; input: `todo wash dishes`, `list`, `bye`.
+- Result: PASS; process exited with status 0, stdout matched the documented add/list behavior, and stderr was empty.
+- The persistence implementation was moved behind `Storage` without changing the file format or observable UI behavior.
+
 ### Session: 2026-08-30 (Ui extraction)
 
 - Java version: `openjdk 25.0.3`; compiler: `javac 25.0.3`.
