@@ -3,7 +3,7 @@
  */
 public class Task {
     protected String description;
-    protected boolean isDone;
+    protected TaskStatus status;
 
     /**
      * Creates an incomplete task with the given description.
@@ -12,7 +12,7 @@ public class Task {
      */
     public Task(String description) {
         this.description = description;
-        this.isDone = false;
+        this.status = TaskStatus.PENDING;
     }
 
     /**
@@ -21,21 +21,21 @@ public class Task {
      * @return {@code X} for a completed task, or a space otherwise
      */
     public String getStatusIcon() {
-        return isDone ? "X" : " ";
+        return status.getIcon();
     }
 
     /**
      * Marks this task as done.
      */
     public void markAsDone() {
-        isDone = true;
+        status = TaskStatus.DONE;
     }
 
     /**
      * Marks this task as not done.
      */
     public void markAsNotDone() {
-        isDone = false;
+        status = TaskStatus.PENDING;
     }
 
     /**
@@ -53,7 +53,7 @@ public class Task {
      * @return the task type marker
      */
     public String getTypeIcon() {
-        return "T";
+        return TaskType.TODO.getIcon();
     }
 
     /**
@@ -73,6 +73,12 @@ public class Task {
     public String toDisplayString() {
         return "[" + getTypeIcon() + "][" + getStatusIcon() + "] " + description
                 + getDateDescription();
+    }
+
+    /** Returns this task in the format used by the local save file. */
+    public String toStorageString() {
+        return getTypeIcon() + " | " + (status == TaskStatus.DONE ? "1" : "0")
+                + " | " + description;
     }
 }
 
@@ -94,12 +100,17 @@ class Deadline extends Task {
 
     @Override
     public String getTypeIcon() {
-        return "D";
+        return TaskType.DEADLINE.getIcon();
     }
 
     @Override
     public String getDateDescription() {
         return " (by: " + by + ")";
+    }
+
+    @Override
+    public String toStorageString() {
+        return super.toStorageString() + " | " + by;
     }
 }
 
@@ -116,11 +127,16 @@ class Event extends Task {
 
     @Override
     public String getTypeIcon() {
-        return "E";
+        return TaskType.EVENT.getIcon();
     }
 
     @Override
     public String getDateDescription() {
         return " (from: " + from + " to: " + to + ")";
+    }
+
+    @Override
+    public String toStorageString() {
+        return super.toStorageString() + " | " + from + " | " + to;
     }
 }

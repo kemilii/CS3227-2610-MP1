@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -5,12 +6,9 @@ import java.util.Scanner;
  * user says bye.
  */
 public class HomeHub {
-    private static final int MAX_TASKS = 100;
-
     public static void main(String[] args) {
         String separator = "____________________________________________________________";
-        Task[] tasks = new Task[MAX_TASKS];
-        int taskCount = 0;
+        ArrayList<Task> tasks = new ArrayList<>();
 
         System.out.println(separator);
         System.out.println("Welcome to HomeHub!");
@@ -23,24 +21,27 @@ public class HomeHub {
             System.out.println(separator);
 
             try {
-                if (command.equals("bye")) {
+                CommandType commandType = CommandType.fromInput(command);
+                if (commandType == CommandType.BYE) {
                     System.out.println("Bye. Hope to see you again soon!");
                     System.out.println(separator);
                     break;
-                } else if (command.equals("list")) {
-                    printTaskList(tasks, taskCount);
-                } else if (command.equals("mark") || command.startsWith("mark ")) {
-                    markTask(tasks, taskCount, command, true);
-                } else if (command.equals("unmark") || command.startsWith("unmark ")) {
-                    markTask(tasks, taskCount, command, false);
-                } else if (command.equals("todo") || command.startsWith("todo ")) {
-                    taskCount = addTodo(tasks, taskCount, command);
-                } else if (command.equals("deadline") || command.startsWith("deadline ")) {
-                    taskCount = addDeadline(tasks, taskCount, command);
-                } else if (command.equals("event") || command.startsWith("event ")) {
-                    taskCount = addEvent(tasks, taskCount, command);
+                } else if (commandType == CommandType.LIST) {
+                    printTaskList(tasks);
+                } else if (commandType == CommandType.MARK) {
+                    markTask(tasks, command, true);
+                } else if (commandType == CommandType.UNMARK) {
+                    markTask(tasks, command, false);
+                } else if (commandType == CommandType.DELETE) {
+                    deleteTask(tasks, command);
+                } else if (commandType == CommandType.TODO) {
+                    addTodo(tasks, command);
+                } else if (commandType == CommandType.DEADLINE) {
+                    addDeadline(tasks, command);
+                } else if (commandType == CommandType.EVENT) {
+                    addEvent(tasks, command);
                 } else {
-                    throw new HomeHubException("I don't recognise that command. Try todo, deadline, event, list, or mark.");
+                    throw new HomeHubException("I don't recognise that command. Try todo, deadline, event, list, mark, or delete.");
                 }
             } catch (HomeHubException exception) {
                 System.out.println("Oops! " + exception.getMessage());
@@ -49,14 +50,14 @@ public class HomeHub {
         }
     }
 
-    private static void printTaskList(Task[] tasks, int taskCount) {
+    private static void printTaskList(ArrayList<Task> tasks) {
         System.out.println("Here are the household tasks in your HomeHub:");
-        for (int i = 0; i < taskCount; i++) {
-            System.out.println((i + 1) + "." + tasks[i].toDisplayString());
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println((i + 1) + "." + tasks.get(i).toDisplayString());
         }
     }
 
-    private static void markTask(Task[] tasks, int taskCount, String command, boolean markAsDone)
+    private static void markTask(ArrayList<Task> tasks, String command, boolean markAsDone)
             throws HomeHubException {
         String action = markAsDone ? "mark" : "unmark";
         String taskNumberText = command.substring(action.length()).trim();
@@ -65,10 +66,10 @@ public class HomeHub {
         }
         try {
             int taskNumber = Integer.parseInt(taskNumberText);
-            if (taskNumber < 1 || taskNumber > taskCount) {
+            if (taskNumber < 1 || taskNumber > tasks.size()) {
                 throw new HomeHubException("That task number does not exist.");
             }
-            Task task = tasks[taskNumber - 1];
+            Task task = tasks.get(taskNumber - 1);
             if (markAsDone) {
                 task.markAsDone();
                 System.out.println("Nice! I've marked this household task as done:");
@@ -76,50 +77,67 @@ public class HomeHub {
                 task.markAsNotDone();
                 System.out.println("I've marked this household task as not done:");
             }
+            TaskStorage.save(tasks);
             System.out.println("  " + task.toDisplayString());
         } catch (NumberFormatException exception) {
             throw new HomeHubException("The task number must be a whole number.");
         }
     }
 
-    private static int addTodo(Task[] tasks, int taskCount, String command) throws HomeHubException {
+    private static void deleteTask(ArrayList<Task> tasks, String command) throws HomeHubException {
+        String taskNumberText = command.substring("delete".length()).trim();
+        if (taskNumberText.isEmpty()) {
+            throw new HomeHubException("Please provide a task number after delete.");
+        }
+        try {
+            int taskNumber = Integer.parseInt(taskNumberText);
+            if (taskNumber < 1 || taskNumber > tasks.size()) {
+                throw new HomeHubException("That task number does not exist.");
+            }
+            Task removedTask = tasks.remove(taskNumber - 1);
+            TaskStorage.save(tasks);
+            System.out.println("Noted. I've removed this task:");
+            System.out.println("  " + removedTask.toDisplayString());
+            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        } catch (NumberFormatException exception) {
+            throw new HomeHubException("The task number must be a whole number.");
+        }
+    }
+
+    private static void addTodo(ArrayList<Task> tasks, String command) throws HomeHubException {
         String description = command.substring("todo".length()).trim();
         if (description.isEmpty()) {
             throw new HomeHubException("A todo description cannot be empty.");
         }
-        return addTask(tasks, taskCount, new Todo(description));
+        addTask(tasks, new Todo(description));
     }
 
-    private static int addDeadline(Task[] tasks, int taskCount, String command) throws HomeHubException {
+    private static void addDeadline(ArrayList<Task> tasks, String command) throws HomeHubException {
         String content = command.substring("deadline".length()).trim();
         int byMarker = content.indexOf(" /by ");
         if (byMarker <= 0 || content.substring(byMarker + 5).trim().isEmpty()) {
             throw new HomeHubException("Use: deadline <description> /by <date or time>.");
         }
-        return addTask(tasks, taskCount, new Deadline(content.substring(0, byMarker).trim(),
+        addTask(tasks, new Deadline(content.substring(0, byMarker).trim(),
                 content.substring(byMarker + 5).trim()));
     }
 
-    private static int addEvent(Task[] tasks, int taskCount, String command) throws HomeHubException {
+    private static void addEvent(ArrayList<Task> tasks, String command) throws HomeHubException {
         String content = command.substring("event".length()).trim();
         int fromMarker = content.indexOf(" /from ");
         int toMarker = content.indexOf(" /to ");
         if (fromMarker <= 0 || toMarker <= fromMarker || content.substring(toMarker + 5).trim().isEmpty()) {
             throw new HomeHubException("Use: event <description> /from <start> /to <end>.");
         }
-        return addTask(tasks, taskCount, new Event(content.substring(0, fromMarker).trim(),
+        addTask(tasks, new Event(content.substring(0, fromMarker).trim(),
                 content.substring(fromMarker + 7, toMarker).trim(),
                 content.substring(toMarker + 5).trim()));
     }
 
-    private static int addTask(Task[] tasks, int taskCount, Task task) throws HomeHubException {
-        if (taskCount >= MAX_TASKS) {
-            throw new HomeHubException("Your task list is full. Delete a task before adding another.");
-        }
-        tasks[taskCount] = task;
-        int newTaskCount = taskCount + 1;
-        printAddedTask(task, newTaskCount);
-        return newTaskCount;
+    private static void addTask(ArrayList<Task> tasks, Task task) throws HomeHubException {
+        tasks.add(task);
+        TaskStorage.save(tasks);
+        printAddedTask(task, tasks.size());
     }
 
     private static void printAddedTask(Task task, int taskCount) {
