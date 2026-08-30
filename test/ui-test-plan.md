@@ -1,5 +1,23 @@
 # HomeHub UI test plan
 
+### Session: 2026-08-30 (SE-EDU Java standard update)
+
+- Working-tree revision: uncommitted changes present.
+- Java-selection command: `JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/current`.
+- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
+- `javac --version`: `javac 25.0.3`.
+- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
+- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup: fresh temporary directories for UI-001 through UI-009; one shared temporary directory for UI-010.
+- Timeout: 20 seconds per process.
+- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
+- Overall result: PASS.
+- UI-001 through UI-009: PASS; exit status 0, empty stderr, and exact stdout.
+- UI-010 first launch and second launch: PASS; exit status 0, empty stderr, and exact stdout.
+- UI-010 persistence-file assertion: PASS; deleted deadline absent and saved records matched the expected content.
+- Complete console input/output record: [ui-test-session-2026-08-30.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-30.txt).
+
 ### Test session record — 2026-08-30 (package organisation)
 
 - Java 25 compilation succeeded with `javac --release 25 -d <compiled-classes> $(find src/main/java -name '*.java')`.

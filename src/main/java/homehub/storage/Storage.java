@@ -1,10 +1,16 @@
 package homehub.storage;
-import homehub.exception.*; import homehub.model.*;
-import homehub.exception.HomeHubException; import homehub.model.*;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+
+import homehub.exception.HomeHubException;
+import homehub.model.Deadline;
+import homehub.model.Event;
+import homehub.model.Task;
+import homehub.model.TaskList;
+import homehub.model.Todo;
 
 /** Reads and writes HomeHub tasks to a configured local data file. */
 public class Storage {
@@ -15,7 +21,12 @@ public class Storage {
         this.filePath = Path.of(filePath);
     }
 
-    /** Saves the current tasks, replacing the previous file contents. */
+    /**
+     * Saves the current tasks, replacing the previous file contents.
+     *
+     * @param taskList tasks to save.
+     * @throws HomeHubException if the file cannot be written.
+     */
     public void save(TaskList taskList) throws HomeHubException {
         ArrayList<String> lines = new ArrayList<>();
         for (Task task : taskList.asArrayList()) {
@@ -29,7 +40,12 @@ public class Storage {
         }
     }
 
-    /** Loads tasks from the local data file; a missing file means no tasks. */
+    /**
+     * Loads tasks from the local data file; a missing file means no tasks.
+     *
+     * @return the loaded tasks.
+     * @throws HomeHubException if the file cannot be read or contains an invalid date.
+     */
     public ArrayList<Task> load() throws HomeHubException {
         ArrayList<Task> tasks = new ArrayList<>();
         try {
@@ -53,7 +69,8 @@ public class Storage {
             return null;
         }
         String[] fields = line.split("\\s*\\|\\s*", -1);
-        if (fields.length < 3 || fields[1].isEmpty() || fields[2].isEmpty()) {
+        if (fields.length < 3 || fields[1].isEmpty()
+                || fields[2].isEmpty()) {
             return null;
         }
         Task task;
@@ -75,4 +92,3 @@ public class Storage {
         return task;
     }
 }
-

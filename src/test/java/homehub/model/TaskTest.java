@@ -1,10 +1,11 @@
 package homehub.model;
 
-import homehub.exception.HomeHubException;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import homehub.exception.HomeHubException;
+
+import org.junit.jupiter.api.Test;
 
 /** Tests task state transitions and date-aware display/storage formatting. */
 class TaskTest {

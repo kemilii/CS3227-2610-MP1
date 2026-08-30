@@ -11,6 +11,14 @@ public class Event extends Task {
     private final boolean fromHasTime;
     private final boolean toHasTime;
 
+    /**
+     * Creates an event task with the supplied start and end dates.
+     *
+     * @param description task description.
+     * @param from event start date or time in HomeHub's accepted format.
+     * @param to event end date or time in HomeHub's accepted format.
+     * @throws HomeHubException if either date or time is invalid.
+     */
     public Event(String description, String from, String to) throws HomeHubException {
         super(description);
         this.from = DateTimeParser.parse(from);
@@ -20,7 +28,9 @@ public class Event extends Task {
     }
 
     @Override
-    public String getTypeIcon() { return TaskType.EVENT.getIcon(); }
+    public String getTypeIcon() {
+        return TaskType.EVENT.getIcon();
+    }
 
     @Override
     public String getDateDescription() {

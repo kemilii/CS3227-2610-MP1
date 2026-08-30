@@ -1,5 +1,5 @@
 package homehub.command;
-import homehub.exception.*; import homehub.model.*; import homehub.storage.*; import homehub.ui.*;
+
 /** Represents a command understood by HomeHub. */
 public enum CommandType {
     BYE("bye"), LIST("list"), MARK("mark"), UNMARK("unmark"), DELETE("delete"),
@@ -7,11 +7,15 @@ public enum CommandType {
 
     private final String keyword;
 
-    CommandType(String keyword) { this.keyword = keyword; }
+    CommandType(String keyword) {
+        this.keyword = keyword;
+    }
 
     /** Returns the command keyword used by the parser. */
     String getKeyword() { return keyword; }
 
     /** Identifies a command from the first word of user input. */
-    public static CommandType fromInput(String input) { return new Parser().parse(input).type(); }
+    public static CommandType fromInput(String input) {
+        return new Parser().parse(input).type();
+    }
 }

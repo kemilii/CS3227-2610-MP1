@@ -1,4 +1,5 @@
 package homehub.model;
+
 import java.util.ArrayList;
 
 /** Owns the in-memory collection of household tasks. */
@@ -15,32 +16,59 @@ public class TaskList {
         this.tasks = new ArrayList<>(tasks);
     }
 
-    /** Returns the task at the zero-based index. */
+    /**
+     * Returns the task at the zero-based index.
+     *
+     * @param index zero-based task index.
+     * @return the task at the index.
+     */
     public Task get(int index) {
         return tasks.get(index);
     }
 
-    /** Adds a task to the end of the list. */
+    /**
+     * Adds a task to the end of the list.
+     *
+     * @param task task to add.
+     */
     public void add(Task task) {
         tasks.add(task);
     }
 
-    /** Inserts a task at the zero-based index. */
+    /**
+     * Inserts a task at the zero-based index.
+     *
+     * @param index zero-based insertion index.
+     * @param task task to add.
+     */
     public void add(int index, Task task) {
         tasks.add(index, task);
     }
 
-    /** Removes and returns the task at the zero-based index. */
+    /**
+     * Removes and returns the task at the zero-based index.
+     *
+     * @param index zero-based task index.
+     * @return the removed task.
+     */
     public Task remove(int index) {
         return tasks.remove(index);
     }
 
-    /** Returns the number of tasks. */
+    /**
+     * Returns the number of tasks.
+     *
+     * @return the number of tasks.
+     */
     public int size() {
         return tasks.size();
     }
 
-    /** Returns the tasks for persistence without exposing the mutable list. */
+    /**
+     * Returns a copy of the tasks for persistence without exposing the mutable list.
+     *
+     * @return a copy of the tasks.
+     */
     public ArrayList<Task> asArrayList() {
         return new ArrayList<>(tasks);
     }

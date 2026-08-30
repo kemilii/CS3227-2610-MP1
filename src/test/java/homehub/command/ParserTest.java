@@ -1,9 +1,9 @@
 package homehub.command;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 /** Tests parsing of HomeHub command input into normalized parsed commands. */
 class ParserTest {

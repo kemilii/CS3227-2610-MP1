@@ -1,6 +1,8 @@
 package homehub.ui;
-import homehub.model.*;
-import homehub.model.*;
+
+import homehub.model.Task;
+import homehub.model.TaskList;
+
 import java.util.Scanner;
 
 /** Handles HomeHub's interaction with the command-line user. */
@@ -57,4 +59,3 @@ public class Ui {
         System.out.println("Now you have " + taskCount + " tasks in the list.");
     }
 }
-

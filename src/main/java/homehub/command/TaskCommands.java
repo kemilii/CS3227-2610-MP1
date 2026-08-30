@@ -1,24 +1,52 @@
 package homehub.command;
+
+import homehub.exception.HomeHubException;
+import homehub.model.Deadline;
+import homehub.model.Event;
+import homehub.model.Task;
+import homehub.model.TaskList;
+import homehub.model.Todo;
+import homehub.storage.Storage;
+import homehub.ui.Ui;
+
 /** Executes commands that create and persist household tasks. */
-import homehub.exception.HomeHubException; import homehub.model.*; import homehub.storage.Storage; import homehub.ui.Ui;
 public class TaskCommands {
     private final Storage storage;
     private final Ui ui;
 
-    /** Creates a task-command handler with the required collaborators. */
+    /**
+     * Creates a task-command handler with the required collaborators.
+     *
+     * @param storage persistence service for tasks.
+     * @param ui user-interface service for confirmations.
+     */
     public TaskCommands(Storage storage, Ui ui) {
         this.storage = storage;
         this.ui = ui;
     }
 
-    /** Adds a todo task. */
+    /**
+     * Adds a todo task.
+     *
+     * @param tasks task list to update.
+     * @param description task description.
+     * @throws HomeHubException if the description is invalid or persistence fails.
+     */
     public void addTodo(TaskList tasks, String description) throws HomeHubException {
-        if (description.isEmpty()) throw new HomeHubException("A todo description cannot be empty.");
+        if (description.isEmpty()) {
+            throw new HomeHubException("A todo description cannot be empty.");
+        }
         validateText(description, "A todo description");
         addTask(tasks, new Todo(description));
     }
 
-    /** Adds a deadline task. */
+    /**
+     * Adds a deadline task.
+     *
+     * @param tasks task list to update.
+     * @param content description and deadline separated by {@code /by}.
+     * @throws HomeHubException if the command content is invalid or persistence fails.
+     */
     public void addDeadline(TaskList tasks, String content) throws HomeHubException {
         int byMarker = content.indexOf(" /by ");
         if (byMarker <= 0 || content.indexOf(" /by ", byMarker + 1) >= 0
@@ -32,7 +60,13 @@ public class TaskCommands {
         addTask(tasks, new Deadline(description, by));
     }
 
-    /** Adds an event task. */
+    /**
+     * Adds an event task.
+     *
+     * @param tasks task list to update.
+     * @param content description and event dates separated by {@code /from} and {@code /to}.
+     * @throws HomeHubException if the command content is invalid or persistence fails.
+     */
     public void addEvent(TaskList tasks, String content) throws HomeHubException {
         int fromMarker = content.indexOf(" /from ");
         int toMarker = content.indexOf(" /to ");
@@ -67,4 +101,3 @@ public class TaskCommands {
         }
     }
 }
-

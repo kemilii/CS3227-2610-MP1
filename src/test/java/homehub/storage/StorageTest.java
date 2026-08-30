@@ -1,21 +1,22 @@
 package homehub.storage;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+
 import homehub.exception.HomeHubException;
 import homehub.model.Deadline;
 import homehub.model.Event;
 import homehub.model.Task;
 import homehub.model.TaskList;
 import homehub.model.Todo;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Tests persistence and recovery of the supported task representations. */
 class StorageTest {

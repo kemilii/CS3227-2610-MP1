@@ -1,11 +1,26 @@
 package homehub;
-import homehub.command.*; import homehub.exception.*; import homehub.model.*; import homehub.storage.*; import homehub.ui.*;
-import homehub.command.*; import homehub.exception.HomeHubException; import homehub.model.*; import homehub.storage.Storage; import homehub.ui.Ui;
+
+import homehub.command.CommandType;
+import homehub.command.ParsedCommand;
+import homehub.command.Parser;
+import homehub.command.TaskCommands;
+import homehub.exception.HomeHubException;
+import homehub.model.Task;
+import homehub.model.TaskList;
+import homehub.model.TaskStatus;
+import homehub.storage.Storage;
+import homehub.ui.Ui;
+
 /**
  * A simple command-line household task manager that accepts commands until the
  * user says bye.
  */
 public class HomeHub {
+    /**
+     * Runs the HomeHub command-line application.
+     *
+     * @param args command-line arguments, which are not used.
+     */
     public static void main(String[] args) {
         Ui ui = new Ui();
         Parser parser = new Parser();
@@ -46,7 +61,8 @@ public class HomeHub {
                 } else if (commandType == CommandType.EVENT) {
                     taskCommands.addEvent(tasks, parsedCommand.arguments());
                 } else {
-                    throw new HomeHubException("I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.");
+                    throw new HomeHubException("I don't recognise that command. Try todo, deadline, event, list, "
+                            + "mark, unmark, or delete.");
                 }
             } catch (HomeHubException exception) {
                 ui.showError(exception.getMessage());
@@ -57,8 +73,8 @@ public class HomeHub {
         }
     }
 
-    private static void markTask(TaskList tasks, String arguments, boolean markAsDone,
-            Storage storage)
+    private static void markTask(TaskList tasks, String arguments,
+            boolean markAsDone, Storage storage)
             throws HomeHubException {
         String action = markAsDone ? "mark" : "unmark";
         String taskNumberText = arguments;
@@ -91,8 +107,8 @@ public class HomeHub {
         }
     }
 
-    private static void deleteTask(TaskList tasks, String arguments, Storage storage)
-            throws HomeHubException {
+    private static void deleteTask(TaskList tasks, String arguments,
+            Storage storage) throws HomeHubException {
         String taskNumberText = arguments;
         if (taskNumberText.isEmpty()) {
             throw new HomeHubException("Please provide a task number after delete.");
@@ -118,4 +134,3 @@ public class HomeHub {
     }
 
 }
-
