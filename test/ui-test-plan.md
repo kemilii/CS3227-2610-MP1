@@ -2576,3 +2576,581 @@ ____________________________________________________________
 ```
 
 Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+### Session: 2026-08-30 (expanded ParserTest verification)
+
+- Working-tree revision: uncommitted changes present (expanded JUnit test).
+- Java-selection command: `JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/current` with its `bin` directory first in `PATH`.
+- Java version: `openjdk 25.0.3 2026-04-21 LTS / OpenJDK Runtime Environment Zulu25.34+17-CA (build 25.0.3+9-LTS) / OpenJDK 64-Bit Server VM Zulu25.34+17-CA (build 25.0.3+9-LTS, mixed mode, sharing)`
+- `javac --version`: `javac 25.0.3`
+- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
+- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup: UI-001 through UI-009 used fresh temporary directories without `data/homehub.txt`; UI-010 reused one temporary directory across both launches.
+- Timeout: 30 seconds per process.
+- Output comparison: stdout compared exactly; stderr required to be empty; exit status required to be 0.
+- Overall result: PASS; all ten UI cases passed in documented order.
+
+#### UI-001: PASS
+
+Console input:
+
+```text
+bye
+```
+
+Console output:
+
+```text
+____________________________________________________________
+Welcome to HomeHub!
+Manage your household tasks here.
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+
+#### UI-002: PASS
+
+Console input:
+
+```text
+todo wash dishes
+list
+bye
+```
+
+Console output:
+
+```text
+____________________________________________________________
+Welcome to HomeHub!
+Manage your household tasks here.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] wash dishes
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the household tasks in your HomeHub:
+1.[T][ ] wash dishes
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+
+#### UI-003: PASS
+
+Console input:
+
+```text
+todo
+todo mop floor
+deadline pay bill
+deadline pay bill /by 2026-09-01
+event meeting /from 2026-09-02
+event meeting /from 2026-09-02 14:00 /to 2026-09-02 16:00
+blah
+list
+mark 9
+list
+mark 1
+list
+bye
+```
+
+Console output:
+
+```text
+____________________________________________________________
+Welcome to HomeHub!
+Manage your household tasks here.
+____________________________________________________________
+____________________________________________________________
+Oops! A todo description cannot be empty.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] mop floor
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Oops! Use: deadline <description> /by <date or time>.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [D][ ] pay bill (by: Sept 01 2026)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Oops! Use: event <description> /from <start> /to <end>.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
+Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
+____________________________________________________________
+____________________________________________________________
+Here are the household tasks in your HomeHub:
+1.[T][ ] mop floor
+2.[D][ ] pay bill (by: Sept 01 2026)
+3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
+____________________________________________________________
+____________________________________________________________
+Oops! That task number does not exist.
+____________________________________________________________
+____________________________________________________________
+Here are the household tasks in your HomeHub:
+1.[T][ ] mop floor
+2.[D][ ] pay bill (by: Sept 01 2026)
+3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
+____________________________________________________________
+____________________________________________________________
+Nice! I've marked this household task as done:
+  [T][X] mop floor
+____________________________________________________________
+____________________________________________________________
+Here are the household tasks in your HomeHub:
+1.[T][X] mop floor
+2.[D][ ] pay bill (by: Sept 01 2026)
+3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+
+#### UI-004: PASS
+
+Console input:
+
+```text
+todo first task
+todo second task
+delete 1
+list
+delete 5
+list
+bye
+```
+
+Console output:
+
+```text
+____________________________________________________________
+Welcome to HomeHub!
+Manage your household tasks here.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] first task
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] second task
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Noted. I've removed this task:
+  [T][ ] first task
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the household tasks in your HomeHub:
+1.[T][ ] second task
+____________________________________________________________
+____________________________________________________________
+Oops! That task number does not exist.
+____________________________________________________________
+____________________________________________________________
+Here are the household tasks in your HomeHub:
+1.[T][ ] second task
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+
+#### UI-005: PASS
+
+Console input:
+
+```text
+todo alpha
+deadline due /by 2026-02-30
+list
+deadline due /by 2026-02-28
+event outing /from nope /to 2026-03-02
+event outing /from 2026-03-01 /to 2026-03-02
+mark 3
+list
+delete 2
+delete 4
+list
+bye
+```
+
+Console output:
+
+```text
+____________________________________________________________
+Welcome to HomeHub!
+Manage your household tasks here.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] alpha
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+____________________________________________________________
+____________________________________________________________
+Here are the household tasks in your HomeHub:
+1.[T][ ] alpha
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [D][ ] due (by: Feb 28 2026)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [E][ ] outing (from: Mar 01 2026 to: Mar 02 2026)
+Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Nice! I've marked this household task as done:
+  [E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
+____________________________________________________________
+____________________________________________________________
+Here are the household tasks in your HomeHub:
+1.[T][ ] alpha
+2.[D][ ] due (by: Feb 28 2026)
+3.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
+____________________________________________________________
+____________________________________________________________
+Noted. I've removed this task:
+  [D][ ] due (by: Feb 28 2026)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Oops! That task number does not exist.
+____________________________________________________________
+____________________________________________________________
+Here are the household tasks in your HomeHub:
+1.[T][ ] alpha
+2.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+
+#### UI-006: PASS
+
+Console input:
+
+```text
+todo wash dishes
+mark 1
+unmark 1
+list
+bye
+```
+
+Console output:
+
+```text
+____________________________________________________________
+Welcome to HomeHub!
+Manage your household tasks here.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] wash dishes
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Nice! I've marked this household task as done:
+  [T][X] wash dishes
+____________________________________________________________
+____________________________________________________________
+I've marked this household task as not done:
+  [T][ ] wash dishes
+____________________________________________________________
+____________________________________________________________
+Here are the household tasks in your HomeHub:
+1.[T][ ] wash dishes
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+
+#### UI-007: PASS
+
+Console input:
+
+```text
+todo one task
+mark
+mark nope
+mark 0
+mark -1
+delete
+delete nope
+delete 0
+delete -1
+delete 9
+list
+bye
+```
+
+Console output:
+
+```text
+____________________________________________________________
+Welcome to HomeHub!
+Manage your household tasks here.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] one task
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Oops! Please provide a task number after mark.
+____________________________________________________________
+____________________________________________________________
+Oops! The task number must be a whole number.
+____________________________________________________________
+____________________________________________________________
+Oops! That task number does not exist.
+____________________________________________________________
+____________________________________________________________
+Oops! That task number does not exist.
+____________________________________________________________
+____________________________________________________________
+Oops! Please provide a task number after delete.
+____________________________________________________________
+____________________________________________________________
+Oops! The task number must be a whole number.
+____________________________________________________________
+____________________________________________________________
+Oops! That task number does not exist.
+____________________________________________________________
+____________________________________________________________
+Oops! That task number does not exist.
+____________________________________________________________
+____________________________________________________________
+Oops! That task number does not exist.
+____________________________________________________________
+____________________________________________________________
+Here are the household tasks in your HomeHub:
+1.[T][ ] one task
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+
+#### UI-008: PASS
+
+Console input:
+
+```text
+
+␠␠todo spaced task␠␠
+␠␠list␠␠
+␠␠bye␠␠
+```
+
+Console output:
+
+```text
+____________________________________________________________
+Welcome to HomeHub!
+Manage your household tasks here.
+____________________________________________________________
+____________________________________________________________
+Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] spaced task
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the household tasks in your HomeHub:
+1.[T][ ] spaced task
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+
+#### UI-009: PASS
+
+Console input:
+
+```text
+deadline /by 2026-10-15
+deadline review /by
+deadline review /by 2028-02-29
+deadline invalid-time /by 2026-03-01 25:00
+deadline invalid-format /by 2026-03-01T14:00
+event outing /from 2026-10-15 /to
+event outing /to 2026-10-16 /from 2026-10-15
+event outing /from 2026-10-15 /from 2026-10-16 /to 2026-10-17
+list
+bye
+```
+
+Console output:
+
+```text
+____________________________________________________________
+Welcome to HomeHub!
+Manage your household tasks here.
+____________________________________________________________
+____________________________________________________________
+Oops! Use: deadline <description> /by <date or time>.
+____________________________________________________________
+____________________________________________________________
+Oops! Use: deadline <description> /by <date or time>.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [D][ ] review (by: Feb 29 2028)
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+____________________________________________________________
+____________________________________________________________
+Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+____________________________________________________________
+____________________________________________________________
+Oops! Use: event <description> /from <start> /to <end>.
+____________________________________________________________
+____________________________________________________________
+Oops! Use: event <description> /from <start> /to <end>.
+____________________________________________________________
+____________________________________________________________
+Oops! Use: event <description> /from <start> /to <end>.
+____________________________________________________________
+____________________________________________________________
+Here are the household tasks in your HomeHub:
+1.[D][ ] review (by: Feb 29 2028)
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+
+#### UI-010 first launch: PASS
+
+Console input:
+
+```text
+todo persisted
+deadline review /by 2026-10-15
+event meeting /from 2026-10-15 14:00 /to 2026-10-15 16:00
+mark 1
+delete 2
+bye
+```
+
+Console output:
+
+```text
+____________________________________________________________
+Welcome to HomeHub!
+Manage your household tasks here.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] persisted
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [D][ ] review (by: Oct 15 2026)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
+Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Nice! I've marked this household task as done:
+  [T][X] persisted
+____________________________________________________________
+____________________________________________________________
+Noted. I've removed this task:
+  [D][ ] review (by: Oct 15 2026)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+
+#### UI-010 second launch: PASS
+
+Console input:
+
+```text
+list
+bye
+```
+
+Console output:
+
+```text
+____________________________________________________________
+Welcome to HomeHub!
+Manage your household tasks here.
+____________________________________________________________
+____________________________________________________________
+Here are the household tasks in your HomeHub:
+1.[T][X] persisted
+2.[E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
