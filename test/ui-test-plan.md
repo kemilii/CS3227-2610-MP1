@@ -3155,6 +3155,37 @@ ____________________________________________________________
 
 Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
 
+### Session: 2026-08-30 (Shadow JAR configuration verification)
+
+- Working-tree revision: uncommitted `build.gradle` change; application behavior unchanged.
+- Java-selection command: `sdk use java 25.0.3.fx-zulu` was unavailable in the terminal; Java 25.0.3 was selected directly using `JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/current`.
+- Java version: OpenJDK 25.0.3; `javac 25.0.3`.
+- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
+- Compile command: `find src/main/java -name '*.java' -print0 | xargs -0 javac --release 25 -d <temporary-classes>`.
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup: UI-001 through UI-009 used fresh temporary directories without `data/homehub.txt`; UI-010 reused one fresh temporary directory across both launches.
+- Timeout: 30 seconds per process.
+- Output comparison policy: CRLF normalised to LF only; all other whitespace compared exactly; stderr required to be empty; exit status required to be 0.
+- Overall result: PASS; all documented cases passed in order.
+
+For each case, the console input was executed exactly as shown in the
+corresponding test-case block above. The complete actual console output was
+captured and matched that case's complete `Expected output` block exactly.
+
+#### UI-001 through UI-009: PASS
+
+- Exit status: 0 for every case; stderr was empty; no case timed out.
+- Exact stdout comparison: PASS for every case.
+- Inputs and complete outputs: the documented UI-001 through UI-009 records above; actual output was identical.
+
+#### UI-010 first launch and second launch: PASS
+
+- First-launch input: `todo persisted`, `deadline review /by 2026-10-15`, `event meeting /from 2026-10-15 14:00 /to 2026-10-15 16:00`, `mark 1`, `delete 2`, `bye`.
+- Second-launch input: `list`, `bye`.
+- Exit status: 0 for both launches; stderr was empty; neither launch timed out.
+- Exact stdout comparison: PASS for both launches; persistence assertions passed.
+- Inputs and complete outputs: the documented UI-010 records above; actual output was identical.
+
 ### Session: 2026-08-30 (expanded ParserTest verification)
 
 - Working-tree revision: uncommitted changes present (expanded JUnit test).
