@@ -8,7 +8,13 @@ import java.util.Scanner;
 public class HomeHub {
     public static void main(String[] args) {
         String separator = "____________________________________________________________";
-        ArrayList<Task> tasks = new ArrayList<>();
+        ArrayList<Task> tasks;
+        try {
+            tasks = TaskStorage.load();
+        } catch (HomeHubException exception) {
+            tasks = new ArrayList<>();
+            System.out.println("Oops! " + exception.getMessage());
+        }
 
         System.out.println(separator);
         System.out.println("Welcome to HomeHub!");
@@ -45,6 +51,8 @@ public class HomeHub {
                 }
             } catch (HomeHubException exception) {
                 System.out.println("Oops! " + exception.getMessage());
+            } catch (RuntimeException exception) {
+                System.out.println("Oops! HomeHub could not process that input.");
             }
             System.out.println(separator);
         }
@@ -70,6 +78,7 @@ public class HomeHub {
                 throw new HomeHubException("That task number does not exist.");
             }
             Task task = tasks.get(taskNumber - 1);
+            TaskStatus previousStatus = task.status;
             if (markAsDone) {
                 task.markAsDone();
                 System.out.println("Nice! I've marked this household task as done:");
@@ -77,7 +86,12 @@ public class HomeHub {
                 task.markAsNotDone();
                 System.out.println("I've marked this household task as not done:");
             }
-            TaskStorage.save(tasks);
+            try {
+                TaskStorage.save(tasks);
+            } catch (HomeHubException exception) {
+                task.status = previousStatus;
+                throw exception;
+            }
             System.out.println("  " + task.toDisplayString());
         } catch (NumberFormatException exception) {
             throw new HomeHubException("The task number must be a whole number.");
@@ -95,7 +109,12 @@ public class HomeHub {
                 throw new HomeHubException("That task number does not exist.");
             }
             Task removedTask = tasks.remove(taskNumber - 1);
-            TaskStorage.save(tasks);
+            try {
+                TaskStorage.save(tasks);
+            } catch (HomeHubException exception) {
+                tasks.add(taskNumber - 1, removedTask);
+                throw exception;
+            }
             System.out.println("Noted. I've removed this task:");
             System.out.println("  " + removedTask.toDisplayString());
             System.out.println("Now you have " + tasks.size() + " tasks in the list.");
@@ -109,35 +128,57 @@ public class HomeHub {
         if (description.isEmpty()) {
             throw new HomeHubException("A todo description cannot be empty.");
         }
+        validateText(description, "A todo description");
         addTask(tasks, new Todo(description));
     }
 
     private static void addDeadline(ArrayList<Task> tasks, String command) throws HomeHubException {
         String content = command.substring("deadline".length()).trim();
         int byMarker = content.indexOf(" /by ");
-        if (byMarker <= 0 || content.substring(byMarker + 5).trim().isEmpty()) {
+        if (byMarker <= 0 || content.indexOf(" /by ", byMarker + 1) >= 0
+                || content.substring(byMarker + 5).trim().isEmpty()) {
             throw new HomeHubException("Use: deadline <description> /by <date or time>.");
         }
-        addTask(tasks, new Deadline(content.substring(0, byMarker).trim(),
-                content.substring(byMarker + 5).trim()));
+        String description = content.substring(0, byMarker).trim();
+        String by = content.substring(byMarker + 5).trim();
+        validateText(description, "A deadline description");
+        validateText(by, "A deadline date or time");
+        addTask(tasks, new Deadline(description, by));
     }
 
     private static void addEvent(ArrayList<Task> tasks, String command) throws HomeHubException {
         String content = command.substring("event".length()).trim();
         int fromMarker = content.indexOf(" /from ");
         int toMarker = content.indexOf(" /to ");
-        if (fromMarker <= 0 || toMarker <= fromMarker || content.substring(toMarker + 5).trim().isEmpty()) {
+        if (fromMarker <= 0 || content.indexOf(" /from ", fromMarker + 1) >= 0
+                || toMarker <= fromMarker || content.indexOf(" /to ", toMarker + 1) >= 0
+                || content.substring(toMarker + 5).trim().isEmpty()) {
             throw new HomeHubException("Use: event <description> /from <start> /to <end>.");
         }
-        addTask(tasks, new Event(content.substring(0, fromMarker).trim(),
-                content.substring(fromMarker + 7, toMarker).trim(),
-                content.substring(toMarker + 5).trim()));
+        String description = content.substring(0, fromMarker).trim();
+        String from = content.substring(fromMarker + 7, toMarker).trim();
+        String to = content.substring(toMarker + 5).trim();
+        validateText(description, "An event description");
+        validateText(from, "An event start date or time");
+        validateText(to, "An event end date or time");
+        addTask(tasks, new Event(description, from, to));
     }
 
     private static void addTask(ArrayList<Task> tasks, Task task) throws HomeHubException {
         tasks.add(task);
-        TaskStorage.save(tasks);
+        try {
+            TaskStorage.save(tasks);
+        } catch (HomeHubException exception) {
+            tasks.remove(tasks.size() - 1);
+            throw exception;
+        }
         printAddedTask(task, tasks.size());
+    }
+
+    private static void validateText(String value, String fieldName) throws HomeHubException {
+        if (value.indexOf('|') >= 0) {
+            throw new HomeHubException(fieldName + " cannot contain the '|' character.");
+        }
     }
 
     private static void printAddedTask(Task task, int taskCount) {
