@@ -1700,6 +1700,14 @@ ____________________________________________________________
 
 Status: PASS
 
+### Session: 2026-08-30 (task command extraction)
+
+- Java version: `openjdk 25.0.3`; compiler: `javac 25.0.3`.
+- Compile command: `javac --release 25 -d <temporary-directory> src/main/java/*.java`
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-directory> HomeHub`
+- Fresh temporary working directory; add/list inputs covering todo, deadline, and event commands were executed.
+- Result: PASS; task creation and list output matched the documented behavior, process exited with status 0, and stderr was empty.
+
 ### Session: 2026-08-30 (Parser argument extraction)
 
 - Java version: `openjdk 25.0.3`; compiler: `javac 25.0.3`.

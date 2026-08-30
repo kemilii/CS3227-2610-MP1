@@ -7,6 +7,7 @@ public class HomeHub {
         Ui ui = new Ui();
         Parser parser = new Parser();
         Storage storage = new Storage("data/homehub.txt");
+        TaskCommands taskCommands = new TaskCommands(storage, ui);
         TaskList tasks;
         try {
             tasks = new TaskList(storage.load());
@@ -36,11 +37,11 @@ public class HomeHub {
                 } else if (commandType == CommandType.DELETE) {
                     deleteTask(tasks, parsedCommand.arguments(), storage);
                 } else if (commandType == CommandType.TODO) {
-                    addTodo(tasks, parsedCommand.arguments(), storage);
+                    taskCommands.addTodo(tasks, parsedCommand.arguments());
                 } else if (commandType == CommandType.DEADLINE) {
-                    addDeadline(tasks, parsedCommand.arguments(), storage);
+                    taskCommands.addDeadline(tasks, parsedCommand.arguments());
                 } else if (commandType == CommandType.EVENT) {
-                    addEvent(tasks, parsedCommand.arguments(), storage);
+                    taskCommands.addEvent(tasks, parsedCommand.arguments());
                 } else {
                     throw new HomeHubException("I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.");
                 }
@@ -113,68 +114,4 @@ public class HomeHub {
         }
     }
 
-    private static void addTodo(TaskList tasks, String description, Storage storage)
-            throws HomeHubException {
-        if (description.isEmpty()) {
-            throw new HomeHubException("A todo description cannot be empty.");
-        }
-        validateText(description, "A todo description");
-        addTask(tasks, new Todo(description), storage);
-    }
-
-    private static void addDeadline(TaskList tasks, String content, Storage storage)
-            throws HomeHubException {
-        int byMarker = content.indexOf(" /by ");
-        if (byMarker <= 0 || content.indexOf(" /by ", byMarker + 1) >= 0
-                || content.substring(byMarker + 5).trim().isEmpty()) {
-            throw new HomeHubException("Use: deadline <description> /by <date or time>.");
-        }
-        String description = content.substring(0, byMarker).trim();
-        String by = content.substring(byMarker + 5).trim();
-        validateText(description, "A deadline description");
-        validateText(by, "A deadline date or time");
-        addTask(tasks, new Deadline(description, by), storage);
-    }
-
-    private static void addEvent(TaskList tasks, String content, Storage storage)
-            throws HomeHubException {
-        int fromMarker = content.indexOf(" /from ");
-        int toMarker = content.indexOf(" /to ");
-        if (fromMarker <= 0 || content.indexOf(" /from ", fromMarker + 1) >= 0
-                || toMarker <= fromMarker || content.indexOf(" /to ", toMarker + 1) >= 0
-                || content.substring(toMarker + 5).trim().isEmpty()) {
-            throw new HomeHubException("Use: event <description> /from <start> /to <end>.");
-        }
-        String description = content.substring(0, fromMarker).trim();
-        String from = content.substring(fromMarker + 7, toMarker).trim();
-        String to = content.substring(toMarker + 5).trim();
-        validateText(description, "An event description");
-        validateText(from, "An event start date or time");
-        validateText(to, "An event end date or time");
-        addTask(tasks, new Event(description, from, to), storage);
-    }
-
-    private static void addTask(TaskList tasks, Task task, Storage storage)
-            throws HomeHubException {
-        tasks.add(task);
-        try {
-            storage.save(tasks);
-        } catch (HomeHubException exception) {
-            tasks.remove(tasks.size() - 1);
-            throw exception;
-        }
-        printAddedTask(task, tasks.size());
-    }
-
-    private static void validateText(String value, String fieldName) throws HomeHubException {
-        if (value.indexOf('|') >= 0) {
-            throw new HomeHubException(fieldName + " cannot contain the '|' character.");
-        }
-    }
-
-    private static void printAddedTask(Task task, int taskCount) {
-        System.out.println("Got it. I've added this task:");
-        System.out.println("  " + task.toDisplayString());
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
-    }
 }
