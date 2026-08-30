@@ -1700,6 +1700,15 @@ ____________________________________________________________
 
 Status: PASS
 
+### Session: 2026-08-30 (Ui extraction)
+
+- Java version: `openjdk 25.0.3`; compiler: `javac 25.0.3`.
+- `sdk use java 25.0.3.fx-zulu` was unavailable because `sdk` is not installed; the already-selected Java 25.0.3 runtime was used.
+- Compile command: `javac --release 25 -d <temporary-directory> src/main/java/*.java`
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-directory> HomeHub`
+- Fresh temporary working directories were used. UI-001 (bye), UI-002 (add/list), and UI-004 (delete/list) were rerun; each exited with status 0, produced empty stderr, and matched the documented expected output. The complete captured stdout is preserved in the terminal session for this run.
+- The extracted `Ui` class did not change observable console behavior.
+
 ### Session: 2026-08-30 (persistence write happy path)
 
 - Java requested: 25 (`sdk use java 25.0.3.fx-zulu` was unavailable; Java 17.0.14 was used)

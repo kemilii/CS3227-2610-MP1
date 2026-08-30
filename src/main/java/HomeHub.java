@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * A simple command-line household task manager that accepts commands until the
@@ -7,33 +6,28 @@ import java.util.Scanner;
  */
 public class HomeHub {
     public static void main(String[] args) {
-        String separator = "____________________________________________________________";
+        Ui ui = new Ui();
         ArrayList<Task> tasks;
         try {
             tasks = TaskStorage.load();
         } catch (HomeHubException exception) {
             tasks = new ArrayList<>();
-            System.out.println("Oops! " + exception.getMessage());
+            ui.showError(exception.getMessage());
         }
 
-        System.out.println(separator);
-        System.out.println("Welcome to HomeHub!");
-        System.out.println("Manage your household tasks here.");
-        System.out.println(separator);
+        ui.showWelcome();
 
-        Scanner scanner = new Scanner(System.in);
-        while (scanner.hasNextLine()) {
-            String command = scanner.nextLine().trim();
-            System.out.println(separator);
+        String command;
+        while ((command = ui.readCommand()) != null) {
+            ui.showSeparator();
 
             try {
                 CommandType commandType = CommandType.fromInput(command);
                 if (commandType == CommandType.BYE) {
-                    System.out.println("Bye. Hope to see you again soon!");
-                    System.out.println(separator);
+                    ui.showGoodbye();
                     break;
                 } else if (commandType == CommandType.LIST) {
-                    printTaskList(tasks);
+                    ui.showTaskList(tasks);
                 } else if (commandType == CommandType.MARK) {
                     markTask(tasks, command, true);
                 } else if (commandType == CommandType.UNMARK) {
@@ -50,18 +44,11 @@ public class HomeHub {
                     throw new HomeHubException("I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.");
                 }
             } catch (HomeHubException exception) {
-                System.out.println("Oops! " + exception.getMessage());
+                ui.showError(exception.getMessage());
             } catch (RuntimeException exception) {
-                System.out.println("Oops! HomeHub could not process that input.");
+                ui.showError("HomeHub could not process that input.");
             }
-            System.out.println(separator);
-        }
-    }
-
-    private static void printTaskList(ArrayList<Task> tasks) {
-        System.out.println("Here are the household tasks in your HomeHub:");
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + "." + tasks.get(i).toDisplayString());
+            ui.showSeparator();
         }
     }
 
