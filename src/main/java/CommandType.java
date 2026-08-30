@@ -7,14 +7,9 @@ public enum CommandType {
 
     CommandType(String keyword) { this.keyword = keyword; }
 
+    /** Returns the command keyword used by the parser. */
+    String getKeyword() { return keyword; }
+
     /** Identifies a command from the first word of user input. */
-    public static CommandType fromInput(String input) {
-        String trimmedInput = input.trim();
-        if (trimmedInput.isEmpty()) return UNKNOWN;
-        String keyword = trimmedInput.split("\\s+", 2)[0];
-        for (CommandType command : values()) {
-            if (command.keyword.equals(keyword)) return command;
-        }
-        return UNKNOWN;
-    }
+    public static CommandType fromInput(String input) { return new Parser().parse(input); }
 }

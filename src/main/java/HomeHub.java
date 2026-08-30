@@ -5,6 +5,7 @@
 public class HomeHub {
     public static void main(String[] args) {
         Ui ui = new Ui();
+        Parser parser = new Parser();
         Storage storage = new Storage("data/homehub.txt");
         TaskList tasks;
         try {
@@ -21,7 +22,7 @@ public class HomeHub {
             ui.showSeparator();
 
             try {
-                CommandType commandType = CommandType.fromInput(command);
+                CommandType commandType = parser.parse(command);
                 if (commandType == CommandType.BYE) {
                     ui.showGoodbye();
                     break;
