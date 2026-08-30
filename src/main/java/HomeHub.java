@@ -22,84 +22,109 @@ public class HomeHub {
             String command = scanner.nextLine();
             System.out.println(separator);
 
-            if (command.equals("bye")) {
-                System.out.println("Bye. Hope to see you again soon!");
-                System.out.println(separator);
-                break;
-            } else if (command.equals("list")) {
-                System.out.println("Here are the household tasks in your HomeHub:");
-                for (int i = 0; i < taskCount; i++) {
-                    System.out.println((i + 1) + "." + tasks[i].toDisplayString());
+            try {
+                if (command.equals("bye")) {
+                    System.out.println("Bye. Hope to see you again soon!");
+                    System.out.println(separator);
+                    break;
+                } else if (command.equals("list")) {
+                    printTaskList(tasks, taskCount);
+                } else if (command.equals("mark") || command.startsWith("mark ")) {
+                    markTask(tasks, taskCount, command, true);
+                } else if (command.equals("unmark") || command.startsWith("unmark ")) {
+                    markTask(tasks, taskCount, command, false);
+                } else if (command.equals("todo") || command.startsWith("todo ")) {
+                    taskCount = addTodo(tasks, taskCount, command);
+                } else if (command.equals("deadline") || command.startsWith("deadline ")) {
+                    taskCount = addDeadline(tasks, taskCount, command);
+                } else if (command.equals("event") || command.startsWith("event ")) {
+                    taskCount = addEvent(tasks, taskCount, command);
+                } else {
+                    throw new HomeHubException("I don't recognise that command. Try todo, deadline, event, list, or mark.");
                 }
-                System.out.println(separator);
-            } else if (command.startsWith("mark ")) {
-                String taskNumberText = command.substring("mark ".length()).trim();
-                try {
-                    int taskNumber = Integer.parseInt(taskNumberText);
-                    if (taskNumber >= 1 && taskNumber <= taskCount) {
-                        int taskIndex = taskNumber - 1;
-                        tasks[taskIndex].markAsDone();
-                        System.out.println("Nice! I've marked this household task as done:");
-                        System.out.println("  " + tasks[taskIndex].toDisplayString());
-                    } else {
-                        System.out.println("That task number does not exist.");
-                    }
-                } catch (NumberFormatException exception) {
-                    System.out.println("Please specify a valid task number.");
-                }
-                System.out.println(separator);
-            } else if (command.startsWith("unmark ")) {
-                String taskNumberText = command.substring("unmark ".length()).trim();
-                try {
-                    int taskNumber = Integer.parseInt(taskNumberText);
-                    if (taskNumber >= 1 && taskNumber <= taskCount) {
-                        int taskIndex = taskNumber - 1;
-                        tasks[taskIndex].markAsNotDone();
-                        System.out.println("OK, I've marked this task as not done yet:");
-                        System.out.println("  " + tasks[taskIndex].toDisplayString());
-                    } else {
-                        System.out.println("That task number does not exist.");
-                    }
-                } catch (NumberFormatException exception) {
-                    System.out.println("Please specify a valid task number.");
-                }
-                System.out.println(separator);
-            } else if (taskCount < MAX_TASKS && command.startsWith("todo ")) {
-                tasks[taskCount] = new Todo(command.substring("todo ".length()).trim());
-                taskCount++;
-                printAddedTask(tasks[taskCount - 1], taskCount, separator);
-            } else if (taskCount < MAX_TASKS && command.startsWith("deadline ")) {
-                String content = command.substring("deadline ".length()).trim();
-                int byMarker = content.indexOf(" /by ");
-                if (byMarker > 0) {
-                    tasks[taskCount] = new Deadline(content.substring(0, byMarker).trim(),
-                            content.substring(byMarker + " /by ".length()).trim());
-                    taskCount++;
-                    printAddedTask(tasks[taskCount - 1], taskCount, separator);
-                }
-            } else if (taskCount < MAX_TASKS && command.startsWith("event ")) {
-                String content = command.substring("event ".length()).trim();
-                int fromMarker = content.indexOf(" /from ");
-                int toMarker = content.indexOf(" /to ");
-                if (fromMarker > 0 && toMarker > fromMarker) {
-                    tasks[taskCount] = new Event(content.substring(0, fromMarker).trim(),
-                            content.substring(fromMarker + " /from ".length(), toMarker).trim(),
-                            content.substring(toMarker + " /to ".length()).trim());
-                    taskCount++;
-                    printAddedTask(tasks[taskCount - 1], taskCount, separator);
-                }
-            } else if (taskCount < MAX_TASKS) {
-                tasks[taskCount] = new Todo(command);
-                taskCount++;
-                printAddedTask(tasks[taskCount - 1], taskCount, separator);
+            } catch (HomeHubException exception) {
+                System.out.println("Oops! " + exception.getMessage());
             }
+            System.out.println(separator);
         }
     }
 
-    private static void printAddedTask(Task task, int taskCount, String separator) {
+    private static void printTaskList(Task[] tasks, int taskCount) {
+        System.out.println("Here are the household tasks in your HomeHub:");
+        for (int i = 0; i < taskCount; i++) {
+            System.out.println((i + 1) + "." + tasks[i].toDisplayString());
+        }
+    }
+
+    private static void markTask(Task[] tasks, int taskCount, String command, boolean markAsDone)
+            throws HomeHubException {
+        String action = markAsDone ? "mark" : "unmark";
+        String taskNumberText = command.substring(action.length()).trim();
+        if (taskNumberText.isEmpty()) {
+            throw new HomeHubException("Please provide a task number after " + action + ".");
+        }
+        try {
+            int taskNumber = Integer.parseInt(taskNumberText);
+            if (taskNumber < 1 || taskNumber > taskCount) {
+                throw new HomeHubException("That task number does not exist.");
+            }
+            Task task = tasks[taskNumber - 1];
+            if (markAsDone) {
+                task.markAsDone();
+                System.out.println("Nice! I've marked this household task as done:");
+            } else {
+                task.markAsNotDone();
+                System.out.println("I've marked this household task as not done:");
+            }
+            System.out.println("  " + task.toDisplayString());
+        } catch (NumberFormatException exception) {
+            throw new HomeHubException("The task number must be a whole number.");
+        }
+    }
+
+    private static int addTodo(Task[] tasks, int taskCount, String command) throws HomeHubException {
+        String description = command.substring("todo".length()).trim();
+        if (description.isEmpty()) {
+            throw new HomeHubException("A todo description cannot be empty.");
+        }
+        return addTask(tasks, taskCount, new Todo(description));
+    }
+
+    private static int addDeadline(Task[] tasks, int taskCount, String command) throws HomeHubException {
+        String content = command.substring("deadline".length()).trim();
+        int byMarker = content.indexOf(" /by ");
+        if (byMarker <= 0 || content.substring(byMarker + 5).trim().isEmpty()) {
+            throw new HomeHubException("Use: deadline <description> /by <date or time>.");
+        }
+        return addTask(tasks, taskCount, new Deadline(content.substring(0, byMarker).trim(),
+                content.substring(byMarker + 5).trim()));
+    }
+
+    private static int addEvent(Task[] tasks, int taskCount, String command) throws HomeHubException {
+        String content = command.substring("event".length()).trim();
+        int fromMarker = content.indexOf(" /from ");
+        int toMarker = content.indexOf(" /to ");
+        if (fromMarker <= 0 || toMarker <= fromMarker || content.substring(toMarker + 5).trim().isEmpty()) {
+            throw new HomeHubException("Use: event <description> /from <start> /to <end>.");
+        }
+        return addTask(tasks, taskCount, new Event(content.substring(0, fromMarker).trim(),
+                content.substring(fromMarker + 7, toMarker).trim(),
+                content.substring(toMarker + 5).trim()));
+    }
+
+    private static int addTask(Task[] tasks, int taskCount, Task task) throws HomeHubException {
+        if (taskCount >= MAX_TASKS) {
+            throw new HomeHubException("Your task list is full. Delete a task before adding another.");
+        }
+        tasks[taskCount] = task;
+        int newTaskCount = taskCount + 1;
+        printAddedTask(task, newTaskCount);
+        return newTaskCount;
+    }
+
+    private static void printAddedTask(Task task, int taskCount) {
         System.out.println("Got it. I've added this task:");
         System.out.println("  " + task.toDisplayString());
         System.out.println("Now you have " + taskCount + " tasks in the list.");
-        System.out.println(separator);
     }
 }
