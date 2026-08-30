@@ -22,24 +22,25 @@ public class HomeHub {
             ui.showSeparator();
 
             try {
-                CommandType commandType = parser.parse(command);
+                ParsedCommand parsedCommand = parser.parse(command);
+                CommandType commandType = parsedCommand.type();
                 if (commandType == CommandType.BYE) {
                     ui.showGoodbye();
                     break;
                 } else if (commandType == CommandType.LIST) {
                     ui.showTaskList(tasks);
                 } else if (commandType == CommandType.MARK) {
-                    markTask(tasks, command, true, storage);
+                    markTask(tasks, parsedCommand.arguments(), true, storage);
                 } else if (commandType == CommandType.UNMARK) {
-                    markTask(tasks, command, false, storage);
+                    markTask(tasks, parsedCommand.arguments(), false, storage);
                 } else if (commandType == CommandType.DELETE) {
-                    deleteTask(tasks, command, storage);
+                    deleteTask(tasks, parsedCommand.arguments(), storage);
                 } else if (commandType == CommandType.TODO) {
-                    addTodo(tasks, command, storage);
+                    addTodo(tasks, parsedCommand.arguments(), storage);
                 } else if (commandType == CommandType.DEADLINE) {
-                    addDeadline(tasks, command, storage);
+                    addDeadline(tasks, parsedCommand.arguments(), storage);
                 } else if (commandType == CommandType.EVENT) {
-                    addEvent(tasks, command, storage);
+                    addEvent(tasks, parsedCommand.arguments(), storage);
                 } else {
                     throw new HomeHubException("I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.");
                 }
@@ -52,11 +53,11 @@ public class HomeHub {
         }
     }
 
-    private static void markTask(TaskList tasks, String command, boolean markAsDone,
+    private static void markTask(TaskList tasks, String arguments, boolean markAsDone,
             Storage storage)
             throws HomeHubException {
         String action = markAsDone ? "mark" : "unmark";
-        String taskNumberText = command.substring(action.length()).trim();
+        String taskNumberText = arguments;
         if (taskNumberText.isEmpty()) {
             throw new HomeHubException("Please provide a task number after " + action + ".");
         }
@@ -86,9 +87,9 @@ public class HomeHub {
         }
     }
 
-    private static void deleteTask(TaskList tasks, String command, Storage storage)
+    private static void deleteTask(TaskList tasks, String arguments, Storage storage)
             throws HomeHubException {
-        String taskNumberText = command.substring("delete".length()).trim();
+        String taskNumberText = arguments;
         if (taskNumberText.isEmpty()) {
             throw new HomeHubException("Please provide a task number after delete.");
         }
@@ -112,9 +113,8 @@ public class HomeHub {
         }
     }
 
-    private static void addTodo(TaskList tasks, String command, Storage storage)
+    private static void addTodo(TaskList tasks, String description, Storage storage)
             throws HomeHubException {
-        String description = command.substring("todo".length()).trim();
         if (description.isEmpty()) {
             throw new HomeHubException("A todo description cannot be empty.");
         }
@@ -122,9 +122,8 @@ public class HomeHub {
         addTask(tasks, new Todo(description), storage);
     }
 
-    private static void addDeadline(TaskList tasks, String command, Storage storage)
+    private static void addDeadline(TaskList tasks, String content, Storage storage)
             throws HomeHubException {
-        String content = command.substring("deadline".length()).trim();
         int byMarker = content.indexOf(" /by ");
         if (byMarker <= 0 || content.indexOf(" /by ", byMarker + 1) >= 0
                 || content.substring(byMarker + 5).trim().isEmpty()) {
@@ -137,9 +136,8 @@ public class HomeHub {
         addTask(tasks, new Deadline(description, by), storage);
     }
 
-    private static void addEvent(TaskList tasks, String command, Storage storage)
+    private static void addEvent(TaskList tasks, String content, Storage storage)
             throws HomeHubException {
-        String content = command.substring("event".length()).trim();
         int fromMarker = content.indexOf(" /from ");
         int toMarker = content.indexOf(" /to ");
         if (fromMarker <= 0 || content.indexOf(" /from ", fromMarker + 1) >= 0

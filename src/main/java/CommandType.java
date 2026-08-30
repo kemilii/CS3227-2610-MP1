@@ -11,5 +11,5 @@ public enum CommandType {
     String getKeyword() { return keyword; }
 
     /** Identifies a command from the first word of user input. */
-    public static CommandType fromInput(String input) { return new Parser().parse(input); }
+    public static CommandType fromInput(String input) { return new Parser().parse(input).type(); }
 }
