@@ -23,7 +23,7 @@ public class HomeHub {
 
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
-            String command = scanner.nextLine();
+            String command = scanner.nextLine().trim();
             System.out.println(separator);
 
             try {
@@ -47,7 +47,7 @@ public class HomeHub {
                 } else if (commandType == CommandType.EVENT) {
                     addEvent(tasks, command);
                 } else {
-                    throw new HomeHubException("I don't recognise that command. Try todo, deadline, event, list, mark, or delete.");
+                    throw new HomeHubException("I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.");
                 }
             } catch (HomeHubException exception) {
                 System.out.println("Oops! " + exception.getMessage());

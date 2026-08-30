@@ -168,7 +168,6 @@ final class DateTimeParser {
     static LocalDateTime parse(String value) throws HomeHubException {
         try {
             String trimmed = value.trim();
-            if (trimmed.contains("T")) return LocalDateTime.parse(trimmed);
             if (trimmed.length() > 10) return LocalDateTime.parse(trimmed, DATE_TIME);
             return java.time.LocalDate.parse(trimmed, DATE).atStartOfDay();
         } catch (DateTimeParseException exception) {
