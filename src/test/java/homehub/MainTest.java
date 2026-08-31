@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 
 import javafx.application.Application;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
 /** Tests the structure of the JavaFX application entry points. */
@@ -21,6 +22,11 @@ class MainTest {
     }
 
     @Test
+    void mainWindow_extendsAnchorPane_isFxmlController() {
+        assertEquals(AnchorPane.class, MainWindow.class.getSuperclass());
+    }
+
+    @Test
     void homeHubResponse_echoesUserMessage() {
         assertEquals("HomeHub heard: list", new HomeHub().getResponse("list"));
     }
@@ -29,5 +35,11 @@ class MainTest {
     void avatarResources_areAvailableOnClasspath() {
         assertNotNull(Main.class.getResourceAsStream("/images/homeowner.png"));
         assertNotNull(Main.class.getResourceAsStream("/images/homehub.png"));
+    }
+
+    @Test
+    void fxmlResources_areAvailableOnClasspath() {
+        assertNotNull(Main.class.getResourceAsStream("/view/MainWindow.fxml"));
+        assertNotNull(Main.class.getResourceAsStream("/view/DialogBox.fxml"));
     }
 }
