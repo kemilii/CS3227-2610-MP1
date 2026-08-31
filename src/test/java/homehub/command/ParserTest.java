@@ -21,6 +21,7 @@ class ParserTest {
         assertEquals(new ParsedCommand(CommandType.EVENT, "meeting /from 2026-09-02 /to 2026-09-03"),
                 parser.parse("event meeting /from 2026-09-02 /to 2026-09-03"));
         assertEquals(new ParsedCommand(CommandType.FIND, "book"), parser.parse("find book"));
+        assertEquals(new ParsedCommand(CommandType.HELP, ""), parser.parse("help"));
     }
 
     @Test
@@ -61,6 +62,7 @@ class ParserTest {
     void fromInput_supportedAndUnknownCommands_returnsCorrespondingTypes() {
         assertEquals(CommandType.BYE, CommandType.fromInput("bye"));
         assertEquals(CommandType.TODO, CommandType.fromInput("todo clean room"));
+        assertEquals(CommandType.HELP, CommandType.fromInput("help"));
         assertEquals(CommandType.UNKNOWN, CommandType.fromInput("not-a-command"));
     }
 }

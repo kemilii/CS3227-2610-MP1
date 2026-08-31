@@ -35,6 +35,23 @@ public class Ui {
         printLine(SEPARATOR);
     }
 
+    /** Displays every supported command and the accepted date/time formats. */
+    public void showHelp() {
+        printLine(Moss.NAME + "'s command guide:");
+        printLine("todo <description> - add a household task.");
+        printLine("deadline <description> /by <date or time> - add a task with a deadline.");
+        printLine("event <description> /from <start> /to <end> - add a scheduled event.");
+        printLine("list - show every task on the household board.");
+        printLine("find <keyword> - find tasks by description.");
+        printLine("mark <task number> - mark a task as done.");
+        printLine("unmark <task number> - mark a task as pending.");
+        printLine("delete <task number> - remove a task from the board.");
+        printLine("help - show this command guide.");
+        printLine("bye - close HomeHub.");
+        printLine("Date/time format: yyyy-MM-dd or yyyy-MM-dd HH:mm.");
+        printLine("Examples: 2026-09-01 or 2026-09-01 14:30.");
+    }
+
     /** Reads the next command, or returns {@code null} at end of input. */
     public String readCommand() {
         return scanner.hasNextLine() ? scanner.nextLine().trim() : null;

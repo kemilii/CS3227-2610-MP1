@@ -736,6 +736,45 @@ All tucked away. See you soon!
 ____________________________________________________________
 ```
 
+### UI-012: Display command help
+
+Aim: Verify that `help` documents every supported command and the accepted
+date/time formats without changing task state.
+
+Inputs:
+
+```text
+help
+bye
+```
+
+Expected output:
+
+```text
+____________________________________________________________
+Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly.
+____________________________________________________________
+____________________________________________________________
+Moss's command guide:
+todo <description> - add a household task.
+deadline <description> /by <date or time> - add a task with a deadline.
+event <description> /from <start> /to <end> - add a scheduled event.
+list - show every task on the household board.
+find <keyword> - find tasks by description.
+mark <task number> - mark a task as done.
+unmark <task number> - mark a task as pending.
+delete <task number> - remove a task from the board.
+help - show this command guide.
+bye - close HomeHub.
+Date/time format: yyyy-MM-dd or yyyy-MM-dd HH:mm.
+Examples: 2026-09-01 or 2026-09-01 14:30.
+____________________________________________________________
+____________________________________________________________
+All tucked away. See you soon!
+____________________________________________________________
+```
+
 ## Coverage matrix
 
 | Behavior | Covered by |
@@ -753,6 +792,7 @@ ____________________________________________________________
 | Persistence and reload | UI-010 |
 | Find tasks by case-insensitive description keyword | UI-011 |
 | Find no-match and missing-keyword behavior | UI-011 |
+| Display command usage and date/time formats | UI-012 |
 
 ## Test-case pass criteria
 
@@ -767,6 +807,20 @@ first differing output line.
 Keep the test specification above stable and record each run separately using
 the following template. Do not record a run as PASS if it used a different JDK,
 locale, working-directory setup, or input contract.
+
+### Session: 2026-08-31 (help command regression)
+
+- Working-tree base revision: `f8ebb3d`.
+- Java selection: `/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin/java` and `javac`.
+- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
+- Verification command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu ./gradlew check`.
+- CLI regression compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
+- CLI launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup: UI-001 through UI-009, UI-011, and UI-012 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
+- Timeout: 20 seconds per process.
+- Overall result: PASS; all 13 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
+- UI-012 confirmed that `help` lists every command and both supported date/time formats.
+- Complete console input/output record: [ui-test-session-2026-08-31-help-command.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-help-command.txt).
 
 ### Session: 2026-08-31 (Moss personality regression)
 

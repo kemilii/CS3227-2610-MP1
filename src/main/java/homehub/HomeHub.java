@@ -145,6 +145,9 @@ public class HomeHub {
             case LIST:
                 ui.showTaskList(tasks);
                 break;
+            case HELP:
+                ui.showHelp();
+                break;
             case FIND:
                 if (parsedCommand.arguments().isEmpty()) {
                     throw new HomeHubException("Please provide a keyword after find.");

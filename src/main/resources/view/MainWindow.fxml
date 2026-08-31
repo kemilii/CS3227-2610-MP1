@@ -40,7 +40,7 @@
                             </children>
                         </HBox>
                         <Label styleClass="command-hint"
-                               text="Ask Moss: todo, deadline, event, list, find, mark, unmark, delete"
+                               text="Ask Moss: help, todo, deadline, event, list, find, mark, unmark, delete"
                                wrapText="true" />
                     </children>
                 </VBox>

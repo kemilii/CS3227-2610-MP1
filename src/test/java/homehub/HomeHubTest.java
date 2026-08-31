@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import homehub.command.CommandType;
 import homehub.storage.Storage;
 
 /** Tests command execution and responses shared by the CLI and JavaFX interfaces. */
@@ -62,6 +63,27 @@ class HomeHubTest {
         assertEquals(String.join(System.lineSeparator(),
                 "Moss found these matching tasks:",
                 "1.[T][ ] wash dishes"), homeHub.getResponse("find DISH"));
+    }
+
+    @Test
+    void getResponse_helpCommand_listsCommandsAndDateTimeFormats() {
+        HomeHub homeHub = homeHubAt("data/homehub.txt");
+
+        assertEquals(String.join(System.lineSeparator(),
+                "Moss's command guide:",
+                "todo <description> - add a household task.",
+                "deadline <description> /by <date or time> - add a task with a deadline.",
+                "event <description> /from <start> /to <end> - add a scheduled event.",
+                "list - show every task on the household board.",
+                "find <keyword> - find tasks by description.",
+                "mark <task number> - mark a task as done.",
+                "unmark <task number> - mark a task as pending.",
+                "delete <task number> - remove a task from the board.",
+                "help - show this command guide.",
+                "bye - close HomeHub.",
+                "Date/time format: yyyy-MM-dd or yyyy-MM-dd HH:mm.",
+                "Examples: 2026-09-01 or 2026-09-01 14:30."), homeHub.getResponse("help"));
+        assertEquals(CommandType.HELP, homeHub.getCommandType());
     }
 
     @Test

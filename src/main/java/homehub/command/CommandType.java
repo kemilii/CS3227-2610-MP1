@@ -3,7 +3,7 @@ package homehub.command;
 /** Represents a command understood by HomeHub. */
 public enum CommandType {
     BYE("bye"), LIST("list"), MARK("mark"), UNMARK("unmark"), DELETE("delete"),
-    TODO("todo"), DEADLINE("deadline"), EVENT("event"), FIND("find"), UNKNOWN("");
+    TODO("todo"), DEADLINE("deadline"), EVENT("event"), FIND("find"), HELP("help"), UNKNOWN("");
 
     private final String keyword;
 
