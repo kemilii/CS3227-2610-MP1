@@ -4,20 +4,20 @@
 }
 
 .dialog-label {
-    -fx-background-color: #ffffff;
+    -fx-background-color: #fffdf8;
     -fx-background-radius: 11px;
-    -fx-border-color: #dbe5e4;
+    -fx-border-color: #d9e0d3;
     -fx-border-radius: 11px;
     -fx-border-width: 1px;
     -fx-padding: 10px 13px;
-    -fx-text-fill: #263a3c;
+    -fx-text-fill: #27382d;
     -fx-font-size: 13px;
     -fx-line-spacing: 2px;
 }
 
 .reply-label {
-    -fx-background-color: #e5f4f0;
-    -fx-border-color: #b9dcd5;
+    -fx-background-color: #e6f0e5;
+    -fx-border-color: #bfd1ba;
     -fx-background-radius: 11px;
     -fx-border-radius: 11px;
 }
@@ -27,31 +27,31 @@
 }
 
 .user-message .dialog-label {
-    -fx-background-color: #27766e;
-    -fx-border-color: #27766e;
+    -fx-background-color: #557a61;
+    -fx-border-color: #557a61;
     -fx-background-radius: 11px 11px 3px 11px;
     -fx-border-radius: 11px 11px 3px 11px;
     -fx-text-fill: #ffffff;
 }
 
 .homehub-message .add-label {
-    -fx-background-color: #fff4d9;
-    -fx-border-color: #e5c56c;
+    -fx-background-color: #fff2d8;
+    -fx-border-color: #e5c27b;
 }
 
 .homehub-message .marked-label {
-    -fx-background-color: #e6f5e7;
-    -fx-border-color: #abd3af;
+    -fx-background-color: #e6f0e5;
+    -fx-border-color: #b5cfad;
 }
 
 .homehub-message .delete-label,
 .homehub-message .error-label {
-    -fx-background-color: #fff0ef;
-    -fx-border-color: #e7a8a2;
+    -fx-background-color: #fff0e8;
+    -fx-border-color: #dfaa8f;
 }
 
 .homehub-message .error-label {
-    -fx-text-fill: #8d2f28;
+    -fx-text-fill: #8b3d28;
     -fx-font-weight: bold;
 }
 

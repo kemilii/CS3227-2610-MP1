@@ -33,14 +33,14 @@
                                 <VBox spacing="1.0" HBox.hgrow="ALWAYS">
                                     <children>
                                         <Label styleClass="app-title" text="HomeHub" />
-                                        <Label styleClass="app-subtitle" text="A calmer way to manage home tasks" />
+                                        <Label styleClass="app-subtitle" text="Moss · your calm household concierge" />
                                     </children>
                                 </VBox>
-                                <Label styleClass="status-label" text="● READY" />
+                                <Label styleClass="status-label" text="● MOSS ON DUTY" />
                             </children>
                         </HBox>
                         <Label styleClass="command-hint"
-                               text="Try: todo, deadline, event, list, find, mark, unmark, delete"
+                               text="Ask Moss: todo, deadline, event, list, find, mark, unmark, delete"
                                wrapText="true" />
                     </children>
                 </VBox>
@@ -58,7 +58,7 @@
                             </padding>
                             <children>
                                 <Label styleClass="welcome-card"
-                                       text="Welcome to HomeHub!\nI can help you keep track of household tasks."
+                                       text="Hello, I'm Moss.\nI'll keep your household tasks tidy."
                                        wrapText="true" />
                             </children>
                         </VBox>

@@ -20,23 +20,23 @@ class HomeHubTest {
         HomeHub homeHub = homeHubAt("data/homehub.txt");
 
         assertEquals(String.join(System.lineSeparator(),
-                "Got it. I've added this task:",
+                "On it. I've added this task:",
                 "  [T][ ] wash dishes",
-                "Now you have 1 tasks in the list."), homeHub.getResponse("todo wash dishes"));
+                "That makes 1 tasks on the board."), homeHub.getResponse("todo wash dishes"));
         assertEquals(String.join(System.lineSeparator(),
-                "Here are the household tasks in your HomeHub:",
+                "Moss's household board:",
                 "1.[T][ ] wash dishes"), homeHub.getResponse("list"));
         assertEquals(String.join(System.lineSeparator(),
-                "Nice! I've marked this household task as done:",
+                "Done and dusted. This task is complete:",
                 "  [T][X] wash dishes"), homeHub.getResponse("mark 1"));
         assertEquals(String.join(System.lineSeparator(),
-                "I've marked this household task as not done:",
+                "Back on the board. This task is pending:",
                 "  [T][ ] wash dishes"), homeHub.getResponse("unmark 1"));
         assertEquals(String.join(System.lineSeparator(),
-                "Noted. I've removed this task:",
+                "Cleared from the board:",
                 "  [T][ ] wash dishes",
-                "Now you have 0 tasks in the list."), homeHub.getResponse("delete 1"));
-        assertEquals("Here are the household tasks in your HomeHub:", homeHub.getResponse("list"));
+                "That leaves 0 tasks to keep tidy."), homeHub.getResponse("delete 1"));
+        assertEquals("Moss's household board:", homeHub.getResponse("list"));
     }
 
     @Test
@@ -47,7 +47,7 @@ class HomeHubTest {
         homeHub.getResponse("event meeting /from 2026-09-02 14:00 /to 2026-09-02 16:00");
 
         assertEquals(String.join(System.lineSeparator(),
-                "Here are the household tasks in your HomeHub:",
+                "Moss's household board:",
                 "1.[D][ ] pay bill (by: Sept 01 2026)",
                 "2.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)"),
                 homeHub.getResponse("list"));
@@ -60,7 +60,7 @@ class HomeHubTest {
         homeHub.getResponse("todo read book");
 
         assertEquals(String.join(System.lineSeparator(),
-                "Here are the matching tasks in your list:",
+                "Moss found these matching tasks:",
                 "1.[T][ ] wash dishes"), homeHub.getResponse("find DISH"));
     }
 
@@ -68,17 +68,17 @@ class HomeHubTest {
     void getResponse_invalidCommands_returnErrorsWithoutChangingState() {
         HomeHub homeHub = homeHubAt("data/homehub.txt");
 
-        assertTrue(homeHub.getResponse("unknown command").startsWith("Oops! I don't recognise that command."));
+        assertTrue(homeHub.getResponse("unknown command").startsWith("Moss says: Moss does not recognise "));
         assertTrue(homeHub.getResponse("find").contains("Please provide a keyword after find."));
         assertTrue(homeHub.getResponse("mark 1").contains("That task number does not exist."));
-        assertEquals("Here are the household tasks in your HomeHub:", homeHub.getResponse("list"));
+        assertEquals("Moss's household board:", homeHub.getResponse("list"));
     }
 
     @Test
     void getResponse_byeCommand_requestsExit() {
         HomeHub homeHub = homeHubAt("data/homehub.txt");
 
-        assertEquals("Bye. Hope to see you again soon!", homeHub.getResponse("bye"));
+        assertEquals("All tucked away. See you soon!", homeHub.getResponse("bye"));
         assertTrue(homeHub.isExitRequested());
     }
 
@@ -91,7 +91,7 @@ class HomeHubTest {
         HomeHub reopenedSession = new HomeHub(storage);
 
         assertEquals(String.join(System.lineSeparator(),
-                "Here are the household tasks in your HomeHub:",
+                "Moss's household board:",
                 "1.[T][ ] clean room"), reopenedSession.getResponse("list"));
     }
 

@@ -42,7 +42,7 @@ class MainTest {
     void homeHubResponse_listsCurrentTasks() {
         HomeHub homeHub = new HomeHub(new Storage(temporaryDirectory.resolve("homehub.txt").toString()));
 
-        assertEquals("Here are the household tasks in your HomeHub:", homeHub.getResponse("list"));
+        assertEquals("Moss's household board:", homeHub.getResponse("list"));
     }
 
     @Test
@@ -84,5 +84,14 @@ class MainTest {
         assertTrue(fxml.contains("minHeight=\"420.0\""));
         assertTrue(fxml.contains("HBox.hgrow=\"ALWAYS\""));
         assertTrue(fxml.contains("styleClass=\"welcome-card\""));
+        assertTrue(fxml.contains("Moss · your calm household concierge"));
+        assertTrue(fxml.contains("Ask Moss:"));
+    }
+
+    @Test
+    void mossPersona_hasDistinctIdentityAndErrorVoice() {
+        assertEquals("Moss", Moss.NAME);
+        assertEquals("your calm household concierge", Moss.ROLE);
+        assertEquals("Moss says: ", Moss.ERROR_PREFIX);
     }
 }

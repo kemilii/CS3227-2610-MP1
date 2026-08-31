@@ -2,6 +2,7 @@ package homehub.ui;
 
 import java.util.Scanner;
 
+import homehub.Moss;
 import homehub.model.Task;
 import homehub.model.TaskList;
 
@@ -18,14 +19,14 @@ public class Ui {
     /** Displays the welcome message. */
     public void showWelcome() {
         showSeparator();
-        printLine("Welcome to HomeHub!");
-        printLine("Manage your household tasks here.");
+        printLine("Welcome to HomeHub. " + Moss.NAME + " is on duty.");
+        printLine("Let's keep the household running smoothly.");
         showSeparator();
     }
 
     /** Displays the goodbye message. */
     public void showGoodbye() {
-        printLine("Bye. Hope to see you again soon!");
+        printLine("All tucked away. See you soon!");
         showSeparator();
     }
 
@@ -41,13 +42,13 @@ public class Ui {
 
     /** Displays an error message. */
     public void showError(String message) {
-        printLine("Oops! " + message);
+        printLine(Moss.ERROR_PREFIX + message);
     }
 
     /** Displays all tasks. */
     public void showTaskList(TaskList tasks) {
         assert tasks != null : "Displaying tasks requires an initialized task list";
-        printLine("Here are the household tasks in your HomeHub:");
+        printLine(Moss.NAME + "'s household board:");
         for (int i = 0; i < tasks.size(); i++) {
             printLine((i + 1) + "." + tasks.get(i).toDisplayString());
         }
@@ -60,7 +61,7 @@ public class Ui {
      */
     public void showMatchingTasks(TaskList matchingTasks) {
         assert matchingTasks != null : "Displaying matching tasks requires a task list";
-        printLine("Here are the matching tasks in your list:");
+        printLine(Moss.NAME + " found these matching tasks:");
         for (int i = 0; i < matchingTasks.size(); i++) {
             printLine((i + 1) + "." + matchingTasks.get(i).toDisplayString());
         }
@@ -70,17 +71,17 @@ public class Ui {
     public void showAddedTask(Task task, int taskCount) {
         assert task != null : "An added-task confirmation requires a task";
         assert taskCount > 0 : "An added-task confirmation requires a non-empty list";
-        printLine("Got it. I've added this task:");
+        printLine("On it. I've added this task:");
         printLine("  " + task.toDisplayString());
-        printLine("Now you have " + taskCount + " tasks in the list.");
+        printLine("That makes " + taskCount + " tasks on the board.");
     }
 
     /** Displays the confirmation for a marked or unmarked task. */
     public void showMarkedTask(Task task, boolean markedAsDone) {
         assert task != null : "A marked-task confirmation requires a task";
         String message = markedAsDone
-                ? "Nice! I've marked this household task as done:"
-                : "I've marked this household task as not done:";
+                ? "Done and dusted. This task is complete:"
+                : "Back on the board. This task is pending:";
         printLine(message);
         printLine("  " + task.toDisplayString());
     }
@@ -89,9 +90,9 @@ public class Ui {
     public void showDeletedTask(Task task, int taskCount) {
         assert task != null : "A deleted-task confirmation requires a task";
         assert taskCount >= 0 : "A deleted-task confirmation requires a non-negative task count";
-        printLine("Noted. I've removed this task:");
+        printLine("Cleared from the board:");
         printLine("  " + task.toDisplayString());
-        printLine("Now you have " + taskCount + " tasks in the list.");
+        printLine("That leaves " + taskCount + " tasks to keep tidy.");
     }
 
     /** Writes one output line; subclasses can redirect the output destination. */

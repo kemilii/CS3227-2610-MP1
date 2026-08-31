@@ -73,7 +73,8 @@ public class HomeHub {
         }
         if (input == null) {
             commandType = CommandType.UNKNOWN;
-            responseUi.showError("I don't recognise that command. Try todo, deadline, event, list, find, mark, "
+            responseUi.showError(Moss.NAME + " does not recognise that command yet. Try todo, deadline, event, list, "
+                    + "find, mark, "
                     + "unmark, or delete.");
             return responseUi.getResponse();
         }
@@ -82,7 +83,7 @@ public class HomeHub {
         } catch (HomeHubException exception) {
             responseUi.showError(exception.getMessage());
         } catch (RuntimeException exception) {
-            responseUi.showError("HomeHub could not process that input.");
+            responseUi.showError(Moss.NAME + " could not process that input.");
         }
         return responseUi.getResponse();
     }
@@ -120,7 +121,7 @@ public class HomeHub {
             } catch (HomeHubException exception) {
                 ui.showError(exception.getMessage());
             } catch (RuntimeException exception) {
-                ui.showError("HomeHub could not process that input.");
+                ui.showError(Moss.NAME + " could not process that input.");
             }
             ui.showSeparator();
         }
@@ -169,7 +170,8 @@ public class HomeHub {
                 taskCommands.addEvent(tasks, parsedCommand.arguments());
                 break;
             default:
-                throw new HomeHubException("I don't recognise that command. Try todo, deadline, event, list, "
+                throw new HomeHubException(Moss.NAME + " does not recognise that command yet. Try todo, deadline, "
+                        + "event, list, "
                         + "find, mark, unmark, or delete.");
         }
     }
@@ -251,7 +253,7 @@ public class HomeHub {
 
         @Override
         public void showGoodbye() {
-            printLine("Bye. Hope to see you again soon!");
+            printLine("All tucked away. See you soon!");
         }
 
         @Override

@@ -78,11 +78,11 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+All tucked away. See you soon!
 ____________________________________________________________
 ```
 
@@ -102,20 +102,20 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [T][ ] wash dishes
-Now you have 1 tasks in the list.
+That makes 1 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
+Moss's household board:
 1.[T][ ] wash dishes
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+All tucked away. See you soon!
 ____________________________________________________________
 ```
 
@@ -145,63 +145,63 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly.
 ____________________________________________________________
 ____________________________________________________________
-Oops! A todo description cannot be empty.
+Moss says: A todo description cannot be empty.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [T][ ] mop floor
-Now you have 1 tasks in the list.
+That makes 1 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
+Moss says: Use: deadline <description> /by <date or time>.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [D][ ] pay bill (by: Sept 01 2026)
-Now you have 2 tasks in the list.
+That makes 2 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
+Moss says: Use: event <description> /from <start> /to <end>.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-Now you have 3 tasks in the list.
+That makes 3 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, find, mark, unmark, or delete.
+Moss says: Moss does not recognise that command yet. Try todo, deadline, event, list, find, mark, unmark, or delete.
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
+Moss's household board:
 1.[T][ ] mop floor
 2.[D][ ] pay bill (by: Sept 01 2026)
 3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
 ____________________________________________________________
 ____________________________________________________________
-Oops! That task number does not exist.
+Moss says: That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
+Moss's household board:
 1.[T][ ] mop floor
 2.[D][ ] pay bill (by: Sept 01 2026)
 3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
 ____________________________________________________________
 ____________________________________________________________
-Nice! I've marked this household task as done:
+Done and dusted. This task is complete:
   [T][X] mop floor
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
+Moss's household board:
 1.[T][X] mop floor
 2.[D][ ] pay bill (by: Sept 01 2026)
 3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+All tucked away. See you soon!
 ____________________________________________________________
 ```
 
@@ -225,37 +225,37 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [T][ ] first task
-Now you have 1 tasks in the list.
+That makes 1 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [T][ ] second task
-Now you have 2 tasks in the list.
+That makes 2 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Noted. I've removed this task:
+Cleared from the board:
   [T][ ] first task
-Now you have 1 tasks in the list.
+That leaves 1 tasks to keep tidy.
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
+Moss's household board:
 1.[T][ ] second task
 ____________________________________________________________
 ____________________________________________________________
-Oops! That task number does not exist.
+Moss says: That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
+Moss's household board:
 1.[T][ ] second task
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+All tucked away. See you soon!
 ____________________________________________________________
 ```
 
@@ -284,59 +284,59 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [T][ ] alpha
-Now you have 1 tasks in the list.
+That makes 1 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+Moss says: Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
+Moss's household board:
 1.[T][ ] alpha
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [D][ ] due (by: Feb 28 2026)
-Now you have 2 tasks in the list.
+That makes 2 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+Moss says: Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [E][ ] outing (from: Mar 01 2026 to: Mar 02 2026)
-Now you have 3 tasks in the list.
+That makes 3 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Nice! I've marked this household task as done:
+Done and dusted. This task is complete:
   [E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
+Moss's household board:
 1.[T][ ] alpha
 2.[D][ ] due (by: Feb 28 2026)
 3.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
 ____________________________________________________________
 ____________________________________________________________
-Noted. I've removed this task:
+Cleared from the board:
   [D][ ] due (by: Feb 28 2026)
-Now you have 2 tasks in the list.
+That leaves 2 tasks to keep tidy.
 ____________________________________________________________
 ____________________________________________________________
-Oops! That task number does not exist.
+Moss says: That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
+Moss's household board:
 1.[T][ ] alpha
 2.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+All tucked away. See you soon!
 ____________________________________________________________
 ```
 
@@ -359,28 +359,28 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [T][ ] wash dishes
-Now you have 1 tasks in the list.
+That makes 1 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Nice! I've marked this household task as done:
+Done and dusted. This task is complete:
   [T][X] wash dishes
 ____________________________________________________________
 ____________________________________________________________
-I've marked this household task as not done:
+Back on the board. This task is pending:
   [T][ ] wash dishes
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
+Moss's household board:
 1.[T][ ] wash dishes
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+All tucked away. See you soon!
 ____________________________________________________________
 ```
 
@@ -410,47 +410,47 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [T][ ] one task
-Now you have 1 tasks in the list.
+That makes 1 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Oops! Please provide a task number after mark.
+Moss says: Please provide a task number after mark.
 ____________________________________________________________
 ____________________________________________________________
-Oops! The task number must be a whole number.
+Moss says: The task number must be a whole number.
 ____________________________________________________________
 ____________________________________________________________
-Oops! That task number does not exist.
+Moss says: That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Oops! That task number does not exist.
+Moss says: That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Oops! Please provide a task number after delete.
+Moss says: Please provide a task number after delete.
 ____________________________________________________________
 ____________________________________________________________
-Oops! The task number must be a whole number.
+Moss says: The task number must be a whole number.
 ____________________________________________________________
 ____________________________________________________________
-Oops! That task number does not exist.
+Moss says: That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Oops! That task number does not exist.
+Moss says: That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Oops! That task number does not exist.
+Moss says: That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
+Moss's household board:
 1.[T][ ] one task
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+All tucked away. See you soon!
 ____________________________________________________________
 ```
 
@@ -476,23 +476,23 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly.
 ____________________________________________________________
 ____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, find, mark, unmark, or delete.
+Moss says: Moss does not recognise that command yet. Try todo, deadline, event, list, find, mark, unmark, or delete.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [T][ ] spaced task
-Now you have 1 tasks in the list.
+That makes 1 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
+Moss's household board:
 1.[T][ ] spaced task
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+All tucked away. See you soon!
 ____________________________________________________________
 ```
 
@@ -520,41 +520,41 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly.
 ____________________________________________________________
 ____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
+Moss says: Use: deadline <description> /by <date or time>.
 ____________________________________________________________
 ____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
+Moss says: Use: deadline <description> /by <date or time>.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [D][ ] review (by: Feb 29 2028)
-Now you have 1 tasks in the list.
+That makes 1 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+Moss says: Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
 ____________________________________________________________
 ____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+Moss says: Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
 ____________________________________________________________
 ____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
+Moss says: Use: event <description> /from <start> /to <end>.
 ____________________________________________________________
 ____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
+Moss says: Use: event <description> /from <start> /to <end>.
 ____________________________________________________________
 ____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
+Moss says: Use: event <description> /from <start> /to <end>.
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
+Moss's household board:
 1.[D][ ] review (by: Feb 29 2028)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+All tucked away. See you soon!
 ____________________________________________________________
 ```
 
@@ -593,35 +593,35 @@ First launch:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [T][ ] persisted
-Now you have 1 tasks in the list.
+That makes 1 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [D][ ] review (by: Oct 15 2026)
-Now you have 2 tasks in the list.
+That makes 2 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
-Now you have 3 tasks in the list.
+That makes 3 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Nice! I've marked this household task as done:
+Done and dusted. This task is complete:
   [T][X] persisted
 ____________________________________________________________
 ____________________________________________________________
-Noted. I've removed this task:
+Cleared from the board:
   [D][ ] review (by: Oct 15 2026)
-Now you have 2 tasks in the list.
+That leaves 2 tasks to keep tidy.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+All tucked away. See you soon!
 ____________________________________________________________
 ```
 
@@ -631,16 +631,16 @@ Second launch:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly.
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
+Moss's household board:
 1.[T][X] persisted
 2.[E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+All tucked away. See you soon!
 ____________________________________________________________
 ```
 
@@ -683,56 +683,56 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [T][ ] read book
-Now you have 1 tasks in the list.
+That makes 1 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [D][ ] return book (by: Jun 06 2026)
-Now you have 2 tasks in the list.
+That makes 2 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+On it. I've added this task:
   [T][ ] clean room
-Now you have 3 tasks in the list.
+That makes 3 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Nice! I've marked this household task as done:
+Done and dusted. This task is complete:
   [T][X] read book
 ____________________________________________________________
 ____________________________________________________________
-Nice! I've marked this household task as done:
+Done and dusted. This task is complete:
   [D][X] return book (by: Jun 06 2026)
 ____________________________________________________________
 ____________________________________________________________
-Here are the matching tasks in your list:
+Moss found these matching tasks:
 1.[T][X] read book
 2.[D][X] return book (by: Jun 06 2026)
 ____________________________________________________________
 ____________________________________________________________
-Here are the matching tasks in your list:
+Moss found these matching tasks:
 1.[T][X] read book
 2.[D][X] return book (by: Jun 06 2026)
 ____________________________________________________________
 ____________________________________________________________
-Here are the matching tasks in your list:
+Moss found these matching tasks:
 ____________________________________________________________
 ____________________________________________________________
-Oops! Please provide a keyword after find.
+Moss says: Please provide a keyword after find.
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
+Moss's household board:
 1.[T][X] read book
 2.[D][X] return book (by: Jun 06 2026)
 3.[T][ ] clean room
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+All tucked away. See you soon!
 ____________________________________________________________
 ```
 
@@ -767,6 +767,20 @@ first differing output line.
 Keep the test specification above stable and record each run separately using
 the following template. Do not record a run as PASS if it used a different JDK,
 locale, working-directory setup, or input contract.
+
+### Session: 2026-08-31 (Moss personality regression)
+
+- Working-tree base revision: `d5eb45a`.
+- Java selection: `/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin/java` and `javac`.
+- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
+- Verification command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu ./gradlew check`.
+- CLI regression compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
+- CLI launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup: UI-001 through UI-009 and UI-011 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
+- Timeout: 20 seconds per process.
+- Overall result: PASS; all 12 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
+- The CLI and GUI now use the Moss name and personality wording consistently.
+- Complete console input/output record: [ui-test-session-2026-08-31-moss-personality.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-moss-personality.txt).
 
 ### Session: YYYY-MM-DD (short description)
 

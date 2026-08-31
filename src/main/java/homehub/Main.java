@@ -27,7 +27,7 @@ public class Main extends Application {
             assert mainWindow != null : "MainWindow.fxml must declare a MainWindow controller";
             stage.setScene(new Scene(mainLayout));
             mainWindow.setHomeHub(homeHub);
-            stage.setTitle("HomeHub");
+            stage.setTitle("HomeHub - " + Moss.NAME);
             stage.setMinHeight(420.0);
             stage.setMinWidth(320.0);
             stage.show();

@@ -56,9 +56,10 @@ public class MainWindow extends AnchorPane {
         String response = homeHub.getResponse(input);
         CommandType commandType = homeHub.getCommandType();
         assert commandType != null : "Every HomeHub response must have a command type for styling";
+        boolean isError = response.startsWith(Moss.ERROR_PREFIX);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getHomeHubDialog(response, homeHubImage, commandType, response.startsWith("Oops!")));
+                DialogBox.getHomeHubDialog(response, homeHubImage, commandType, isError));
         userInput.clear();
         if (homeHub.isExitRequested()) {
             userInput.setDisable(true);
