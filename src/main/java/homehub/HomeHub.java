@@ -48,6 +48,11 @@ public class HomeHub {
                     break;
                 } else if (commandType == CommandType.LIST) {
                     ui.showTaskList(tasks);
+                } else if (commandType == CommandType.FIND) {
+                    if (parsedCommand.arguments().isEmpty()) {
+                        throw new HomeHubException("Please provide a keyword after find.");
+                    }
+                    ui.showMatchingTasks(tasks.findMatchingTasks(parsedCommand.arguments()));
                 } else if (commandType == CommandType.MARK) {
                     markTask(tasks, parsedCommand.arguments(), true, storage);
                 } else if (commandType == CommandType.UNMARK) {
@@ -62,7 +67,7 @@ public class HomeHub {
                     taskCommands.addEvent(tasks, parsedCommand.arguments());
                 } else {
                     throw new HomeHubException("I don't recognise that command. Try todo, deadline, event, list, "
-                            + "mark, unmark, or delete.");
+                            + "find, mark, unmark, or delete.");
                 }
             } catch (HomeHubException exception) {
                 ui.showError(exception.getMessage());

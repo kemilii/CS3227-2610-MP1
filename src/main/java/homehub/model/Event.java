@@ -1,8 +1,8 @@
 package homehub.model;
 
-import homehub.exception.HomeHubException;
-
 import java.time.LocalDateTime;
+
+import homehub.exception.HomeHubException;
 
 /** Represents a task with a starting and ending date or time. */
 public class Event extends Task {

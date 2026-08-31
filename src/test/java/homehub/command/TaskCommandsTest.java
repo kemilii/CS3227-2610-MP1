@@ -1,19 +1,18 @@
 package homehub.command;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import homehub.exception.HomeHubException;
 import homehub.model.TaskList;
 import homehub.storage.Storage;
 import homehub.ui.Ui;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /** Tests validation, creation, and persistence of tasks from user commands. */
 class TaskCommandsTest {
@@ -109,10 +108,10 @@ class TaskCommandsTest {
         TaskCommands commands = new TaskCommands(storageAt("data/homehub.txt"), new Ui());
 
         assertThrows(HomeHubException.class, () -> commands.addEvent(tasks, "meeting /from 2026-09-02"));
-        assertThrows(HomeHubException.class,
-                () -> commands.addEvent(tasks, "meeting /from 2026-09-02 /to 2026-02-30"));
-        assertThrows(HomeHubException.class,
-                () -> commands.addEvent(tasks, "meeting /from 2026-09-02 /from 2026-09-03 /to 2026-09-04"));
+        assertThrows(HomeHubException.class, () ->
+                commands.addEvent(tasks, "meeting /from 2026-09-02 /to 2026-02-30"));
+        assertThrows(HomeHubException.class, () ->
+                commands.addEvent(tasks, "meeting /from 2026-09-02 /from 2026-09-03 /to 2026-09-04"));
 
         assertEquals(0, tasks.size());
     }

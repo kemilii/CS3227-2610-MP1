@@ -1,8 +1,8 @@
 package homehub.model;
 
-import homehub.exception.HomeHubException;
-
 import java.time.LocalDateTime;
+
+import homehub.exception.HomeHubException;
 
 /** Represents a task that must be completed before a specified date or time. */
 public class Deadline extends Task {

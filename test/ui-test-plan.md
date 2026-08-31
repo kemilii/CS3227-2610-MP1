@@ -24,6 +24,24 @@
 - The documented input blocks for UI-001 through UI-010 were executed in order using `homehub.HomeHub` from fresh temporary working directories where applicable.
 - All ten processes exited with status 0 and produced empty stderr. The complete captured console records were retained during this verification run; no UI behavior or expected output changed.
 
+### Test session record — 2026-08-31 (Checkstyle setup verification)
+
+- Working-tree revision: uncommitted changes present.
+- Java-selection command: `export JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu; export PATH="$JAVA_HOME/bin:$PATH"`.
+- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
+- `javac --version`: `javac 25.0.3`.
+- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
+- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup: fresh temporary directories for UI-001 through UI-009 and UI-011; one shared temporary directory for both UI-010 launches.
+- Timeout: 20 seconds per process.
+- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
+- Overall result: PASS.
+- UI-001 through UI-009 and UI-011: PASS; exit status 0, empty stderr, and exact stdout.
+- UI-010 first launch and second launch: PASS; exit status 0, empty stderr, and exact stdout.
+- UI-010 persistence-file assertions: PASS; the deleted deadline was absent and the saved records matched the expected content.
+- Complete console input/output record: [ui-test-session-2026-08-31.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31.txt).
+
 ## Scope and execution information
 
 This plan tests HomeHub through its command-line interface. Each test case is an
@@ -155,7 +173,7 @@ Got it. I've added this task:
 Now you have 3 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
+Oops! I don't recognise that command. Try todo, deadline, event, list, find, mark, unmark, or delete.
 ____________________________________________________________
 ____________________________________________________________
 Here are the household tasks in your HomeHub:
@@ -462,7 +480,7 @@ Welcome to HomeHub!
 Manage your household tasks here.
 ____________________________________________________________
 ____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
+Oops! I don't recognise that command. Try todo, deadline, event, list, find, mark, unmark, or delete.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
@@ -639,6 +657,85 @@ E | 0 | meeting | 2026-10-15 14:00 | 2026-10-15 16:00
 
 - Both launches exit with status 0 and produce empty stderr.
 
+### UI-011: Find tasks by description keyword
+
+Aim: Verify that `find` displays matching tasks in their original order,
+searches case-insensitively within descriptions, leaves the task list unchanged,
+and reports invalid or unmatched searches clearly.
+
+Inputs:
+
+```text
+todo read book
+deadline return book /by 2026-06-06
+todo clean room
+mark 1
+mark 2
+find book
+find BOOK
+find movie
+find
+list
+bye
+```
+
+Expected output:
+
+```text
+____________________________________________________________
+Welcome to HomeHub!
+Manage your household tasks here.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] read book
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [D][ ] return book (by: Jun 06 2026)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] clean room
+Now you have 3 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Nice! I've marked this household task as done:
+  [T][X] read book
+____________________________________________________________
+____________________________________________________________
+Nice! I've marked this household task as done:
+  [D][X] return book (by: Jun 06 2026)
+____________________________________________________________
+____________________________________________________________
+Here are the matching tasks in your list:
+1.[T][X] read book
+2.[D][X] return book (by: Jun 06 2026)
+____________________________________________________________
+____________________________________________________________
+Here are the matching tasks in your list:
+1.[T][X] read book
+2.[D][X] return book (by: Jun 06 2026)
+____________________________________________________________
+____________________________________________________________
+Here are the matching tasks in your list:
+____________________________________________________________
+____________________________________________________________
+Oops! Please provide a keyword after find.
+____________________________________________________________
+____________________________________________________________
+Here are the household tasks in your HomeHub:
+1.[T][X] read book
+2.[D][X] return book (by: Jun 06 2026)
+3.[T][ ] clean room
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
 ## Coverage matrix
 
 | Behavior | Covered by |
@@ -654,6 +751,8 @@ E | 0 | meeting | 2026-10-15 14:00 | 2026-10-15 16:00
 | Missing, malformed, and out-of-range indices | UI-007 |
 | Empty and whitespace-padded input | UI-008 |
 | Persistence and reload | UI-010 |
+| Find tasks by case-insensitive description keyword | UI-011 |
+| Find no-match and missing-keyword behavior | UI-011 |
 
 ## Test-case pass criteria
 
@@ -2594,6 +2693,33 @@ ____________________________________________________________
 ```
 
 Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+
+### Session: 2026-08-30 (find feature)
+
+- Commit or worktree revision: uncommitted changes present.
+- OS and architecture: Darwin x86_64.
+- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
+- `javac --version`: `javac 25.0.3`.
+- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
+- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup: fresh temporary directories for UI-001 through UI-009 and UI-011; one shared fresh temporary directory for UI-010.
+- Timeout: 20 seconds per process.
+- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
+- Overall result: PASS.
+- UI-001: PASS — input `bye`; exit status 0; no timeout; stderr empty; exact stdout.
+- UI-002: PASS — input `todo wash dishes`, `list`, `bye`; exit status 0; no timeout; stderr empty; exact stdout.
+- UI-003: PASS — documented invalid and valid creation, listing, marking, and exit inputs; exit status 0; no timeout; stderr empty; exact stdout.
+- UI-004: PASS — documented add, delete, list, invalid delete, list, and exit inputs; exit status 0; no timeout; stderr empty; exact stdout.
+- UI-005: PASS — documented invalid-date, valid-task, mark, delete, list, and exit inputs; exit status 0; no timeout; stderr empty; exact stdout.
+- UI-006: PASS — documented add, mark, unmark, list, and exit inputs; exit status 0; no timeout; stderr empty; exact stdout.
+- UI-007: PASS — documented invalid task-number inputs, list, and exit; exit status 0; no timeout; stderr empty; exact stdout.
+- UI-008: PASS — documented whitespace-notation inputs translated before execution; exit status 0; no timeout; stderr empty; exact stdout.
+- UI-009: PASS — documented invalid syntax/date/time inputs, list, and exit; exit status 0; no timeout; stderr empty; exact stdout.
+- UI-010 first launch: PASS — documented persistence setup inputs; exit status 0; no timeout; stderr empty; exact stdout.
+- UI-010 second launch: PASS — documented reload inputs; exit status 0; no timeout; stderr empty; exact stdout; saved-file assertion passed.
+- UI-011: PASS — documented find, no-match, missing-keyword, list, and exit inputs; exit status 0; no timeout; stderr empty; exact stdout.
+- Complete console input/output records, including actual and expected stdout for every case: [ui-test-session-2026-08-30-find.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-30-find.txt).
 ### Session: 2026-08-30 (core business-logic test coverage)
 
 - Working-tree revision: uncommitted changes present (expanded JUnit coverage).

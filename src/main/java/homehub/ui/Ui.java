@@ -1,9 +1,9 @@
 package homehub.ui;
 
+import java.util.Scanner;
+
 import homehub.model.Task;
 import homehub.model.TaskList;
-
-import java.util.Scanner;
 
 /** Handles HomeHub's interaction with the command-line user. */
 public class Ui {
@@ -49,6 +49,18 @@ public class Ui {
         System.out.println("Here are the household tasks in your HomeHub:");
         for (int i = 0; i < tasks.size(); i++) {
             System.out.println((i + 1) + "." + tasks.get(i).toDisplayString());
+        }
+    }
+
+    /**
+     * Displays tasks matching a search keyword.
+     *
+     * @param matchingTasks tasks whose descriptions matched the search keyword.
+     */
+    public void showMatchingTasks(TaskList matchingTasks) {
+        System.out.println("Here are the matching tasks in your list:");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            System.out.println((i + 1) + "." + matchingTasks.get(i).toDisplayString());
         }
     }
 

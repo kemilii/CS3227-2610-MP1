@@ -3,9 +3,9 @@ package homehub.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import homehub.exception.HomeHubException;
-
 import org.junit.jupiter.api.Test;
+
+import homehub.exception.HomeHubException;
 
 /** Tests task state transitions and date-aware display/storage formatting. */
 class TaskTest {
@@ -53,7 +53,7 @@ class TaskTest {
     @Test
     void deadlineOrEvent_invalidDate_throwsHomeHubException() {
         assertThrows(HomeHubException.class, () -> new Deadline("submit report", "2026-02-30"));
-        assertThrows(HomeHubException.class,
-                () -> new Event("team meeting", "2026-09-02 25:00", "2026-09-02 16:00"));
+        assertThrows(HomeHubException.class, () ->
+                new Event("team meeting", "2026-09-02 25:00", "2026-09-02 16:00"));
     }
 }

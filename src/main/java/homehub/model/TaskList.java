@@ -1,6 +1,7 @@
 package homehub.model;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /** Owns the in-memory collection of household tasks. */
 public class TaskList {
@@ -62,6 +63,27 @@ public class TaskList {
      */
     public int size() {
         return tasks.size();
+    }
+
+    /**
+     * Returns the tasks whose descriptions contain the supplied keyword.
+     * Matching is case-insensitive and preserves the order of the original list.
+     *
+     * @param keyword text to search for in task descriptions.
+     * @return a new task list containing the matching tasks.
+     */
+    public TaskList findMatchingTasks(String keyword) {
+        String normalizedKeyword = keyword.trim().toLowerCase(Locale.ROOT);
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+        if (normalizedKeyword.isEmpty()) {
+            return new TaskList(matchingTasks);
+        }
+        for (Task task : tasks) {
+            if (task.getDescription().toLowerCase(Locale.ROOT).contains(normalizedKeyword)) {
+                matchingTasks.add(task);
+            }
+        }
+        return new TaskList(matchingTasks);
     }
 
     /**

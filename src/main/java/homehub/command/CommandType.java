@@ -3,7 +3,7 @@ package homehub.command;
 /** Represents a command understood by HomeHub. */
 public enum CommandType {
     BYE("bye"), LIST("list"), MARK("mark"), UNMARK("unmark"), DELETE("delete"),
-    TODO("todo"), DEADLINE("deadline"), EVENT("event"), UNKNOWN("");
+    TODO("todo"), DEADLINE("deadline"), EVENT("event"), FIND("find"), UNKNOWN("");
 
     private final String keyword;
 
@@ -12,7 +12,9 @@ public enum CommandType {
     }
 
     /** Returns the command keyword used by the parser. */
-    String getKeyword() { return keyword; }
+    String getKeyword() {
+        return keyword;
+    }
 
     /** Identifies a command from the first word of user input. */
     public static CommandType fromInput(String input) {
