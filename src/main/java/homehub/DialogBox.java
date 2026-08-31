@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 /** Displays a HomeHub conversation message alongside its avatar. */
 public class DialogBox extends HBox {
@@ -43,6 +44,7 @@ public class DialogBox extends HBox {
         assert displayPicture != null : "DialogBox.fxml must inject the avatar image view";
         dialog.setText(message);
         displayPicture.setImage(image);
+        HBox.setHgrow(dialog, Priority.ALWAYS);
     }
 
     /** Flips this dialog box so that its image is displayed on the left. */
@@ -52,6 +54,15 @@ public class DialogBox extends HBox {
         getChildren().setAll(children);
         setAlignment(Pos.TOP_LEFT);
         dialog.getStyleClass().add("reply-label");
+        getStyleClass().add("homehub-message");
+    }
+
+    /** Hides the avatar and constrains a user message to a compact bubble. */
+    private void configureUserMessage() {
+        displayPicture.setManaged(false);
+        displayPicture.setVisible(false);
+        dialog.maxWidthProperty().bind(widthProperty().multiply(0.78));
+        getStyleClass().add("user-message");
     }
 
     /**
@@ -76,6 +87,11 @@ public class DialogBox extends HBox {
         }
     }
 
+    /** Applies the attention style used when HomeHub rejects a command. */
+    private void markAsError() {
+        dialog.getStyleClass().add("error-label");
+    }
+
     /**
      * Creates a dialog box for a user's message.
      *
@@ -84,7 +100,9 @@ public class DialogBox extends HBox {
      * @return a right-aligned user dialog box.
      */
     public static DialogBox getUserDialog(String message, Image image) {
-        return new DialogBox(message, image);
+        DialogBox dialogBox = new DialogBox(message, image);
+        dialogBox.configureUserMessage();
+        return dialogBox;
     }
 
     /**
@@ -109,9 +127,27 @@ public class DialogBox extends HBox {
      * @return a left-aligned, command-styled HomeHub dialog box.
      */
     public static DialogBox getHomeHubDialog(String message, Image image, CommandType commandType) {
+        return getHomeHubDialog(message, image, commandType, false);
+    }
+
+    /**
+     * Creates a styled HomeHub response, optionally highlighting an error.
+     *
+     * @param message HomeHub's response.
+     * @param image HomeHub's avatar.
+     * @param commandType command type associated with the response.
+     * @param isError whether the response represents rejected input.
+     * @return a left-aligned HomeHub dialog box.
+     */
+    public static DialogBox getHomeHubDialog(String message, Image image, CommandType commandType,
+            boolean isError) {
         DialogBox dialogBox = new DialogBox(message, image);
         dialogBox.flip();
-        dialogBox.changeDialogStyle(commandType);
+        if (isError) {
+            dialogBox.markAsError();
+        } else {
+            dialogBox.changeDialogStyle(commandType);
+        }
         return dialogBox;
     }
 }

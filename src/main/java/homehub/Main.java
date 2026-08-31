@@ -28,8 +28,8 @@ public class Main extends Application {
             stage.setScene(new Scene(mainLayout));
             mainWindow.setHomeHub(homeHub);
             stage.setTitle("HomeHub");
-            stage.setMinHeight(600.0);
-            stage.setMinWidth(400.0);
+            stage.setMinHeight(420.0);
+            stage.setMinWidth(320.0);
             stage.show();
         } catch (IOException exception) {
             throw new IllegalStateException("Unable to load the HomeHub interface.", exception);

@@ -2897,6 +2897,21 @@ in [ui-test-session-2026-08-31-gui-features.txt](/Users/camelliaaa/Desktop/NUS/C
 
 Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
 
+### Session: 2026-08-31 (GUI polish regression)
+
+- Working-tree base revision: `9f7ff22`.
+- Java selection: `/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin/java` and `javac`.
+- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
+- Verification command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu ./gradlew check`.
+- CLI regression compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
+- CLI launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup: UI-001 through UI-009 and UI-011 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
+- Timeout: 20 seconds per process.
+- Overall result: PASS; all 12 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
+- CLI behavior was unchanged by this GUI-only update.
+- GUI startup smoke test: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu ./gradlew run` loaded the updated FXML and CSS without a startup exception; the process was stopped intentionally after reaching `:run` because the application remains open.
+- Complete console input/output record: [ui-test-session-2026-08-31-gui-polish.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-gui-polish.txt).
+
 ### Session: 2026-08-30 (find feature)
 
 - Commit or worktree revision: uncommitted changes present.

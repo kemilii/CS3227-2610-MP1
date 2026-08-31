@@ -2,7 +2,11 @@ package homehub;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
@@ -66,5 +70,19 @@ class MainTest {
     void stylesheetResources_areAvailableOnClasspath() {
         assertNotNull(Main.class.getResourceAsStream("/css/main.css"));
         assertNotNull(Main.class.getResourceAsStream("/css/dialog-box.css"));
+    }
+
+    @Test
+    void mainWindowLayout_supportsResponsivePolishedConversation() throws IOException {
+        String fxml;
+        try (InputStream inputStream = Main.class.getResourceAsStream("/view/MainWindow.fxml")) {
+            assertNotNull(inputStream);
+            fxml = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        }
+
+        assertTrue(fxml.contains("minWidth=\"320.0\""));
+        assertTrue(fxml.contains("minHeight=\"420.0\""));
+        assertTrue(fxml.contains("HBox.hgrow=\"ALWAYS\""));
+        assertTrue(fxml.contains("styleClass=\"welcome-card\""));
     }
 }

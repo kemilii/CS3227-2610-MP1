@@ -1,35 +1,60 @@
-.label {
-    -fx-background-color: linear-gradient(to bottom right, #c7f0e1, #a7dcd7);
-    -fx-border-color: #2c766d;
-    -fx-border-width: 2px;
-    -fx-background-radius: 1em 1em 0 1em;
-    -fx-border-radius: 1em 1em 0 1em;
-    -fx-padding: 6px;
-    -fx-border-insets: 0 7px 0 7px;
-    -fx-background-insets: 0 7px 0 7px;
-    -fx-text-fill: #173d3a;
+.dialog-box {
+    -fx-spacing: 7px;
+    -fx-padding: 3px 0;
+}
+
+.dialog-label {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 11px;
+    -fx-border-color: #dbe5e4;
+    -fx-border-radius: 11px;
+    -fx-border-width: 1px;
+    -fx-padding: 10px 13px;
+    -fx-text-fill: #263a3c;
+    -fx-font-size: 13px;
+    -fx-line-spacing: 2px;
 }
 
 .reply-label {
-    -fx-background-radius: 1em 1em 1em 0;
-    -fx-border-radius: 1em 1em 1em 0;
+    -fx-background-color: #e5f4f0;
+    -fx-border-color: #b9dcd5;
+    -fx-background-radius: 11px;
+    -fx-border-radius: 11px;
 }
 
-.add-label {
-    -fx-background-color: #ffe2a8;
+.user-message {
+    -fx-padding: 2px 0;
 }
 
-.marked-label {
-    -fx-background-color: #c6edc8;
+.user-message .dialog-label {
+    -fx-background-color: #27766e;
+    -fx-border-color: #27766e;
+    -fx-background-radius: 11px 11px 3px 11px;
+    -fx-border-radius: 11px 11px 3px 11px;
+    -fx-text-fill: #ffffff;
 }
 
-.delete-label {
-    -fx-background-color: #ffd0d0;
+.homehub-message .add-label {
+    -fx-background-color: #fff4d9;
+    -fx-border-color: #e5c56c;
 }
 
-#displayPicture {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 5, 5);
-    -fx-scale-x: 1;
-    -fx-scale-y: 1;
-    -fx-rotate: 0;
+.homehub-message .marked-label {
+    -fx-background-color: #e6f5e7;
+    -fx-border-color: #abd3af;
+}
+
+.homehub-message .delete-label,
+.homehub-message .error-label {
+    -fx-background-color: #fff0ef;
+    -fx-border-color: #e7a8a2;
+}
+
+.homehub-message .error-label {
+    -fx-text-fill: #8d2f28;
+    -fx-font-weight: bold;
+}
+
+.bot-avatar {
+    -fx-effect: dropshadow(gaussian, rgba(32, 50, 53, 0.16), 5, 0.3, 0, 1);
 }

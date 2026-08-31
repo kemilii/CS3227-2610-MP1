@@ -1,15 +1,71 @@
 .root {
-    homehub-main-color: #f7efe2;
+    homehub-main-color: #f5f7f7;
+    homehub-ink: #203235;
+    homehub-muted: #6a7b7d;
+    homehub-teal: #27766e;
     -fx-background-color: homehub-main-color;
+    -fx-font-family: "Arial";
+}
+
+.header {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent transparent #dbe5e4 transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.app-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: homehub-ink;
+}
+
+.app-subtitle,
+.command-hint {
+    -fx-text-fill: homehub-muted;
+}
+
+.app-subtitle {
+    -fx-font-size: 12px;
+}
+
+.command-hint {
+    -fx-font-size: 11px;
+    -fx-padding: 7px 0 0 0;
+}
+
+.status-label {
+    -fx-background-color: #e4f4ef;
+    -fx-background-radius: 12px;
+    -fx-padding: 5px 9px;
+    -fx-text-fill: homehub-teal;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.welcome-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12px;
+    -fx-border-color: #dbe5e4;
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+    -fx-padding: 13px 15px;
+    -fx-text-fill: homehub-ink;
+    -fx-font-size: 14px;
+}
+
+.composer {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dbe5e4 transparent transparent transparent;
+    -fx-border-width: 1px 0 0 0;
 }
 
 .text-field {
-    -fx-background-color: #fffaf2;
-    -fx-border-color: #2c766d;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-font: 16px "Arial";
-    -fx-padding: 8px;
+    -fx-background-color: #f7faf9;
+    -fx-border-color: #c9d9d7;
+    -fx-border-radius: 9px;
+    -fx-background-radius: 9px;
+    -fx-font-size: 13px;
+    -fx-padding: 10px 12px;
 }
 
 .text-field:focused {
@@ -18,14 +74,16 @@
 }
 
 .button {
-    -fx-background-color: #2c766d;
-    -fx-background-radius: 8px;
-    -fx-font: bold 16px "Arial";
+    -fx-background-color: #27766e;
+    -fx-background-radius: 9px;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 17px;
     -fx-text-fill: white;
 }
 
 .button:hover {
-    -fx-background-color: #3f9488;
+    -fx-background-color: #338e83;
 }
 
 .button:pressed {
@@ -39,11 +97,11 @@
 
 .scroll-bar {
     -fx-font-size: 10px;
-    -fx-background-color: homehub-main-color;
+    -fx-background-color: transparent;
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: #7dbbb1;
+    -fx-background-color: #a9c5c1;
     -fx-background-radius: 1em;
 }
 
