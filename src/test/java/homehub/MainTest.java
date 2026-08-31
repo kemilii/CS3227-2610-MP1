@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import homehub.command.CommandType;
 import homehub.storage.Storage;
 import javafx.application.Application;
 import javafx.scene.layout.AnchorPane;
@@ -46,7 +47,7 @@ class MainTest {
 
         homeHub.getResponse("todo wash dishes");
 
-        assertEquals("TODO", homeHub.getCommandType());
+        assertEquals(CommandType.TODO, homeHub.getCommandType());
     }
 
     @Test

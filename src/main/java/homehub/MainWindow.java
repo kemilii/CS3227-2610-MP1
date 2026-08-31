@@ -1,5 +1,6 @@
 package homehub;
 
+import homehub.command.CommandType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -53,7 +54,7 @@ public class MainWindow extends AnchorPane {
         assert userInput != null : "MainWindow.fxml must inject the user input field";
         String input = userInput.getText();
         String response = homeHub.getResponse(input);
-        String commandType = homeHub.getCommandType();
+        CommandType commandType = homeHub.getCommandType();
         assert commandType != null : "Every HomeHub response must have a command type for styling";
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),

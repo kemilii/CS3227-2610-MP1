@@ -18,7 +18,7 @@ public class HomeHub {
     private final Parser parser;
     private final Storage storage;
     private TaskList tasks;
-    private String commandType;
+    private CommandType commandType;
     private boolean exitRequested;
     private String startupError;
 
@@ -72,7 +72,7 @@ public class HomeHub {
             startupError = null;
         }
         if (input == null) {
-            commandType = CommandType.UNKNOWN.name();
+            commandType = CommandType.UNKNOWN;
             responseUi.showError("I don't recognise that command. Try todo, deadline, event, list, find, mark, "
                     + "unmark, or delete.");
             return responseUi.getResponse();
@@ -88,7 +88,7 @@ public class HomeHub {
     }
 
     /** Returns the command type from the most recent graphical-interface input. */
-    public String getCommandType() {
+    public CommandType getCommandType() {
         return commandType;
     }
 
@@ -133,7 +133,7 @@ public class HomeHub {
         assert parsedCommand != null : "The parser must return a command for every input";
         assert parsedCommand.type() != null : "A parsed command must have a command type";
         assert parsedCommand.arguments() != null : "A parsed command must have normalized arguments";
-        commandType = parsedCommand.type().name();
+        commandType = parsedCommand.type();
         TaskCommands taskCommands = new TaskCommands(storage, ui);
 
         switch (parsedCommand.type()) {

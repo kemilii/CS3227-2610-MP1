@@ -3,6 +3,7 @@ package homehub;
 import java.io.IOException;
 import java.util.Collections;
 
+import homehub.command.CommandType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -58,15 +59,16 @@ public class DialogBox extends HBox {
      *
      * @param commandType command type associated with the response.
      */
-    private void changeDialogStyle(String commandType) {
+    private void changeDialogStyle(CommandType commandType) {
+        assert commandType != null : "A response style requires a command type";
         switch (commandType) {
-            case "TODO", "DEADLINE", "EVENT":
+            case TODO, DEADLINE, EVENT:
                 dialog.getStyleClass().add("add-label");
                 break;
-            case "MARK", "UNMARK":
+            case MARK, UNMARK:
                 dialog.getStyleClass().add("marked-label");
                 break;
-            case "DELETE":
+            case DELETE:
                 dialog.getStyleClass().add("delete-label");
                 break;
             default:
@@ -106,7 +108,7 @@ public class DialogBox extends HBox {
      * @param commandType command type associated with the response.
      * @return a left-aligned, command-styled HomeHub dialog box.
      */
-    public static DialogBox getHomeHubDialog(String message, Image image, String commandType) {
+    public static DialogBox getHomeHubDialog(String message, Image image, CommandType commandType) {
         DialogBox dialogBox = new DialogBox(message, image);
         dialogBox.flip();
         dialogBox.changeDialogStyle(commandType);
