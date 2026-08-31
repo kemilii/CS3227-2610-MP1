@@ -21,8 +21,13 @@ public class Event extends Task {
      */
     public Event(String description, String from, String to) throws HomeHubException {
         super(description);
-        this.from = DateTimeParser.parse(from);
-        this.to = DateTimeParser.parse(to);
+        LocalDateTime parsedFrom = DateTimeParser.parse(from);
+        LocalDateTime parsedTo = DateTimeParser.parse(to);
+        if (!parsedTo.isAfter(parsedFrom)) {
+            throw new HomeHubException("An event must end after it starts.");
+        }
+        this.from = parsedFrom;
+        this.to = parsedTo;
         this.fromHasTime = DateTimeParser.hasTime(from);
         this.toHasTime = DateTimeParser.hasTime(to);
     }

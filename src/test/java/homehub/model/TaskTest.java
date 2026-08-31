@@ -62,5 +62,13 @@ class TaskTest {
         assertThrows(HomeHubException.class, () -> new Deadline("submit report", "2026-02-30"));
         assertThrows(HomeHubException.class, () ->
                 new Event("team meeting", "2026-09-02 25:00", "2026-09-02 16:00"));
+        assertThrows(HomeHubException.class, () ->
+                new Event("team meeting", "2026-09-02 16:00", "2026-09-02 16:00"));
+        assertThrows(HomeHubException.class, () ->
+                new Event("team meeting", "2026-09-02", "2026-09-01"));
+        assertThrows(HomeHubException.class, () ->
+                new Deadline("submit report", null));
+        assertThrows(HomeHubException.class, () ->
+                new Event("team meeting", "  ", "2026-09-02"));
     }
 }

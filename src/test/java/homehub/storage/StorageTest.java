@@ -1,6 +1,7 @@
 package homehub.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -85,6 +86,35 @@ class StorageTest {
         Files.writeString(file, "D | 0 | invalid deadline | 2026-02-30");
 
         assertThrows(HomeHubException.class, () -> storageAt("data/homehub.txt").load());
+    }
+
+    @Test
+    void load_duplicateTaskDetails_throwsHomeHubException() throws Exception {
+        Path file = temporaryDirectory.resolve("data/homehub.txt");
+        Files.createDirectories(file.getParent());
+        Files.writeString(file, String.join("\n",
+                "T | 0 | duplicate",
+                "T | 1 | duplicate"));
+
+        assertThrows(HomeHubException.class, () -> storageAt("data/homehub.txt").load());
+    }
+
+    @Test
+    void constructor_missingOrBlankPath_rejectsInvalidStorageConfiguration() {
+        assertThrows(IllegalArgumentException.class, () -> new Storage(null));
+        assertThrows(IllegalArgumentException.class, () -> new Storage("  "));
+    }
+
+    @Test
+    void save_duplicateTaskDetails_rejectsWithoutWritingFile() throws Exception {
+        Storage storage = storageAt("data/homehub.txt");
+        TaskList tasks = new TaskList();
+        Task duplicate = new Todo("duplicate");
+        tasks.add(duplicate);
+        tasks.add(duplicate);
+
+        assertThrows(HomeHubException.class, () -> storage.save(tasks));
+        assertFalse(Files.exists(temporaryDirectory.resolve("data/homehub.txt")));
     }
 
     private Storage storageAt(String relativePath) {

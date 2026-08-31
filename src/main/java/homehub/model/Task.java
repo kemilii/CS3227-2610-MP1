@@ -107,6 +107,29 @@ public class Task {
         return getTypeIcon() + " | " + (status == TaskStatus.DONE ? "1" : "0")
                 + " | " + description;
     }
+
+    /**
+     * Returns whether another task has the same type and task details.
+     * Completion status is intentionally ignored so that the same task cannot be
+     * added twice after one copy has been completed.
+     *
+     * @param other task to compare with this task.
+     * @return {@code true} when both tasks represent the same details.
+     */
+    public boolean hasSameDetailsAs(Task other) {
+        if (other == null || !getTypeIcon().equals(other.getTypeIcon())) {
+            return false;
+        }
+        return getStorageDetails().equals(other.getStorageDetails());
+    }
+
+    private String getStorageDetails() {
+        String serialized = toStorageString();
+        int firstSeparator = serialized.indexOf(" | ");
+        int secondSeparator = serialized.indexOf(" | ", firstSeparator + 3);
+        assert secondSeparator >= 0 : "A serialized task must contain type and status separators";
+        return serialized.substring(secondSeparator + 3);
+    }
 }
 
 /** Parses and formats date/time values accepted by HomeHub. */
@@ -122,6 +145,9 @@ final class DateTimeParser {
     }
 
     static LocalDateTime parse(String value) throws HomeHubException {
+        if (value == null || value.trim().isEmpty()) {
+            throw new HomeHubException("Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.");
+        }
         try {
             String trimmed = value.trim();
             if (trimmed.length() > 10) {

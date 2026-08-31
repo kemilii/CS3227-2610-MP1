@@ -74,8 +74,7 @@ public class HomeHub {
         if (input == null) {
             commandType = CommandType.UNKNOWN;
             responseUi.showError(Moss.NAME + " does not recognise that command yet. Try todo, deadline, event, list, "
-                    + "find, mark, "
-                    + "unmark, or delete.");
+                    + "find, mark, unmark, delete, or help.");
             return responseUi.getResponse();
         }
         try {
@@ -139,13 +138,16 @@ public class HomeHub {
 
         switch (parsedCommand.type()) {
             case BYE:
+                requireNoArguments(parsedCommand.arguments(), "bye");
                 exitRequested = true;
                 ui.showGoodbye();
                 break;
             case LIST:
+                requireNoArguments(parsedCommand.arguments(), "list");
                 ui.showTaskList(tasks);
                 break;
             case HELP:
+                requireNoArguments(parsedCommand.arguments(), "help");
                 ui.showHelp();
                 break;
             case FIND:
@@ -174,8 +176,14 @@ public class HomeHub {
                 break;
             default:
                 throw new HomeHubException(Moss.NAME + " does not recognise that command yet. Try todo, deadline, "
-                        + "event, list, "
-                        + "find, mark, unmark, or delete.");
+                        + "event, list, find, mark, unmark, delete, or help.");
+        }
+    }
+
+    private void requireNoArguments(String arguments, String command) throws HomeHubException {
+        assert arguments != null : "Parsed commands must provide normalized arguments";
+        if (!arguments.isEmpty()) {
+            throw new HomeHubException("The " + command + " command does not take arguments.");
         }
     }
 

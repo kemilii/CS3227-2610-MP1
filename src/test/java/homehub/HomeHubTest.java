@@ -1,6 +1,7 @@
 package homehub;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
@@ -94,6 +95,32 @@ class HomeHubTest {
         assertTrue(homeHub.getResponse("find").contains("Please provide a keyword after find."));
         assertTrue(homeHub.getResponse("mark 1").contains("That task number does not exist."));
         assertEquals("Moss's household board:", homeHub.getResponse("list"));
+    }
+
+    @Test
+    void getResponse_extraArgumentsAndNullInput_returnClearErrors() {
+        HomeHub homeHub = homeHubAt("data/homehub.txt");
+
+        assertTrue(homeHub.getResponse("list now").contains("The list command does not take arguments."));
+        assertTrue(homeHub.getResponse("help now").contains("The help command does not take arguments."));
+        assertTrue(homeHub.getResponse("bye now").contains("The bye command does not take arguments."));
+        assertTrue(homeHub.getResponse(null).contains("Moss does not recognise that command yet."));
+        assertFalse(homeHub.isExitRequested());
+    }
+
+    @Test
+    void getResponse_duplicateAndUnorderedTasks_rejectWithoutChangingState() {
+        HomeHub homeHub = homeHubAt("data/homehub.txt");
+
+        homeHub.getResponse("todo wash dishes");
+        assertTrue(homeHub.getResponse("todo wash dishes").contains("already on the board"));
+        assertTrue(homeHub.getResponse("event meeting /from 2026-09-02 /to 2026-09-01")
+                .contains("must end after it starts"));
+        assertTrue(homeHub.getResponse("event meeting /from 2026-09-02 /to 2026-09-02")
+                .contains("must end after it starts"));
+        assertEquals(String.join(System.lineSeparator(),
+                "Moss's household board:",
+                "1.[T][ ] wash dishes"), homeHub.getResponse("list"));
     }
 
     @Test

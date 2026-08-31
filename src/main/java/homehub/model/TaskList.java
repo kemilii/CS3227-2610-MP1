@@ -53,6 +53,24 @@ public class TaskList {
     }
 
     /**
+     * Returns whether this list already contains the supplied task details.
+     * Completion status is ignored when comparing tasks.
+     *
+     * @param candidate task details to find.
+     * @return {@code true} if an equivalent task is already present.
+     */
+    public boolean hasTaskWithSameDetails(Task candidate) {
+        assert candidate != null : "Duplicate checks require a task candidate";
+        for (Task task : tasks) {
+            assert task != null : "A task list must not contain null tasks";
+            if (task.hasSameDetailsAs(candidate)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Removes and returns the task at the zero-based index.
      *
      * @param index zero-based task index.
@@ -81,6 +99,9 @@ public class TaskList {
      * @return a new task list containing the matching tasks.
      */
     public TaskList findMatchingTasks(String keyword) {
+        if (keyword == null) {
+            return new TaskList();
+        }
         String normalizedKeyword = keyword.trim().toLowerCase(Locale.ROOT);
         ArrayList<Task> matchingTasks = new ArrayList<>();
         if (normalizedKeyword.isEmpty()) {

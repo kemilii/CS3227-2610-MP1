@@ -2,6 +2,7 @@ package homehub.storage;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
@@ -28,7 +29,14 @@ public class Storage {
 
     /** Creates storage backed by the supplied file path. */
     public Storage(String filePath) {
-        this.filePath = Path.of(filePath);
+        if (filePath == null || filePath.isBlank()) {
+            throw new IllegalArgumentException("A storage file path is required.");
+        }
+        try {
+            this.filePath = Path.of(filePath);
+        } catch (InvalidPathException exception) {
+            throw new IllegalArgumentException("The storage file path is invalid.", exception);
+        }
     }
 
     /**
@@ -39,13 +47,23 @@ public class Storage {
      */
     public void save(TaskList taskList) throws HomeHubException {
         assert taskList != null : "Saving requires an initialized task list";
+        ArrayList<Task> tasks = taskList.asArrayList();
         ArrayList<String> lines = new ArrayList<>();
-        for (Task task : taskList.asArrayList()) {
+        if (containsDuplicateTaskDetails(tasks)) {
+            throw new HomeHubException("Tasks contain invalid or duplicate details and cannot be saved.");
+        }
+        for (Task task : tasks) {
             assert task != null : "A task list must not contain null tasks when saved";
+            if (containsInvalidDescription(task)) {
+                throw new HomeHubException("Tasks contain invalid or duplicate details and cannot be saved.");
+            }
             lines.add(task.toStorageString());
         }
         try {
-            Files.createDirectories(filePath.getParent());
+            Path parent = filePath.toAbsolutePath().normalize().getParent();
+            if (parent != null) {
+                Files.createDirectories(parent);
+            }
             Files.write(filePath, lines);
         } catch (IOException | SecurityException exception) {
             throw new HomeHubException("I couldn't save your tasks to disk.");
@@ -67,6 +85,9 @@ public class Storage {
             for (String line : Files.readAllLines(filePath)) {
                 Task task = parseTask(line);
                 if (task != null) {
+                    if (containsTaskWithSameDetails(tasks, task)) {
+                        throw new HomeHubException("Your saved tasks contain duplicate task details.");
+                    }
                     tasks.add(task);
                 }
             }
@@ -82,7 +103,7 @@ public class Storage {
         }
         String[] fields = line.split("\\s*\\|\\s*", -1);
         if (fields.length < MINIMUM_FIELD_COUNT || fields[1].isEmpty()
-                || fields[2].isEmpty()) {
+                || fields[2].trim().isEmpty() || containsControlCharacters(fields[2])) {
             return null;
         }
         Task task = createTask(fields);
@@ -101,15 +122,50 @@ public class Storage {
     private Task createTask(String[] fields) throws HomeHubException {
         switch (fields[0]) {
             case TODO_TYPE:
-                return fields.length == TODO_FIELD_COUNT ? new Todo(fields[2]) : null;
+                return fields.length == TODO_FIELD_COUNT ? new Todo(fields[2].trim()) : null;
             case DEADLINE_TYPE:
                 return fields.length == DEADLINE_FIELD_COUNT && !fields[3].isEmpty()
-                        ? new Deadline(fields[2], fields[3]) : null;
+                        ? new Deadline(fields[2].trim(), fields[3].trim()) : null;
             case EVENT_TYPE:
                 return fields.length == EVENT_FIELD_COUNT && !fields[3].isEmpty() && !fields[4].isEmpty()
-                        ? new Event(fields[2], fields[3], fields[4]) : null;
+                        ? new Event(fields[2].trim(), fields[3].trim(), fields[4].trim()) : null;
             default:
                 return null;
         }
+    }
+
+    private boolean containsTaskWithSameDetails(ArrayList<Task> tasks, Task candidate) {
+        for (Task task : tasks) {
+            if (task.hasSameDetailsAs(candidate)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean containsDuplicateTaskDetails(ArrayList<Task> tasks) {
+        for (int firstIndex = 0; firstIndex < tasks.size(); firstIndex++) {
+            for (int secondIndex = firstIndex + 1; secondIndex < tasks.size(); secondIndex++) {
+                if (tasks.get(firstIndex).hasSameDetailsAs(tasks.get(secondIndex))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean containsInvalidDescription(Task task) {
+        String description = task.getDescription();
+        return description == null || description.trim().isEmpty() || containsControlCharacters(description)
+                || description.contains("|");
+    }
+
+    private boolean containsControlCharacters(String value) {
+        for (int index = 0; index < value.length(); index++) {
+            if (Character.isISOControl(value.charAt(index))) {
+                return true;
+            }
+        }
+        return false;
     }
 }

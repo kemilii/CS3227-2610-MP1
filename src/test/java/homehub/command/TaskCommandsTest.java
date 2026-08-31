@@ -53,6 +53,17 @@ class TaskCommandsTest {
     }
 
     @Test
+    void addTodo_duplicateDescription_rejectsWithoutChangingTasks() throws Exception {
+        TaskList tasks = new TaskList();
+        TaskCommands commands = new TaskCommands(storageAt("data/homehub.txt"), new Ui());
+
+        commands.addTodo(tasks, "wash dishes");
+
+        assertThrows(HomeHubException.class, () -> commands.addTodo(tasks, "wash dishes"));
+        assertEquals(1, tasks.size());
+    }
+
+    @Test
     void addTodo_storageFailure_rollsBackInMemoryTask() {
         TaskList tasks = new TaskList();
         // A directory cannot be written as the storage file, forcing save() to fail.
@@ -112,6 +123,10 @@ class TaskCommandsTest {
                 commands.addEvent(tasks, "meeting /from 2026-09-02 /to 2026-02-30"));
         assertThrows(HomeHubException.class, () ->
                 commands.addEvent(tasks, "meeting /from 2026-09-02 /from 2026-09-03 /to 2026-09-04"));
+        assertThrows(HomeHubException.class, () ->
+                commands.addEvent(tasks, "meeting /from 2026-09-03 /to 2026-09-02"));
+        assertThrows(HomeHubException.class, () ->
+                commands.addEvent(tasks, "meeting /from 2026-09-02 /to 2026-09-02"));
 
         assertEquals(0, tasks.size());
     }

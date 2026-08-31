@@ -173,7 +173,7 @@ On it. I've added this task:
 That makes 3 tasks on the board.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Moss does not recognise that command yet. Try todo, deadline, event, list, find, mark, unmark, or delete.
+Moss says: Moss does not recognise that command yet. Try todo, deadline, event, list, find, mark, unmark, delete, or help.
 ____________________________________________________________
 ____________________________________________________________
 Moss's household board:
@@ -480,7 +480,7 @@ Welcome to HomeHub. Moss is on duty.
 Let's keep the household running smoothly.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Moss does not recognise that command yet. Try todo, deadline, event, list, find, mark, unmark, or delete.
+Moss says: Moss does not recognise that command yet. Try todo, deadline, event, list, find, mark, unmark, delete, or help.
 ____________________________________________________________
 ____________________________________________________________
 On it. I've added this task:
@@ -775,6 +775,76 @@ All tucked away. See you soon!
 ____________________________________________________________
 ```
 
+### UI-013: Reject malformed and contradictory task input
+
+Aim: Verify that extra command arguments, duplicate tasks, unsafe text, and
+events whose end is not after their start are rejected without corrupting the
+task list.
+
+Inputs:
+
+```text
+list now
+help now
+bye now
+todo wash dishes
+todo wash dishes
+todo invalid | task
+event meeting /from 2026-09-02 /to 2026-09-01
+event meeting /from 2026-09-02 /to 2026-09-02
+todo safe task
+list
+bye
+```
+
+Expected output:
+
+```text
+____________________________________________________________
+Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly.
+____________________________________________________________
+____________________________________________________________
+Moss says: The list command does not take arguments.
+____________________________________________________________
+____________________________________________________________
+Moss says: The help command does not take arguments.
+____________________________________________________________
+____________________________________________________________
+Moss says: The bye command does not take arguments.
+____________________________________________________________
+____________________________________________________________
+On it. I've added this task:
+  [T][ ] wash dishes
+That makes 1 tasks on the board.
+____________________________________________________________
+____________________________________________________________
+Moss says: That task is already on the board.
+____________________________________________________________
+____________________________________________________________
+Moss says: A todo description cannot contain the '|' character.
+____________________________________________________________
+____________________________________________________________
+Moss says: An event must end after it starts.
+____________________________________________________________
+____________________________________________________________
+Moss says: An event must end after it starts.
+____________________________________________________________
+____________________________________________________________
+On it. I've added this task:
+  [T][ ] safe task
+That makes 2 tasks on the board.
+____________________________________________________________
+____________________________________________________________
+Moss's household board:
+1.[T][ ] wash dishes
+2.[T][ ] safe task
+____________________________________________________________
+____________________________________________________________
+All tucked away. See you soon!
+____________________________________________________________
+```
+
 ## Coverage matrix
 
 | Behavior | Covered by |
@@ -793,6 +863,7 @@ ____________________________________________________________
 | Find tasks by case-insensitive description keyword | UI-011 |
 | Find no-match and missing-keyword behavior | UI-011 |
 | Display command usage and date/time formats | UI-012 |
+| Reject malformed, duplicate, and contradictory task input | UI-013 |
 
 ## Test-case pass criteria
 
@@ -807,6 +878,33 @@ first differing output line.
 Keep the test specification above stable and record each run separately using
 the following template. Do not record a run as PASS if it used a different JDK,
 locale, working-directory setup, or input contract.
+
+### Session: 2026-09-01 (robust error handling final regression after model validation)
+
+- Working-tree base revision: `9762f3c`.
+- Java selection: `/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin/java` and `javac`.
+- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
+- CLI regression compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
+- CLI launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup: UI-001 through UI-009 and UI-011 through UI-013 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
+- UI-008 notation was translated so each `␠` marker represented one literal space, as required by the test case.
+- Timeout: 20 seconds per process.
+- Overall result: PASS; all 14 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
+- Complete console input/output record: [ui-test-session-2026-09-01-errors-final.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-09-01-errors-final.txt).
+
+### Session: 2026-09-01 (robust error handling regression)
+
+- Working-tree base revision: `9762f3c`.
+- Java selection: `/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin/java` and `javac`.
+- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
+- Verification command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu ./gradlew check`.
+- CLI regression compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
+- CLI launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup: UI-001 through UI-009 and UI-011 through UI-013 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
+- Timeout: 20 seconds per process.
+- Overall result: PASS; all 14 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
+- UI-013 confirmed clear errors for extra arguments, duplicate tasks, unsafe text, and non-increasing event ranges.
+- Complete console input/output record: [ui-test-session-2026-09-01-errors.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-09-01-errors.txt).
 
 ### Session: 2026-08-31 (help command regression)
 

@@ -50,6 +50,7 @@ class ParserTest {
         assertEquals(new ParsedCommand(CommandType.UNKNOWN, ""), parser.parse(""));
         assertEquals(new ParsedCommand(CommandType.UNKNOWN, ""), parser.parse("   "));
         assertEquals(new ParsedCommand(CommandType.UNKNOWN, ""), parser.parse("\t\n"));
+        assertEquals(new ParsedCommand(CommandType.UNKNOWN, ""), parser.parse(null));
     }
 
     @Test

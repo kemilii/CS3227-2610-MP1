@@ -9,6 +9,9 @@ public class Parser {
      * @return the recognized command and its trimmed arguments.
      */
     public ParsedCommand parse(String input) {
+        if (input == null) {
+            return new ParsedCommand(CommandType.UNKNOWN, "");
+        }
         String trimmedInput = input.trim();
         if (trimmedInput.isEmpty()) {
             return new ParsedCommand(CommandType.UNKNOWN, "");

@@ -1,5 +1,8 @@
 package homehub.command;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import homehub.exception.HomeHubException;
 import homehub.model.Deadline;
 import homehub.model.Event;
@@ -11,9 +14,9 @@ import homehub.ui.Ui;
 
 /** Executes commands that create and persist household tasks. */
 public class TaskCommands {
-    private static final String DEADLINE_MARKER = " /by ";
-    private static final String EVENT_FROM_MARKER = " /from ";
-    private static final String EVENT_TO_MARKER = " /to ";
+    private static final Pattern DEADLINE_MARKER = Pattern.compile("[ \\t]+/by[ \\t]+");
+    private static final Pattern EVENT_FROM_MARKER = Pattern.compile("[ \\t]+/from[ \\t]+");
+    private static final Pattern EVENT_TO_MARKER = Pattern.compile("[ \\t]+/to[ \\t]+");
 
     private final Storage storage;
     private final Ui ui;
@@ -39,7 +42,8 @@ public class TaskCommands {
      * @throws HomeHubException if the description is invalid or persistence fails.
      */
     public void addTodo(TaskList tasks, String description) throws HomeHubException {
-        if (description.isEmpty()) {
+        assert tasks != null : "Adding a todo requires an initialized task list";
+        if (description == null || description.trim().isEmpty()) {
             throw new HomeHubException("A todo description cannot be empty.");
         }
         validateText(description, "A todo description");
@@ -54,16 +58,20 @@ public class TaskCommands {
      * @throws HomeHubException if the command content is invalid or persistence fails.
      */
     public void addDeadline(TaskList tasks, String content) throws HomeHubException {
-        int byMarker = content.indexOf(DEADLINE_MARKER);
-        boolean hasDuplicateByMarker = byMarker >= 0
-                && content.indexOf(DEADLINE_MARKER, byMarker + DEADLINE_MARKER.length()) >= 0;
-        boolean hasMissingDeadline = byMarker < 0
-                || content.substring(byMarker + DEADLINE_MARKER.length()).trim().isEmpty();
-        if (byMarker <= 0 || hasDuplicateByMarker || hasMissingDeadline) {
+        assert tasks != null : "Adding a deadline requires an initialized task list";
+        if (content == null) {
             throw new HomeHubException("Use: deadline <description> /by <date or time>.");
         }
-        String description = content.substring(0, byMarker).trim();
-        String by = content.substring(byMarker + DEADLINE_MARKER.length()).trim();
+        Matcher marker = DEADLINE_MARKER.matcher(content);
+        boolean hasMarker = marker.find();
+        int markerStart = hasMarker ? marker.start() : -1;
+        int markerEnd = hasMarker ? marker.end() : -1;
+        boolean hasDuplicateMarker = hasMarker && marker.find();
+        if (!hasMarker || markerStart == 0 || hasDuplicateMarker) {
+            throw new HomeHubException("Use: deadline <description> /by <date or time>.");
+        }
+        String description = content.substring(0, markerStart).trim();
+        String by = content.substring(markerEnd).trim();
         validateText(description, "A deadline description");
         validateText(by, "A deadline date or time");
         addTask(tasks, new Deadline(description, by));
@@ -77,21 +85,27 @@ public class TaskCommands {
      * @throws HomeHubException if the command content is invalid or persistence fails.
      */
     public void addEvent(TaskList tasks, String content) throws HomeHubException {
-        int fromMarker = content.indexOf(EVENT_FROM_MARKER);
-        int toMarker = content.indexOf(EVENT_TO_MARKER);
-        boolean hasDuplicateFromMarker = fromMarker >= 0
-                && content.indexOf(EVENT_FROM_MARKER, fromMarker + EVENT_FROM_MARKER.length()) >= 0;
-        boolean hasDuplicateToMarker = toMarker >= 0
-                && content.indexOf(EVENT_TO_MARKER, toMarker + EVENT_TO_MARKER.length()) >= 0;
-        boolean hasMissingEndTime = toMarker < 0
-                || content.substring(toMarker + EVENT_TO_MARKER.length()).trim().isEmpty();
-        if (fromMarker <= 0 || hasDuplicateFromMarker || toMarker <= fromMarker
-                || hasDuplicateToMarker || hasMissingEndTime) {
+        assert tasks != null : "Adding an event requires an initialized task list";
+        if (content == null) {
             throw new HomeHubException("Use: event <description> /from <start> /to <end>.");
         }
-        String description = content.substring(0, fromMarker).trim();
-        String from = content.substring(fromMarker + EVENT_FROM_MARKER.length(), toMarker).trim();
-        String to = content.substring(toMarker + EVENT_TO_MARKER.length()).trim();
+        Matcher fromMarker = EVENT_FROM_MARKER.matcher(content);
+        Matcher toMarker = EVENT_TO_MARKER.matcher(content);
+        boolean hasFromMarker = fromMarker.find();
+        int fromStart = hasFromMarker ? fromMarker.start() : -1;
+        int fromEnd = hasFromMarker ? fromMarker.end() : -1;
+        boolean hasDuplicateFromMarker = hasFromMarker && fromMarker.find();
+        boolean hasToMarker = toMarker.find();
+        int toStart = hasToMarker ? toMarker.start() : -1;
+        int toEnd = hasToMarker ? toMarker.end() : -1;
+        boolean hasDuplicateToMarker = hasToMarker && toMarker.find();
+        if (!hasFromMarker || fromStart == 0 || hasDuplicateFromMarker
+                || !hasToMarker || toStart <= fromStart || hasDuplicateToMarker) {
+            throw new HomeHubException("Use: event <description> /from <start> /to <end>.");
+        }
+        String description = content.substring(0, fromStart).trim();
+        String from = content.substring(fromEnd, toStart).trim();
+        String to = content.substring(toEnd).trim();
         validateText(description, "An event description");
         validateText(from, "An event start date or time");
         validateText(to, "An event end date or time");
@@ -101,6 +115,9 @@ public class TaskCommands {
     private void addTask(TaskList tasks, Task task) throws HomeHubException {
         assert tasks != null : "Adding a task requires an initialized task list";
         assert task != null : "Adding a task requires a task instance";
+        if (tasks.hasTaskWithSameDetails(task)) {
+            throw new HomeHubException("That task is already on the board.");
+        }
         int taskCountBefore = tasks.size();
         tasks.add(task);
         assert tasks.size() == taskCountBefore + 1 : "Adding a task must increase the list by one";
@@ -116,8 +133,16 @@ public class TaskCommands {
     }
 
     private void validateText(String value, String fieldName) throws HomeHubException {
+        if (value == null || value.trim().isEmpty()) {
+            throw new HomeHubException(fieldName + " cannot be empty.");
+        }
         if (value.indexOf('|') >= 0) {
             throw new HomeHubException(fieldName + " cannot contain the '|' character.");
+        }
+        for (int index = 0; index < value.length(); index++) {
+            if (Character.isISOControl(value.charAt(index))) {
+                throw new HomeHubException(fieldName + " cannot contain control characters.");
+            }
         }
     }
 }
