@@ -837,6 +837,22 @@ For each executed case, record:
 - Complete documented console input/output record: [ui-test-session-2026-08-31-ui-output-hook-documentation.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-ui-output-hook-documentation.txt).
 - Complete assertions-enabled console input/output record: [ui-test-session-2026-08-31-ui-output-hook-assertions.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-ui-output-hook-assertions.txt).
 
+### Session: 2026-08-31 (task-command marker refactor verification)
+
+- Commit or worktree revision: `5784704` with the task-command marker refactor uncommitted.
+- OS and architecture: Darwin 23.6.0 x86_64.
+- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
+- `javac --version`: `javac 25.0.3`.
+- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
+- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
+- Launch command: `java [-ea] -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup and persistence-file precondition: fresh temporary directories for UI-001 through UI-009 and UI-011; one shared fresh temporary directory for both UI-010 launches. The UI-008 `␠` notation was translated to literal spaces as specified.
+- Timeout: 20 seconds per process.
+- Output comparison policy: CRLF normalized to LF; terminal newline included; all other stdout compared exactly; stderr required to be empty.
+- Overall result: PASS; all 12 documented launches passed in order both with assertions disabled and with assertions enabled.
+- Complete documented console input/output record: [ui-test-session-2026-08-31-task-command-markers-documentation.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-task-command-markers-documentation.txt).
+- Complete assertions-enabled console input/output record: [ui-test-session-2026-08-31-task-command-markers-assertions.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-task-command-markers-assertions.txt).
+
 ### Session: 2026-08-30 (test-ui preflight)
 
 - Working-tree revision: uncommitted changes present.

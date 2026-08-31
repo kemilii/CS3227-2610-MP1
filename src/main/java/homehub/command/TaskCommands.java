@@ -11,6 +11,10 @@ import homehub.ui.Ui;
 
 /** Executes commands that create and persist household tasks. */
 public class TaskCommands {
+    private static final String DEADLINE_MARKER = " /by ";
+    private static final String EVENT_FROM_MARKER = " /from ";
+    private static final String EVENT_TO_MARKER = " /to ";
+
     private final Storage storage;
     private final Ui ui;
 
@@ -50,13 +54,16 @@ public class TaskCommands {
      * @throws HomeHubException if the command content is invalid or persistence fails.
      */
     public void addDeadline(TaskList tasks, String content) throws HomeHubException {
-        int byMarker = content.indexOf(" /by ");
-        if (byMarker <= 0 || content.indexOf(" /by ", byMarker + 1) >= 0
-                || content.substring(byMarker + 5).trim().isEmpty()) {
+        int byMarker = content.indexOf(DEADLINE_MARKER);
+        boolean hasDuplicateByMarker = byMarker >= 0
+                && content.indexOf(DEADLINE_MARKER, byMarker + DEADLINE_MARKER.length()) >= 0;
+        boolean hasMissingDeadline = byMarker < 0
+                || content.substring(byMarker + DEADLINE_MARKER.length()).trim().isEmpty();
+        if (byMarker <= 0 || hasDuplicateByMarker || hasMissingDeadline) {
             throw new HomeHubException("Use: deadline <description> /by <date or time>.");
         }
         String description = content.substring(0, byMarker).trim();
-        String by = content.substring(byMarker + 5).trim();
+        String by = content.substring(byMarker + DEADLINE_MARKER.length()).trim();
         validateText(description, "A deadline description");
         validateText(by, "A deadline date or time");
         addTask(tasks, new Deadline(description, by));
@@ -70,16 +77,21 @@ public class TaskCommands {
      * @throws HomeHubException if the command content is invalid or persistence fails.
      */
     public void addEvent(TaskList tasks, String content) throws HomeHubException {
-        int fromMarker = content.indexOf(" /from ");
-        int toMarker = content.indexOf(" /to ");
-        if (fromMarker <= 0 || content.indexOf(" /from ", fromMarker + 1) >= 0
-                || toMarker <= fromMarker || content.indexOf(" /to ", toMarker + 1) >= 0
-                || content.substring(toMarker + 5).trim().isEmpty()) {
+        int fromMarker = content.indexOf(EVENT_FROM_MARKER);
+        int toMarker = content.indexOf(EVENT_TO_MARKER);
+        boolean hasDuplicateFromMarker = fromMarker >= 0
+                && content.indexOf(EVENT_FROM_MARKER, fromMarker + EVENT_FROM_MARKER.length()) >= 0;
+        boolean hasDuplicateToMarker = toMarker >= 0
+                && content.indexOf(EVENT_TO_MARKER, toMarker + EVENT_TO_MARKER.length()) >= 0;
+        boolean hasMissingEndTime = toMarker < 0
+                || content.substring(toMarker + EVENT_TO_MARKER.length()).trim().isEmpty();
+        if (fromMarker <= 0 || hasDuplicateFromMarker || toMarker <= fromMarker
+                || hasDuplicateToMarker || hasMissingEndTime) {
             throw new HomeHubException("Use: event <description> /from <start> /to <end>.");
         }
         String description = content.substring(0, fromMarker).trim();
-        String from = content.substring(fromMarker + 7, toMarker).trim();
-        String to = content.substring(toMarker + 5).trim();
+        String from = content.substring(fromMarker + EVENT_FROM_MARKER.length(), toMarker).trim();
+        String to = content.substring(toMarker + EVENT_TO_MARKER.length()).trim();
         validateText(description, "An event description");
         validateText(from, "An event start date or time");
         validateText(to, "An event end date or time");
