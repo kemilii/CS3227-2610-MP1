@@ -78,11 +78,11 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly. 🏡
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon!
+All tucked away. See you soon! 👋
 ____________________________________________________________
 ```
 
@@ -102,20 +102,20 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly. 🏡
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [T][ ] wash dishes
-That makes 1 tasks on the board.
+That makes 1 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[T][ ] wash dishes
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon!
+All tucked away. See you soon! 👋
 ____________________________________________________________
 ```
 
@@ -145,63 +145,63 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Moss says: A todo description cannot be empty.
+Moss says: 💬 A todo description cannot be empty.
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [T][ ] mop floor
-That makes 1 tasks on the board.
+That makes 1 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Use: deadline <description> /by <date or time>.
+Moss says: 💬 Use: deadline <description> /by <date or time>.
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [D][ ] pay bill (by: Sept 01 2026)
-That makes 2 tasks on the board.
+That makes 2 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Use: event <description> /from <start> /to <end>.
+Moss says: 💬 Use: event <description> /from <start> /to <end>.
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-That makes 3 tasks on the board.
+That makes 3 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Moss does not recognise that command yet. Try todo, deadline, event, list, find, mark, unmark, delete, or help.
+Moss says: 💬 Moss does not recognise that command yet. Try todo, deadline, event, list, find, mark, unmark, delete, or help.
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[T][ ] mop floor
 2.[D][ ] pay bill (by: Sept 01 2026)
 3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
 ____________________________________________________________
 ____________________________________________________________
-Moss says: That task number does not exist.
+Moss says: 💬 That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[T][ ] mop floor
 2.[D][ ] pay bill (by: Sept 01 2026)
 3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
 ____________________________________________________________
 ____________________________________________________________
-Done and dusted. This task is complete:
+Done and dusted. This task is complete: ✅
   [T][X] mop floor
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[T][X] mop floor
 2.[D][ ] pay bill (by: Sept 01 2026)
 3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon!
+All tucked away. See you soon! 👋
 ____________________________________________________________
 ```
 
@@ -225,37 +225,37 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly. 🏡
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [T][ ] first task
-That makes 1 tasks on the board.
+That makes 1 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [T][ ] second task
-That makes 2 tasks on the board.
+That makes 2 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Cleared from the board:
+Cleared from the board: 🗑️
   [T][ ] first task
-That leaves 1 tasks to keep tidy.
+That leaves 1 tasks to keep tidy. ✨
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[T][ ] second task
 ____________________________________________________________
 ____________________________________________________________
-Moss says: That task number does not exist.
+Moss says: 💬 That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[T][ ] second task
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon!
+All tucked away. See you soon! 👋
 ____________________________________________________________
 ```
 
@@ -284,59 +284,59 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly. 🏡
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [T][ ] alpha
-That makes 1 tasks on the board.
+That makes 1 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+Moss says: 💬 Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[T][ ] alpha
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [D][ ] due (by: Feb 28 2026)
-That makes 2 tasks on the board.
+That makes 2 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+Moss says: 💬 Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [E][ ] outing (from: Mar 01 2026 to: Mar 02 2026)
-That makes 3 tasks on the board.
+That makes 3 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Done and dusted. This task is complete:
+Done and dusted. This task is complete: ✅
   [E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[T][ ] alpha
 2.[D][ ] due (by: Feb 28 2026)
 3.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
 ____________________________________________________________
 ____________________________________________________________
-Cleared from the board:
+Cleared from the board: 🗑️
   [D][ ] due (by: Feb 28 2026)
-That leaves 2 tasks to keep tidy.
+That leaves 2 tasks to keep tidy. ✨
 ____________________________________________________________
 ____________________________________________________________
-Moss says: That task number does not exist.
+Moss says: 💬 That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[T][ ] alpha
 2.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon!
+All tucked away. See you soon! 👋
 ____________________________________________________________
 ```
 
@@ -359,28 +359,28 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly. 🏡
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [T][ ] wash dishes
-That makes 1 tasks on the board.
+That makes 1 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Done and dusted. This task is complete:
+Done and dusted. This task is complete: ✅
   [T][X] wash dishes
 ____________________________________________________________
 ____________________________________________________________
-Back on the board. This task is pending:
+Back on the board. This task is pending: 🔄
   [T][ ] wash dishes
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[T][ ] wash dishes
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon!
+All tucked away. See you soon! 👋
 ____________________________________________________________
 ```
 
@@ -410,47 +410,47 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly. 🏡
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [T][ ] one task
-That makes 1 tasks on the board.
+That makes 1 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Please provide a task number after mark.
+Moss says: 💬 Please provide a task number after mark.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: The task number must be a whole number.
+Moss says: 💬 The task number must be a whole number.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: That task number does not exist.
+Moss says: 💬 That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: That task number does not exist.
+Moss says: 💬 That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Please provide a task number after delete.
+Moss says: 💬 Please provide a task number after delete.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: The task number must be a whole number.
+Moss says: 💬 The task number must be a whole number.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: That task number does not exist.
+Moss says: 💬 That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: That task number does not exist.
+Moss says: 💬 That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: That task number does not exist.
+Moss says: 💬 That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[T][ ] one task
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon!
+All tucked away. See you soon! 👋
 ____________________________________________________________
 ```
 
@@ -476,23 +476,23 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Moss does not recognise that command yet. Try todo, deadline, event, list, find, mark, unmark, delete, or help.
+Moss says: 💬 Moss does not recognise that command yet. Try todo, deadline, event, list, find, mark, unmark, delete, or help.
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [T][ ] spaced task
-That makes 1 tasks on the board.
+That makes 1 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[T][ ] spaced task
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon!
+All tucked away. See you soon! 👋
 ____________________________________________________________
 ```
 
@@ -520,41 +520,41 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Use: deadline <description> /by <date or time>.
+Moss says: 💬 Use: deadline <description> /by <date or time>.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Use: deadline <description> /by <date or time>.
+Moss says: 💬 Use: deadline <description> /by <date or time>.
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [D][ ] review (by: Feb 29 2028)
-That makes 1 tasks on the board.
+That makes 1 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+Moss says: 💬 Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+Moss says: 💬 Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Use: event <description> /from <start> /to <end>.
+Moss says: 💬 Use: event <description> /from <start> /to <end>.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Use: event <description> /from <start> /to <end>.
+Moss says: 💬 Use: event <description> /from <start> /to <end>.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Use: event <description> /from <start> /to <end>.
+Moss says: 💬 Use: event <description> /from <start> /to <end>.
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[D][ ] review (by: Feb 29 2028)
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon!
+All tucked away. See you soon! 👋
 ____________________________________________________________
 ```
 
@@ -593,35 +593,35 @@ First launch:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly. 🏡
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [T][ ] persisted
-That makes 1 tasks on the board.
+That makes 1 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [D][ ] review (by: Oct 15 2026)
-That makes 2 tasks on the board.
+That makes 2 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
-That makes 3 tasks on the board.
+That makes 3 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Done and dusted. This task is complete:
+Done and dusted. This task is complete: ✅
   [T][X] persisted
 ____________________________________________________________
 ____________________________________________________________
-Cleared from the board:
+Cleared from the board: 🗑️
   [D][ ] review (by: Oct 15 2026)
-That leaves 2 tasks to keep tidy.
+That leaves 2 tasks to keep tidy. ✨
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon!
+All tucked away. See you soon! 👋
 ____________________________________________________________
 ```
 
@@ -631,16 +631,16 @@ Second launch:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[T][X] persisted
 2.[E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon!
+All tucked away. See you soon! 👋
 ____________________________________________________________
 ```
 
@@ -683,56 +683,56 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly. 🏡
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [T][ ] read book
-That makes 1 tasks on the board.
+That makes 1 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [D][ ] return book (by: Jun 06 2026)
-That makes 2 tasks on the board.
+That makes 2 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [T][ ] clean room
-That makes 3 tasks on the board.
+That makes 3 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Done and dusted. This task is complete:
+Done and dusted. This task is complete: ✅
   [T][X] read book
 ____________________________________________________________
 ____________________________________________________________
-Done and dusted. This task is complete:
+Done and dusted. This task is complete: ✅
   [D][X] return book (by: Jun 06 2026)
 ____________________________________________________________
 ____________________________________________________________
-Moss found these matching tasks:
+🔎 Moss found these matching tasks:
 1.[T][X] read book
 2.[D][X] return book (by: Jun 06 2026)
 ____________________________________________________________
 ____________________________________________________________
-Moss found these matching tasks:
+🔎 Moss found these matching tasks:
 1.[T][X] read book
 2.[D][X] return book (by: Jun 06 2026)
 ____________________________________________________________
 ____________________________________________________________
-Moss found these matching tasks:
+🫧 Moss couldn't find any tasks matching that keyword.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: Please provide a keyword after find.
+Moss says: 💬 Please provide a keyword after find.
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[T][X] read book
 2.[D][X] return book (by: Jun 06 2026)
 3.[T][ ] clean room
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon!
+All tucked away. See you soon! 👋
 ____________________________________________________________
 ```
 
@@ -752,11 +752,11 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Moss's command guide:
+📖 Moss's command guide:
 todo <description> - add a household task.
 deadline <description> /by <date or time> - add a task with a deadline.
 event <description> /from <start> /to <end> - add a scheduled event.
@@ -771,7 +771,7 @@ Date/time format: yyyy-MM-dd or yyyy-MM-dd HH:mm.
 Examples: 2026-09-01 or 2026-09-01 14:30.
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon!
+All tucked away. See you soon! 👋
 ____________________________________________________________
 ```
 
@@ -801,47 +801,47 @@ Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household running smoothly. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Moss says: The list command does not take arguments.
+Moss says: 💬 The list command does not take arguments.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: The help command does not take arguments.
+Moss says: 💬 The help command does not take arguments.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: The bye command does not take arguments.
+Moss says: 💬 The bye command does not take arguments.
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [T][ ] wash dishes
-That makes 1 tasks on the board.
+That makes 1 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Moss says: That task is already on the board.
+Moss says: 💬 That task is already on the board.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: A todo description cannot contain the '|' character.
+Moss says: 💬 A todo description cannot contain the '|' character.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: An event must end after it starts.
+Moss says: 💬 An event must end after it starts.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: An event must end after it starts.
+Moss says: 💬 An event must end after it starts.
 ____________________________________________________________
 ____________________________________________________________
-On it. I've added this task:
+✨ On it. I've added this task:
   [T][ ] safe task
-That makes 2 tasks on the board.
+That makes 2 tasks on the board. 🎯
 ____________________________________________________________
 ____________________________________________________________
-Moss's household board:
+📋 Moss's household board:
 1.[T][ ] wash dishes
 2.[T][ ] safe task
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon!
+All tucked away. See you soon! 👋
 ____________________________________________________________
 ```
 
@@ -874,6 +874,48 @@ artifact. For assertion-based cases, report every failed assertion and the
 first differing output line.
 
 ## Test execution record
+
+### Session: 2026-09-01 (find no-match message final verification)
+
+- Working-tree revision: uncommitted changes present.
+- Java-selection command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu PATH=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin:$PATH`.
+- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
+- Locale JVM properties: `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
+- Compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup: UI-001 through UI-009 and UI-011 through UI-013 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
+- Timeout: 20 seconds per process.
+- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
+- UI-001 through UI-013: PASS; all 13 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
+- Complete console input/output record: [ui-test-session-2026-09-01-find-no-match-final.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-09-01-find-no-match-final.txt).
+
+### Session: 2026-09-01 (find no-match message verification)
+
+- Working-tree revision: uncommitted changes present.
+- Java-selection command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu PATH=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin:$PATH`.
+- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
+- Locale JVM properties: `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
+- Compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup: UI-001 through UI-009 and UI-011 through UI-013 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
+- Timeout: 20 seconds per process.
+- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
+- UI-001 through UI-013: PASS; all 13 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
+- Complete console input/output record: [ui-test-session-2026-09-01-find-no-match.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-09-01-find-no-match.txt).
+
+### Session: 2026-09-01 (Moss emoji message verification)
+
+- Working-tree revision: uncommitted changes present.
+- Java-selection command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu PATH=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin:$PATH`.
+- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
+- Locale JVM properties: `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
+- Compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup: UI-001 through UI-009 and UI-011 through UI-013 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
+- Timeout: 20 seconds per process.
+- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
+- UI-001 through UI-013: PASS; all 13 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
+- Complete console input/output record: [ui-test-session-2026-09-01-emojis.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-09-01-emojis.txt).
 
 Keep the test specification above stable and record each run separately using
 the following template. Do not record a run as PASS if it used a different JDK,

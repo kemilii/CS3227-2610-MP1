@@ -19,14 +19,14 @@ public class Ui {
     /** Displays the welcome message. */
     public void showWelcome() {
         showSeparator();
-        printLine("Welcome to HomeHub. " + Moss.NAME + " is on duty.");
-        printLine("Let's keep the household running smoothly.");
+        printLine("🌿 Welcome to HomeHub. " + Moss.NAME + " is on duty.");
+        printLine("Let's keep the household running smoothly. 🏡");
         showSeparator();
     }
 
     /** Displays the goodbye message. */
     public void showGoodbye() {
-        printLine("All tucked away. See you soon!");
+        printLine("All tucked away. See you soon! 👋");
         showSeparator();
     }
 
@@ -37,7 +37,7 @@ public class Ui {
 
     /** Displays every supported command and the accepted date/time formats. */
     public void showHelp() {
-        printLine(Moss.NAME + "'s command guide:");
+        printLine("📖 " + Moss.NAME + "'s command guide:");
         printLine("todo <description> - add a household task.");
         printLine("deadline <description> /by <date or time> - add a task with a deadline.");
         printLine("event <description> /from <start> /to <end> - add a scheduled event.");
@@ -59,13 +59,13 @@ public class Ui {
 
     /** Displays an error message. */
     public void showError(String message) {
-        printLine(Moss.ERROR_PREFIX + message);
+        printLine(Moss.ERROR_PREFIX + "💬 " + message);
     }
 
     /** Displays all tasks. */
     public void showTaskList(TaskList tasks) {
         assert tasks != null : "Displaying tasks requires an initialized task list";
-        printLine(Moss.NAME + "'s household board:");
+        printLine("📋 " + Moss.NAME + "'s household board:");
         for (int i = 0; i < tasks.size(); i++) {
             printLine((i + 1) + "." + tasks.get(i).toDisplayString());
         }
@@ -78,7 +78,11 @@ public class Ui {
      */
     public void showMatchingTasks(TaskList matchingTasks) {
         assert matchingTasks != null : "Displaying matching tasks requires a task list";
-        printLine(Moss.NAME + " found these matching tasks:");
+        if (matchingTasks.size() == 0) {
+            printLine("🫧 " + Moss.NAME + " couldn't find any tasks matching that keyword.");
+            return;
+        }
+        printLine("🔎 " + Moss.NAME + " found these matching tasks:");
         for (int i = 0; i < matchingTasks.size(); i++) {
             printLine((i + 1) + "." + matchingTasks.get(i).toDisplayString());
         }
@@ -88,17 +92,17 @@ public class Ui {
     public void showAddedTask(Task task, int taskCount) {
         assert task != null : "An added-task confirmation requires a task";
         assert taskCount > 0 : "An added-task confirmation requires a non-empty list";
-        printLine("On it. I've added this task:");
+        printLine("✨ On it. I've added this task:");
         printLine("  " + task.toDisplayString());
-        printLine("That makes " + taskCount + " tasks on the board.");
+        printLine("That makes " + taskCount + " tasks on the board. 🎯");
     }
 
     /** Displays the confirmation for a marked or unmarked task. */
     public void showMarkedTask(Task task, boolean markedAsDone) {
         assert task != null : "A marked-task confirmation requires a task";
         String message = markedAsDone
-                ? "Done and dusted. This task is complete:"
-                : "Back on the board. This task is pending:";
+                ? "Done and dusted. This task is complete: ✅"
+                : "Back on the board. This task is pending: 🔄";
         printLine(message);
         printLine("  " + task.toDisplayString());
     }
@@ -107,9 +111,9 @@ public class Ui {
     public void showDeletedTask(Task task, int taskCount) {
         assert task != null : "A deleted-task confirmation requires a task";
         assert taskCount >= 0 : "A deleted-task confirmation requires a non-negative task count";
-        printLine("Cleared from the board:");
+        printLine("Cleared from the board: 🗑️");
         printLine("  " + task.toDisplayString());
-        printLine("That leaves " + taskCount + " tasks to keep tidy.");
+        printLine("That leaves " + taskCount + " tasks to keep tidy. ✨");
     }
 
     /** Writes one output line; subclasses can redirect the output destination. */

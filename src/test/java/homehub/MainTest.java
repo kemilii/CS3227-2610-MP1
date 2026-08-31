@@ -42,7 +42,7 @@ class MainTest {
     void homeHubResponse_listsCurrentTasks() {
         HomeHub homeHub = new HomeHub(new Storage(temporaryDirectory.resolve("homehub.txt").toString()));
 
-        assertEquals("Moss's household board:", homeHub.getResponse("list"));
+        assertEquals("📋 Moss's household board:", homeHub.getResponse("list"));
     }
 
     @Test
@@ -86,6 +86,7 @@ class MainTest {
         assertTrue(fxml.contains("styleClass=\"welcome-card\""));
         assertTrue(fxml.contains("Moss · your calm household concierge"));
         assertTrue(fxml.contains("Ask Moss:"));
+        assertTrue(fxml.contains("🌿 Hello, I'm Moss."));
     }
 
     @Test

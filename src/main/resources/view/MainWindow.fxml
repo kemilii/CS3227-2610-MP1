@@ -58,7 +58,7 @@
                             </padding>
                             <children>
                                 <Label styleClass="welcome-card"
-                                       text="Hello, I'm Moss.\nI'll keep your household tasks tidy."
+                                       text="🌿 Hello, I'm Moss. I'll keep your household tasks tidy :D"
                                        wrapText="true" />
                             </children>
                         </VBox>

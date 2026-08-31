@@ -264,7 +264,7 @@ public class HomeHub {
 
         @Override
         public void showGoodbye() {
-            printLine("All tucked away. See you soon!");
+            printLine("All tucked away. See you soon! 👋");
         }
 
         @Override
