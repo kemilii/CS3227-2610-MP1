@@ -20,6 +20,7 @@ public class Main extends Application {
     private Scene scene;
     private final Image userImage = new Image(this.getClass().getResourceAsStream("/images/homeowner.png"));
     private final Image homeHubImage = new Image(this.getClass().getResourceAsStream("/images/homehub.png"));
+    private final HomeHub homeHub = new HomeHub();
 
     /**
      * Creates and displays the HomeHub conversation layout.
@@ -34,10 +35,6 @@ public class Main extends Application {
 
         userInput = new TextField();
         sendButton = new Button("Send");
-
-        dialogContainer.getChildren().addAll(
-                new DialogBox("Welcome to HomeHub! Manage your household tasks here.", homeHubImage),
-                new DialogBox("Hello, HomeHub!", userImage));
 
         AnchorPane mainLayout = new AnchorPane();
         mainLayout.getChildren().addAll(scrollPane, userInput, sendButton);
@@ -67,6 +64,23 @@ public class Main extends Application {
         AnchorPane.setLeftAnchor(userInput, 1.0);
         AnchorPane.setBottomAnchor(userInput, 1.0);
 
+        sendButton.setOnMouseClicked(event -> handleUserInput());
+        userInput.setOnAction(event -> handleUserInput());
+        dialogContainer.heightProperty().addListener(observable -> scrollPane.setVvalue(1.0));
+
         stage.show();
+    }
+
+    /**
+     * Adds the user's message and HomeHub's response to the conversation.
+     * Clears the input field after processing the message.
+     */
+    private void handleUserInput() {
+        String userText = userInput.getText();
+        String homeHubText = homeHub.getResponse(userText);
+        dialogContainer.getChildren().addAll(
+                DialogBox.getUserDialog(userText, userImage),
+                DialogBox.getHomeHubDialog(homeHubText, homeHubImage));
+        userInput.clear();
     }
 }

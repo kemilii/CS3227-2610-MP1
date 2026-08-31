@@ -17,6 +17,16 @@ import homehub.ui.Ui;
  */
 public class HomeHub {
     /**
+     * Generates a response for a message entered in the graphical interface.
+     *
+     * @param input user's message.
+     * @return HomeHub's response to the message.
+     */
+    public String getResponse(String input) {
+        return "HomeHub heard: " + input;
+    }
+
+    /**
      * Runs the HomeHub command-line application.
      *
      * @param args command-line arguments, which are not used.

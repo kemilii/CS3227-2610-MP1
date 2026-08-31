@@ -1,6 +1,9 @@
 package homehub;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,5 +30,37 @@ public class DialogBox extends HBox {
         setAlignment(Pos.TOP_RIGHT);
 
         getChildren().addAll(text, displayPicture);
+    }
+
+    /** Flips this dialog box so that its image is displayed on the left. */
+    private void flip() {
+        setAlignment(Pos.TOP_LEFT);
+        ObservableList<Node> children = FXCollections.observableArrayList(getChildren());
+        FXCollections.reverse(children);
+        getChildren().setAll(children);
+    }
+
+    /**
+     * Creates a dialog box for a user's message.
+     *
+     * @param message user's message.
+     * @param image user's avatar.
+     * @return a right-aligned user dialog box.
+     */
+    public static DialogBox getUserDialog(String message, Image image) {
+        return new DialogBox(message, image);
+    }
+
+    /**
+     * Creates a dialog box for HomeHub's response.
+     *
+     * @param message HomeHub's response.
+     * @param image HomeHub's avatar.
+     * @return a left-aligned HomeHub dialog box.
+     */
+    public static DialogBox getHomeHubDialog(String message, Image image) {
+        DialogBox dialogBox = new DialogBox(message, image);
+        dialogBox.flip();
+        return dialogBox;
     }
 }

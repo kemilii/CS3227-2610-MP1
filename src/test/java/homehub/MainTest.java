@@ -21,6 +21,11 @@ class MainTest {
     }
 
     @Test
+    void homeHubResponse_echoesUserMessage() {
+        assertEquals("HomeHub heard: list", new HomeHub().getResponse("list"));
+    }
+
+    @Test
     void avatarResources_areAvailableOnClasspath() {
         assertNotNull(Main.class.getResourceAsStream("/images/homeowner.png"));
         assertNotNull(Main.class.getResourceAsStream("/images/homehub.png"));
