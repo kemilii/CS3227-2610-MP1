@@ -14,6 +14,16 @@ import homehub.model.Todo;
 
 /** Reads and writes HomeHub tasks to a configured local data file. */
 public class Storage {
+    private static final String TODO_TYPE = "T";
+    private static final String DEADLINE_TYPE = "D";
+    private static final String EVENT_TYPE = "E";
+    private static final String DONE_STATUS = "1";
+    private static final String PENDING_STATUS = "0";
+    private static final int MINIMUM_FIELD_COUNT = 3;
+    private static final int TODO_FIELD_COUNT = 3;
+    private static final int DEADLINE_FIELD_COUNT = 4;
+    private static final int EVENT_FIELD_COUNT = 5;
+
     private final Path filePath;
 
     /** Creates storage backed by the supplied file path. */
@@ -71,27 +81,35 @@ public class Storage {
             return null;
         }
         String[] fields = line.split("\\s*\\|\\s*", -1);
-        if (fields.length < 3 || fields[1].isEmpty()
+        if (fields.length < MINIMUM_FIELD_COUNT || fields[1].isEmpty()
                 || fields[2].isEmpty()) {
             return null;
         }
-        Task task;
-        if (fields[0].equals("T") && fields.length == 3) {
-            task = new Todo(fields[2]);
-        } else if (fields[0].equals("D") && fields.length == 4 && !fields[3].isEmpty()) {
-            task = new Deadline(fields[2], fields[3]);
-        } else if (fields[0].equals("E") && fields.length == 5
-                && !fields[3].isEmpty() && !fields[4].isEmpty()) {
-            task = new Event(fields[2], fields[3], fields[4]);
-        } else {
+        Task task = createTask(fields);
+        if (task == null) {
             return null;
         }
         assert task != null : "A recognized storage record must create a task";
-        if (fields[1].equals("1")) {
+        if (fields[1].equals(DONE_STATUS)) {
             task.markAsDone();
-        } else if (!fields[1].equals("0")) {
+        } else if (!fields[1].equals(PENDING_STATUS)) {
             return null;
         }
         return task;
+    }
+
+    private Task createTask(String[] fields) throws HomeHubException {
+        switch (fields[0]) {
+            case TODO_TYPE:
+                return fields.length == TODO_FIELD_COUNT ? new Todo(fields[2]) : null;
+            case DEADLINE_TYPE:
+                return fields.length == DEADLINE_FIELD_COUNT && !fields[3].isEmpty()
+                        ? new Deadline(fields[2], fields[3]) : null;
+            case EVENT_TYPE:
+                return fields.length == EVENT_FIELD_COUNT && !fields[3].isEmpty() && !fields[4].isEmpty()
+                        ? new Event(fields[2], fields[3], fields[4]) : null;
+            default:
+                return null;
+        }
     }
 }
