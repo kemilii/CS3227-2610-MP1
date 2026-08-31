@@ -1768,6 +1768,23 @@ T | 1 | persisted
 E | 0 | meeting | 2026-10-15 14:00 | 2026-10-15 16:00
 ```
 
+### Session: 2026-08-31 (JavaFX Hello World implementation)
+
+- Commit or worktree revision: uncommitted changes present.
+- OS and architecture: macOS on Apple Silicon.
+- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
+- `javac --version`: `javac 25.0.3`.
+- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
+- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup and persistence-file precondition: fresh temporary directories for UI-001 through UI-009 and UI-011 with no `data/homehub.txt`; one shared clean temporary directory for both UI-010 launches. The UI-008 `␠` notation was translated to literal spaces as specified.
+- Timeout: 20 seconds per process.
+- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
+- Overall result: PASS; all 12 documented launches passed with exit status 0 and empty stderr.
+- UI-001 through UI-009 and UI-011: documented inputs, exact outputs, and statuses are captured in [ui-test-session-2026-08-31-javafx-hello-world.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-javafx-hello-world.txt).
+- UI-010 first and second launches: documented inputs, exact outputs, statuses, and saved-file assertion are captured in the same artifact.
+- No failures occurred, so there is no first-difference report.
+
 ## Historical execution records (superseded)
 
 The records below are retained for traceability only. They were run under Java
