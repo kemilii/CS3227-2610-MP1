@@ -250,63 +250,21 @@ public class HomeHub {
         private final StringBuilder response = new StringBuilder();
 
         @Override
-        public void showError(String message) {
-            appendLine("Oops! " + message);
-        }
-
-        @Override
         public void showGoodbye() {
-            appendLine("Bye. Hope to see you again soon!");
+            printLine("Bye. Hope to see you again soon!");
         }
 
         @Override
-        public void showTaskList(TaskList taskList) {
-            appendLine("Here are the household tasks in your HomeHub:");
-            for (int i = 0; i < taskList.size(); i++) {
-                appendLine((i + 1) + "." + taskList.get(i).toDisplayString());
+        protected void printLine(String line) {
+            if (response.length() > 0) {
+                response.append(System.lineSeparator());
             }
-        }
-
-        @Override
-        public void showMatchingTasks(TaskList matchingTasks) {
-            appendLine("Here are the matching tasks in your list:");
-            for (int i = 0; i < matchingTasks.size(); i++) {
-                appendLine((i + 1) + "." + matchingTasks.get(i).toDisplayString());
-            }
-        }
-
-        @Override
-        public void showAddedTask(Task task, int taskCount) {
-            appendLine("Got it. I've added this task:");
-            appendLine("  " + task.toDisplayString());
-            appendLine("Now you have " + taskCount + " tasks in the list.");
-        }
-
-        @Override
-        public void showMarkedTask(Task task, boolean markedAsDone) {
-            appendLine(markedAsDone
-                    ? "Nice! I've marked this household task as done:"
-                    : "I've marked this household task as not done:");
-            appendLine("  " + task.toDisplayString());
-        }
-
-        @Override
-        public void showDeletedTask(Task task, int taskCount) {
-            appendLine("Noted. I've removed this task:");
-            appendLine("  " + task.toDisplayString());
-            appendLine("Now you have " + taskCount + " tasks in the list.");
+            response.append(line);
         }
 
         /** Returns the captured response without a trailing line separator. */
         String getResponse() {
             return response.toString();
-        }
-
-        private void appendLine(String line) {
-            if (response.length() > 0) {
-                response.append(System.lineSeparator());
-            }
-            response.append(line);
         }
     }
 }

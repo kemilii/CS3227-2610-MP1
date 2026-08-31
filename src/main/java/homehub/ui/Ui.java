@@ -18,20 +18,20 @@ public class Ui {
     /** Displays the welcome message. */
     public void showWelcome() {
         showSeparator();
-        System.out.println("Welcome to HomeHub!");
-        System.out.println("Manage your household tasks here.");
+        printLine("Welcome to HomeHub!");
+        printLine("Manage your household tasks here.");
         showSeparator();
     }
 
     /** Displays the goodbye message. */
     public void showGoodbye() {
-        System.out.println("Bye. Hope to see you again soon!");
+        printLine("Bye. Hope to see you again soon!");
         showSeparator();
     }
 
     /** Displays a separator before processing a command. */
     public void showSeparator() {
-        System.out.println(SEPARATOR);
+        printLine(SEPARATOR);
     }
 
     /** Reads the next command, or returns {@code null} at end of input. */
@@ -41,15 +41,15 @@ public class Ui {
 
     /** Displays an error message. */
     public void showError(String message) {
-        System.out.println("Oops! " + message);
+        printLine("Oops! " + message);
     }
 
     /** Displays all tasks. */
     public void showTaskList(TaskList tasks) {
         assert tasks != null : "Displaying tasks requires an initialized task list";
-        System.out.println("Here are the household tasks in your HomeHub:");
+        printLine("Here are the household tasks in your HomeHub:");
         for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + "." + tasks.get(i).toDisplayString());
+            printLine((i + 1) + "." + tasks.get(i).toDisplayString());
         }
     }
 
@@ -60,9 +60,9 @@ public class Ui {
      */
     public void showMatchingTasks(TaskList matchingTasks) {
         assert matchingTasks != null : "Displaying matching tasks requires a task list";
-        System.out.println("Here are the matching tasks in your list:");
+        printLine("Here are the matching tasks in your list:");
         for (int i = 0; i < matchingTasks.size(); i++) {
-            System.out.println((i + 1) + "." + matchingTasks.get(i).toDisplayString());
+            printLine((i + 1) + "." + matchingTasks.get(i).toDisplayString());
         }
     }
 
@@ -70,9 +70,9 @@ public class Ui {
     public void showAddedTask(Task task, int taskCount) {
         assert task != null : "An added-task confirmation requires a task";
         assert taskCount > 0 : "An added-task confirmation requires a non-empty list";
-        System.out.println("Got it. I've added this task:");
-        System.out.println("  " + task.toDisplayString());
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
+        printLine("Got it. I've added this task:");
+        printLine("  " + task.toDisplayString());
+        printLine("Now you have " + taskCount + " tasks in the list.");
     }
 
     /** Displays the confirmation for a marked or unmarked task. */
@@ -81,16 +81,21 @@ public class Ui {
         String message = markedAsDone
                 ? "Nice! I've marked this household task as done:"
                 : "I've marked this household task as not done:";
-        System.out.println(message);
-        System.out.println("  " + task.toDisplayString());
+        printLine(message);
+        printLine("  " + task.toDisplayString());
     }
 
     /** Displays the confirmation for a deleted task. */
     public void showDeletedTask(Task task, int taskCount) {
         assert task != null : "A deleted-task confirmation requires a task";
         assert taskCount >= 0 : "A deleted-task confirmation requires a non-negative task count";
-        System.out.println("Noted. I've removed this task:");
-        System.out.println("  " + task.toDisplayString());
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
+        printLine("Noted. I've removed this task:");
+        printLine("  " + task.toDisplayString());
+        printLine("Now you have " + taskCount + " tasks in the list.");
+    }
+
+    /** Writes one output line; subclasses can redirect the output destination. */
+    protected void printLine(String line) {
+        System.out.println(line);
     }
 }
