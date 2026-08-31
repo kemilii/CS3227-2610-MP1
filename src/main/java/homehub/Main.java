@@ -22,8 +22,11 @@ public class Main extends Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane mainLayout = fxmlLoader.load();
+            assert mainLayout != null : "MainWindow.fxml must load a root layout";
+            MainWindow mainWindow = fxmlLoader.getController();
+            assert mainWindow != null : "MainWindow.fxml must declare a MainWindow controller";
             stage.setScene(new Scene(mainLayout));
-            fxmlLoader.<MainWindow>getController().setHomeHub(homeHub);
+            mainWindow.setHomeHub(homeHub);
             stage.setTitle("HomeHub");
             stage.setMinHeight(600.0);
             stage.setMinWidth(400.0);

@@ -14,6 +14,10 @@ public class TaskList {
 
     /** Creates a task list containing the supplied tasks. */
     public TaskList(ArrayList<Task> tasks) {
+        assert tasks != null : "A task list must be initialized from a collection";
+        for (Task task : tasks) {
+            assert task != null : "A task list must not contain null tasks";
+        }
         this.tasks = new ArrayList<>(tasks);
     }
 
@@ -33,6 +37,7 @@ public class TaskList {
      * @param task task to add.
      */
     public void add(Task task) {
+        assert task != null : "A task list must not contain null tasks";
         tasks.add(task);
     }
 
@@ -43,6 +48,7 @@ public class TaskList {
      * @param task task to add.
      */
     public void add(int index, Task task) {
+        assert task != null : "A task list must not contain null tasks";
         tasks.add(index, task);
     }
 
@@ -53,7 +59,9 @@ public class TaskList {
      * @return the removed task.
      */
     public Task remove(int index) {
-        return tasks.remove(index);
+        Task removedTask = tasks.remove(index);
+        assert removedTask != null : "A task list must not contain null tasks";
+        return removedTask;
     }
 
     /**
@@ -79,6 +87,7 @@ public class TaskList {
             return new TaskList(matchingTasks);
         }
         for (Task task : tasks) {
+            assert task != null : "A task list must not contain null tasks";
             if (task.getDescription().toLowerCase(Locale.ROOT).contains(normalizedKeyword)) {
                 matchingTasks.add(task);
             }

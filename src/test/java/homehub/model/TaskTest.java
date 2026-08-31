@@ -26,6 +26,13 @@ class TaskTest {
     }
 
     @Test
+    void setStatus_nullStatus_isRejectedByAssertion() {
+        Task todo = new Todo("wash dishes");
+
+        assertThrows(AssertionError.class, () -> todo.setStatus(null));
+    }
+
+    @Test
     void deadline_dateOnlyAndDateTime_formatForDisplayAndStorage() throws Exception {
         Task dateOnly = new Deadline("submit report", "2026-09-01");
         Task dateTime = new Deadline("submit report", "2026-09-01 09:30");

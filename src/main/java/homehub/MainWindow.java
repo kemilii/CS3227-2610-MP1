@@ -29,6 +29,8 @@ public class MainWindow extends AnchorPane {
     /** Binds the conversation scroll position to the height of its contents. */
     @FXML
     public void initialize() {
+        assert scrollPane != null : "MainWindow.fxml must inject the scroll pane";
+        assert dialogContainer != null : "MainWindow.fxml must inject the dialog container";
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
@@ -47,11 +49,19 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     private void handleUserInput() {
+        assert homeHub != null : "A HomeHub response generator must be injected before input is handled";
+        assert userInput != null : "MainWindow.fxml must inject the user input field";
         String input = userInput.getText();
         String response = homeHub.getResponse(input);
+        String commandType = homeHub.getCommandType();
+        assert commandType != null : "Every HomeHub response must have a command type for styling";
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getHomeHubDialog(response, homeHubImage, homeHub.getCommandType()));
+                DialogBox.getHomeHubDialog(response, homeHubImage, commandType));
         userInput.clear();
+        if (homeHub.isExitRequested()) {
+            userInput.setDisable(true);
+            sendButton.setDisable(true);
+        }
     }
 }

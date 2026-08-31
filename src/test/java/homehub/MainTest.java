@@ -3,14 +3,21 @@ package homehub;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.Test;
+import java.nio.file.Path;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import homehub.storage.Storage;
 import javafx.application.Application;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
 /** Tests the structure of the JavaFX application entry points. */
 class MainTest {
+    @TempDir
+    Path temporaryDirectory;
+
     @Test
     void main_extendsApplication_isJavaFxApplication() {
         assertEquals(Application.class, Main.class.getSuperclass());
@@ -27,13 +34,15 @@ class MainTest {
     }
 
     @Test
-    void homeHubResponse_echoesUserMessage() {
-        assertEquals("HomeHub heard: list", new HomeHub().getResponse("list"));
+    void homeHubResponse_listsCurrentTasks() {
+        HomeHub homeHub = new HomeHub(new Storage(temporaryDirectory.resolve("homehub.txt").toString()));
+
+        assertEquals("Here are the household tasks in your HomeHub:", homeHub.getResponse("list"));
     }
 
     @Test
     void homeHubResponse_recordsCommandTypeForStyling() {
-        HomeHub homeHub = new HomeHub();
+        HomeHub homeHub = new HomeHub(new Storage(temporaryDirectory.resolve("styling-homehub.txt").toString()));
 
         homeHub.getResponse("todo wash dishes");
 

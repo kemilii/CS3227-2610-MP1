@@ -11,31 +11,90 @@ import homehub.model.TaskStatus;
 import homehub.storage.Storage;
 import homehub.ui.Ui;
 
-/**
- * A simple command-line household task manager that accepts commands until the
- * user says bye.
- */
+/** A household task manager that supports both command-line and graphical interfaces. */
 public class HomeHub {
-    private String commandType;
+    private static final String DEFAULT_STORAGE_PATH = "data/homehub.txt";
 
-    /**
-     * Generates a response for a message entered in the graphical interface.
-     *
-     * @param input user's message.
-     * @return HomeHub's response to the message.
-     */
-    public String getResponse(String input) {
-        commandType = CommandType.fromInput(input).name();
-        return "HomeHub heard: " + input;
+    private final Parser parser;
+    private final Storage storage;
+    private TaskList tasks;
+    private String commandType;
+    private boolean exitRequested;
+    private String startupError;
+
+    /** Creates a HomeHub instance backed by the default task file. */
+    public HomeHub() {
+        this(new Storage(DEFAULT_STORAGE_PATH), null);
     }
 
     /**
-     * Returns the command type from the most recent graphical-interface input.
+     * Creates a HomeHub instance backed by the supplied storage service.
      *
-     * @return the most recent command type name.
+     * @param storage persistence service for household tasks.
      */
+    public HomeHub(Storage storage) {
+        this(storage, null);
+    }
+
+    /**
+     * Creates a HomeHub instance and reports storage errors through the supplied UI.
+     *
+     * @param storage persistence service for household tasks.
+     * @param startupUi UI used to report an error while loading saved tasks.
+     */
+    public HomeHub(Storage storage, Ui startupUi) {
+        assert storage != null : "HomeHub requires initialized storage";
+        this.parser = new Parser();
+        this.storage = storage;
+        this.exitRequested = false;
+        try {
+            this.tasks = new TaskList(storage.load());
+        } catch (HomeHubException exception) {
+            this.tasks = new TaskList();
+            if (startupUi == null) {
+                this.startupError = exception.getMessage();
+            } else {
+                startupUi.showError(exception.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Processes a command entered in the graphical interface.
+     *
+     * @param input user's message.
+     * @return HomeHub's user-facing response.
+     */
+    public String getResponse(String input) {
+        ResponseUi responseUi = new ResponseUi();
+        if (startupError != null) {
+            responseUi.showError(startupError);
+            startupError = null;
+        }
+        if (input == null) {
+            commandType = CommandType.UNKNOWN.name();
+            responseUi.showError("I don't recognise that command. Try todo, deadline, event, list, find, mark, "
+                    + "unmark, or delete.");
+            return responseUi.getResponse();
+        }
+        try {
+            executeCommand(input, responseUi);
+        } catch (HomeHubException exception) {
+            responseUi.showError(exception.getMessage());
+        } catch (RuntimeException exception) {
+            responseUi.showError("HomeHub could not process that input.");
+        }
+        return responseUi.getResponse();
+    }
+
+    /** Returns the command type from the most recent graphical-interface input. */
     public String getCommandType() {
         return commandType;
+    }
+
+    /** Returns whether the most recent command requested that HomeHub exit. */
+    public boolean isExitRequested() {
+        return exitRequested;
     }
 
     /**
@@ -45,16 +104,7 @@ public class HomeHub {
      */
     public static void main(String[] args) {
         Ui ui = new Ui();
-        Parser parser = new Parser();
-        Storage storage = new Storage("data/homehub.txt");
-        TaskCommands taskCommands = new TaskCommands(storage, ui);
-        TaskList tasks;
-        try {
-            tasks = new TaskList(storage.load());
-        } catch (HomeHubException exception) {
-            tasks = new TaskList();
-            ui.showError(exception.getMessage());
-        }
+        HomeHub homeHub = new HomeHub(new Storage(DEFAULT_STORAGE_PATH), ui);
 
         ui.showWelcome();
 
@@ -63,33 +113,9 @@ public class HomeHub {
             ui.showSeparator();
 
             try {
-                ParsedCommand parsedCommand = parser.parse(command);
-                CommandType commandType = parsedCommand.type();
-                if (commandType == CommandType.BYE) {
-                    ui.showGoodbye();
+                homeHub.executeCommand(command, ui);
+                if (homeHub.isExitRequested()) {
                     break;
-                } else if (commandType == CommandType.LIST) {
-                    ui.showTaskList(tasks);
-                } else if (commandType == CommandType.FIND) {
-                    if (parsedCommand.arguments().isEmpty()) {
-                        throw new HomeHubException("Please provide a keyword after find.");
-                    }
-                    ui.showMatchingTasks(tasks.findMatchingTasks(parsedCommand.arguments()));
-                } else if (commandType == CommandType.MARK) {
-                    markTask(tasks, parsedCommand.arguments(), true, storage);
-                } else if (commandType == CommandType.UNMARK) {
-                    markTask(tasks, parsedCommand.arguments(), false, storage);
-                } else if (commandType == CommandType.DELETE) {
-                    deleteTask(tasks, parsedCommand.arguments(), storage);
-                } else if (commandType == CommandType.TODO) {
-                    taskCommands.addTodo(tasks, parsedCommand.arguments());
-                } else if (commandType == CommandType.DEADLINE) {
-                    taskCommands.addDeadline(tasks, parsedCommand.arguments());
-                } else if (commandType == CommandType.EVENT) {
-                    taskCommands.addEvent(tasks, parsedCommand.arguments());
-                } else {
-                    throw new HomeHubException("I don't recognise that command. Try todo, deadline, event, list, "
-                            + "find, mark, unmark, or delete.");
                 }
             } catch (HomeHubException exception) {
                 ui.showError(exception.getMessage());
@@ -100,9 +126,59 @@ public class HomeHub {
         }
     }
 
-    private static void markTask(TaskList tasks, String arguments,
-            boolean markAsDone, Storage storage)
-            throws HomeHubException {
+    private void executeCommand(String input, Ui ui) throws HomeHubException {
+        assert input != null : "A command input must not be null";
+        assert ui != null : "Command execution requires initialized user interface";
+        ParsedCommand parsedCommand = parser.parse(input);
+        assert parsedCommand != null : "The parser must return a command for every input";
+        assert parsedCommand.type() != null : "A parsed command must have a command type";
+        assert parsedCommand.arguments() != null : "A parsed command must have normalized arguments";
+        commandType = parsedCommand.type().name();
+        TaskCommands taskCommands = new TaskCommands(storage, ui);
+
+        switch (parsedCommand.type()) {
+            case BYE:
+                exitRequested = true;
+                ui.showGoodbye();
+                break;
+            case LIST:
+                ui.showTaskList(tasks);
+                break;
+            case FIND:
+                if (parsedCommand.arguments().isEmpty()) {
+                    throw new HomeHubException("Please provide a keyword after find.");
+                }
+                ui.showMatchingTasks(tasks.findMatchingTasks(parsedCommand.arguments()));
+                break;
+            case MARK:
+                markTask(parsedCommand.arguments(), true, ui);
+                break;
+            case UNMARK:
+                markTask(parsedCommand.arguments(), false, ui);
+                break;
+            case DELETE:
+                deleteTask(parsedCommand.arguments(), ui);
+                break;
+            case TODO:
+                taskCommands.addTodo(tasks, parsedCommand.arguments());
+                break;
+            case DEADLINE:
+                taskCommands.addDeadline(tasks, parsedCommand.arguments());
+                break;
+            case EVENT:
+                taskCommands.addEvent(tasks, parsedCommand.arguments());
+                break;
+            default:
+                throw new HomeHubException("I don't recognise that command. Try todo, deadline, event, list, "
+                        + "find, mark, unmark, or delete.");
+        }
+    }
+
+    private void markTask(String arguments, boolean markAsDone, Ui ui) throws HomeHubException {
+        assert tasks != null : "Task operations require an initialized task list";
+        assert arguments != null : "Parsed task commands must provide argument text";
+        assert storage != null : "Task operations require initialized storage";
+        assert ui != null : "Task operations require initialized user interface";
         String action = markAsDone ? "mark" : "unmark";
         String taskNumberText = arguments;
         if (taskNumberText.isEmpty()) {
@@ -114,28 +190,33 @@ public class HomeHub {
                 throw new HomeHubException("That task number does not exist.");
             }
             Task task = tasks.get(taskNumber - 1);
+            assert task != null : "A task list must not contain null tasks";
             TaskStatus previousStatus = task.getStatus();
             if (markAsDone) {
                 task.markAsDone();
-                System.out.println("Nice! I've marked this household task as done:");
             } else {
                 task.markAsNotDone();
-                System.out.println("I've marked this household task as not done:");
             }
+            assert task.getStatus() == (markAsDone ? TaskStatus.DONE : TaskStatus.PENDING)
+                    : "Marking a task must update its status to the requested state";
             try {
                 storage.save(tasks);
             } catch (HomeHubException exception) {
                 task.setStatus(previousStatus);
                 throw exception;
             }
-            System.out.println("  " + task.toDisplayString());
+            assert tasks.get(taskNumber - 1) == task : "Saving a task must not replace it in memory";
+            ui.showMarkedTask(task, markAsDone);
         } catch (NumberFormatException exception) {
             throw new HomeHubException("The task number must be a whole number.");
         }
     }
 
-    private static void deleteTask(TaskList tasks, String arguments,
-            Storage storage) throws HomeHubException {
+    private void deleteTask(String arguments, Ui ui) throws HomeHubException {
+        assert tasks != null : "Task operations require an initialized task list";
+        assert arguments != null : "Parsed task commands must provide argument text";
+        assert storage != null : "Task operations require initialized storage";
+        assert ui != null : "Task operations require initialized user interface";
         String taskNumberText = arguments;
         if (taskNumberText.isEmpty()) {
             throw new HomeHubException("Please provide a task number after delete.");
@@ -145,19 +226,87 @@ public class HomeHub {
             if (taskNumber < 1 || taskNumber > tasks.size()) {
                 throw new HomeHubException("That task number does not exist.");
             }
+            int taskCountBefore = tasks.size();
             Task removedTask = tasks.remove(taskNumber - 1);
+            assert removedTask != null : "A task list must not contain null tasks";
+            assert tasks.size() == taskCountBefore - 1 : "Deleting a task must reduce the list by one";
             try {
                 storage.save(tasks);
             } catch (HomeHubException exception) {
                 tasks.add(taskNumber - 1, removedTask);
+                assert tasks.size() == taskCountBefore : "A failed deletion must restore the original list size";
+                assert tasks.get(taskNumber - 1) == removedTask
+                        : "A failed deletion must restore the removed task at its original index";
                 throw exception;
             }
-            System.out.println("Noted. I've removed this task:");
-            System.out.println("  " + removedTask.toDisplayString());
-            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+            ui.showDeletedTask(removedTask, tasks.size());
         } catch (NumberFormatException exception) {
             throw new HomeHubException("The task number must be a whole number.");
         }
     }
 
+    /** Captures command output for display in a GUI response bubble. */
+    private static final class ResponseUi extends Ui {
+        private final StringBuilder response = new StringBuilder();
+
+        @Override
+        public void showError(String message) {
+            appendLine("Oops! " + message);
+        }
+
+        @Override
+        public void showGoodbye() {
+            appendLine("Bye. Hope to see you again soon!");
+        }
+
+        @Override
+        public void showTaskList(TaskList taskList) {
+            appendLine("Here are the household tasks in your HomeHub:");
+            for (int i = 0; i < taskList.size(); i++) {
+                appendLine((i + 1) + "." + taskList.get(i).toDisplayString());
+            }
+        }
+
+        @Override
+        public void showMatchingTasks(TaskList matchingTasks) {
+            appendLine("Here are the matching tasks in your list:");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                appendLine((i + 1) + "." + matchingTasks.get(i).toDisplayString());
+            }
+        }
+
+        @Override
+        public void showAddedTask(Task task, int taskCount) {
+            appendLine("Got it. I've added this task:");
+            appendLine("  " + task.toDisplayString());
+            appendLine("Now you have " + taskCount + " tasks in the list.");
+        }
+
+        @Override
+        public void showMarkedTask(Task task, boolean markedAsDone) {
+            appendLine(markedAsDone
+                    ? "Nice! I've marked this household task as done:"
+                    : "I've marked this household task as not done:");
+            appendLine("  " + task.toDisplayString());
+        }
+
+        @Override
+        public void showDeletedTask(Task task, int taskCount) {
+            appendLine("Noted. I've removed this task:");
+            appendLine("  " + task.toDisplayString());
+            appendLine("Now you have " + taskCount + " tasks in the list.");
+        }
+
+        /** Returns the captured response without a trailing line separator. */
+        String getResponse() {
+            return response.toString();
+        }
+
+        private void appendLine(String line) {
+            if (response.length() > 0) {
+                response.append(System.lineSeparator());
+            }
+            response.append(line);
+        }
+    }
 }

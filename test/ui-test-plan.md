@@ -791,6 +791,36 @@ For each executed case, record:
 5. The complete console input/output record, or a link to the captured artifact.
 6. If failed, the first differing line and a unified diff.
 
+### Session: 2026-08-31 (Java assertions verification)
+
+- Commit or worktree revision: `73f14b4` with the assertion changes uncommitted.
+- OS and architecture: Darwin 23.6.0 x86_64.
+- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
+- `javac --version`: `javac 25.0.3`.
+- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
+- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
+- Launch command: `java -ea -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup and persistence-file precondition: fresh temporary directories for UI-001 through UI-009 and UI-011; one shared fresh temporary directory for both UI-010 launches.
+- Timeout: 20 seconds per process.
+- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
+- Overall result: PASS; all UI-001 through UI-011 cases passed with assertions enabled.
+- Complete console input/output record: [ui-test-session-2026-08-31-assertions.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-assertions.txt).
+
+### Session: 2026-08-31 (documented UI verification after assertion changes)
+
+- Commit or worktree revision: `73f14b4` with the assertion changes uncommitted.
+- OS and architecture: Darwin 23.6.0 x86_64.
+- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
+- `javac --version`: `javac 25.0.3`.
+- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
+- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup and persistence-file precondition: fresh temporary directories for UI-001 through UI-009 and UI-011; one shared fresh temporary directory for both UI-010 launches.
+- Timeout: 20 seconds per process.
+- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
+- Overall result: PASS; all UI-001 through UI-011 cases passed in documented order.
+- Complete console input/output record: [ui-test-session-2026-08-31-documentation.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-documentation.txt).
+
 ### Session: 2026-08-30 (test-ui preflight)
 
 - Working-tree revision: uncommitted changes present.
@@ -2778,6 +2808,28 @@ ____________________________________________________________
 Bye. Hope to see you again soon!
 ____________________________________________________________
 ```
+
+### Session: 2026-08-31 (shared GUI command logic regression)
+
+- Working-tree base revision: `73f14b4`.
+- OS and architecture: Darwin 23.6.0 x86_64.
+- Java selection: `export JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu; export PATH="$JAVA_HOME/bin:$PATH"`.
+- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
+- `javac --version`: `javac 25.0.3`.
+- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
+- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup: UI-001 through UI-009 and UI-011 used fresh temporary directories; UI-010 reused one temporary directory across both launches. The UI-008 notation was translated as specified.
+- Timeout: 20 seconds per process.
+- Output comparison policy: stdout compared exactly after CRLF-to-LF normalization; stderr required to be empty; exit status required to be 0.
+- Overall result: PASS.
+
+Each executed case passed with exit status 0, empty stderr, no timeout, and exact
+stdout comparison. UI-010's persistence assertion also passed: the completed
+todo and pending event were retained, and the deleted deadline was absent.
+
+Inputs and complete actual console output for UI-001 through UI-011 are retained
+in [ui-test-session-2026-08-31-gui-features.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-gui-features.txt).
 
 Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
 

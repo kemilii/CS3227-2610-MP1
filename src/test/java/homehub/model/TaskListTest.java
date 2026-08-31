@@ -1,6 +1,7 @@
 package homehub.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,5 +28,12 @@ class TaskListTest {
         tasks.add(new Todo("read book"));
 
         assertEquals(0, tasks.findMatchingTasks("movie").size());
+    }
+
+    @Test
+    void add_nullTask_isRejectedByAssertion() {
+        TaskList tasks = new TaskList();
+
+        assertThrows(AssertionError.class, () -> tasks.add(null));
     }
 }

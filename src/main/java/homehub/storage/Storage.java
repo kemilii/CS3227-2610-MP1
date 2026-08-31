@@ -28,8 +28,10 @@ public class Storage {
      * @throws HomeHubException if the file cannot be written.
      */
     public void save(TaskList taskList) throws HomeHubException {
+        assert taskList != null : "Saving requires an initialized task list";
         ArrayList<String> lines = new ArrayList<>();
         for (Task task : taskList.asArrayList()) {
+            assert task != null : "A task list must not contain null tasks when saved";
             lines.add(task.toStorageString());
         }
         try {
@@ -84,6 +86,7 @@ public class Storage {
         } else {
             return null;
         }
+        assert task != null : "A recognized storage record must create a task";
         if (fields[1].equals("1")) {
             task.markAsDone();
         } else if (!fields[1].equals("0")) {

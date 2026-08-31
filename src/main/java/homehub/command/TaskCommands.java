@@ -21,6 +21,8 @@ public class TaskCommands {
      * @param ui user-interface service for confirmations.
      */
     public TaskCommands(Storage storage, Ui ui) {
+        assert storage != null : "Task commands require initialized storage";
+        assert ui != null : "Task commands require initialized user interface";
         this.storage = storage;
         this.ui = ui;
     }
@@ -85,11 +87,17 @@ public class TaskCommands {
     }
 
     private void addTask(TaskList tasks, Task task) throws HomeHubException {
+        assert tasks != null : "Adding a task requires an initialized task list";
+        assert task != null : "Adding a task requires a task instance";
+        int taskCountBefore = tasks.size();
         tasks.add(task);
+        assert tasks.size() == taskCountBefore + 1 : "Adding a task must increase the list by one";
+        assert tasks.get(taskCountBefore) == task : "The newly added task must be appended to the list";
         try {
             storage.save(tasks);
         } catch (HomeHubException exception) {
             tasks.remove(tasks.size() - 1);
+            assert tasks.size() == taskCountBefore : "A failed save must roll back the added task";
             throw exception;
         }
         ui.showAddedTask(task, tasks.size());

@@ -23,6 +23,7 @@ public class Task {
      * @param description the text describing the task.
      */
     public Task(String description) {
+        assert description != null : "A task must always have a description";
         this.description = description;
         this.status = TaskStatus.PENDING;
     }
@@ -55,6 +56,7 @@ public class Task {
     }
 
     public void setStatus(TaskStatus status) {
+        assert status != null : "A task must always have a valid completion status";
         this.status = status;
     }
 
@@ -101,6 +103,7 @@ public class Task {
      * @return the serialized task.
      */
     public String toStorageString() {
+        assert status != null : "A task must have a status before it is serialized";
         return getTypeIcon() + " | " + (status == TaskStatus.DONE ? "1" : "0")
                 + " | " + description;
     }

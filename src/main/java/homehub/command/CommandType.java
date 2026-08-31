@@ -18,6 +18,9 @@ public enum CommandType {
 
     /** Identifies a command from the first word of user input. */
     public static CommandType fromInput(String input) {
-        return new Parser().parse(input).type();
+        ParsedCommand parsedCommand = new Parser().parse(input);
+        assert parsedCommand != null : "The parser must always return a parsed command";
+        assert parsedCommand.type() != null : "A parsed command must always have a command type";
+        return parsedCommand.type();
     }
 }
