@@ -51,7 +51,7 @@ public class MainWindow extends AnchorPane {
         String response = homeHub.getResponse(input);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getHomeHubDialog(response, homeHubImage));
+                DialogBox.getHomeHubDialog(response, homeHubImage, homeHub.getCommandType()));
         userInput.clear();
     }
 }

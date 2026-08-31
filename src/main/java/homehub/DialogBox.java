@@ -48,6 +48,28 @@ public class DialogBox extends HBox {
         Collections.reverse(children);
         getChildren().setAll(children);
         setAlignment(Pos.TOP_LEFT);
+        dialog.getStyleClass().add("reply-label");
+    }
+
+    /**
+     * Applies a response style based on the command that generated it.
+     *
+     * @param commandType command type associated with the response.
+     */
+    private void changeDialogStyle(String commandType) {
+        switch (commandType) {
+            case "TODO", "DEADLINE", "EVENT":
+                dialog.getStyleClass().add("add-label");
+                break;
+            case "MARK", "UNMARK":
+                dialog.getStyleClass().add("marked-label");
+                break;
+            case "DELETE":
+                dialog.getStyleClass().add("delete-label");
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -71,6 +93,21 @@ public class DialogBox extends HBox {
     public static DialogBox getHomeHubDialog(String message, Image image) {
         DialogBox dialogBox = new DialogBox(message, image);
         dialogBox.flip();
+        return dialogBox;
+    }
+
+    /**
+     * Creates a styled dialog box for HomeHub's response.
+     *
+     * @param message HomeHub's response.
+     * @param image HomeHub's avatar.
+     * @param commandType command type associated with the response.
+     * @return a left-aligned, command-styled HomeHub dialog box.
+     */
+    public static DialogBox getHomeHubDialog(String message, Image image, String commandType) {
+        DialogBox dialogBox = new DialogBox(message, image);
+        dialogBox.flip();
+        dialogBox.changeDialogStyle(commandType);
         return dialogBox;
     }
 }

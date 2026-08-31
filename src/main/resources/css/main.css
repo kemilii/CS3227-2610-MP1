@@ -1,0 +1,54 @@
+.root {
+    homehub-main-color: #f7efe2;
+    -fx-background-color: homehub-main-color;
+}
+
+.text-field {
+    -fx-background-color: #fffaf2;
+    -fx-border-color: #2c766d;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-font: 16px "Arial";
+    -fx-padding: 8px;
+}
+
+.text-field:focused {
+    -fx-border-color: #ef8b45;
+    -fx-border-width: 2px;
+}
+
+.button {
+    -fx-background-color: #2c766d;
+    -fx-background-radius: 8px;
+    -fx-font: bold 16px "Arial";
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: #3f9488;
+}
+
+.button:pressed {
+    -fx-background-color: #ef8b45;
+}
+
+.scroll-pane,
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar {
+    -fx-font-size: 10px;
+    -fx-background-color: homehub-main-color;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #7dbbb1;
+    -fx-background-radius: 1em;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-pref-height: 0;
+    -fx-opacity: 0;
+}

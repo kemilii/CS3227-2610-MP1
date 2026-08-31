@@ -16,6 +16,8 @@ import homehub.ui.Ui;
  * user says bye.
  */
 public class HomeHub {
+    private String commandType;
+
     /**
      * Generates a response for a message entered in the graphical interface.
      *
@@ -23,7 +25,17 @@ public class HomeHub {
      * @return HomeHub's response to the message.
      */
     public String getResponse(String input) {
+        commandType = CommandType.fromInput(input).name();
         return "HomeHub heard: " + input;
+    }
+
+    /**
+     * Returns the command type from the most recent graphical-interface input.
+     *
+     * @return the most recent command type name.
+     */
+    public String getCommandType() {
+        return commandType;
     }
 
     /**

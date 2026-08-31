@@ -32,6 +32,15 @@ class MainTest {
     }
 
     @Test
+    void homeHubResponse_recordsCommandTypeForStyling() {
+        HomeHub homeHub = new HomeHub();
+
+        homeHub.getResponse("todo wash dishes");
+
+        assertEquals("TODO", homeHub.getCommandType());
+    }
+
+    @Test
     void avatarResources_areAvailableOnClasspath() {
         assertNotNull(Main.class.getResourceAsStream("/images/homeowner.png"));
         assertNotNull(Main.class.getResourceAsStream("/images/homehub.png"));
@@ -41,5 +50,11 @@ class MainTest {
     void fxmlResources_areAvailableOnClasspath() {
         assertNotNull(Main.class.getResourceAsStream("/view/MainWindow.fxml"));
         assertNotNull(Main.class.getResourceAsStream("/view/DialogBox.fxml"));
+    }
+
+    @Test
+    void stylesheetResources_areAvailableOnClasspath() {
+        assertNotNull(Main.class.getResourceAsStream("/css/main.css"));
+        assertNotNull(Main.class.getResourceAsStream("/css/dialog-box.css"));
     }
 }

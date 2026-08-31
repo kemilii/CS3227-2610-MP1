@@ -25,7 +25,6 @@ public class Main extends Application {
             stage.setScene(new Scene(mainLayout));
             fxmlLoader.<MainWindow>getController().setHomeHub(homeHub);
             stage.setTitle("HomeHub");
-            stage.setResizable(false);
             stage.setMinHeight(600.0);
             stage.setMinWidth(400.0);
             stage.show();
