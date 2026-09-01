@@ -61,7 +61,7 @@ cp build/libs/homehub.jar release/homehub.jar
 
 ## Documentation
 
-- [User Guide](docs/README.md) — setup, commands, and examples
+- [User Guide](docs/UserGuide.md) — setup, commands, and examples
 - [Developer Guide](docs/DeveloperGuide.md) — architecture and development
 - [Reflections](docs/Reflections.md) — project reflections
 - [Interaction Logs](logs/README.md) — project interaction records

@@ -42,6 +42,21 @@
 - UI-010 persistence-file assertions: PASS; the deleted deadline was absent and the saved records matched the expected content.
 - Complete console input/output record: [ui-test-session-2026-08-31.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31.txt).
 
+### Test session record — 2026-09-01 (release compliance audit)
+
+- Working-tree revision: `8d1fd8b`.
+- Java-selection command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu PATH=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin:$PATH`.
+- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
+- Compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
+- Working-directory setup: fresh temporary directories for UI-001 through UI-009 and UI-011 through UI-013; one shared temporary directory for both UI-010 launches.
+- Input notation: each `␠` marker was translated to one literal space as required by UI-008.
+- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
+- Overall result: PASS.
+- UI-001 through UI-009 and UI-011 through UI-013: PASS; exit status 0, empty stderr, and exact stdout.
+- UI-010 first launch and second launch: PASS; exit status 0, empty stderr, and exact stdout.
+- Complete console input/output record: [ui-test-session-2026-09-01-compliance-audit.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-09-01-compliance-audit.txt).
+
 ## Scope and execution information
 
 This plan tests HomeHub through its command-line interface. Each test case is an

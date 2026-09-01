@@ -4,7 +4,14 @@ HomeHub is a Java 25 household task manager with a JavaFX desktop interface and 
 
 ## Release baseline
 
-The repository does not contain a version tag. This guide describes the latest product implementation on `master`, represented by commit `0bdd400` (`Harden HomeHub input and storage validation`), followed by the documentation-only commit `7c95488`. The documented release includes todo, deadline, event, list, find, mark, unmark, delete, help, and bye commands; automatic local persistence; strict date validation; duplicate detection; and the JavaFX conversation interface.
+The repository does not contain a version tag. This guide describes the current
+product implementation on `master`. The checked-in release artifact at
+`release/homehub.jar` is generated with Gradle's `shadowJar` task and includes
+the JavaFX libraries required by the application. The release includes todo,
+deadline, event, list, find, mark, unmark, delete, help, and bye commands;
+automatic local persistence; strict date validation; duplicate detection; and
+the JavaFX conversation interface. User setup instructions and command examples
+are maintained in [`UserGuide.md`](UserGuide.md).
 
 ## Product requirements
 
@@ -152,6 +159,7 @@ Useful commands from the repository root are:
 ./gradlew run       # launch the JavaFX application
 ./gradlew test      # run JUnit tests
 ./gradlew check     # run tests and Checkstyle
+./gradlew shadowJar # build the executable fat JAR
 ```
 
 On macOS, select the project-required Java distribution before running build tasks:
@@ -171,7 +179,8 @@ Development proceeded incrementally from the SE-EDU Java/JavaFX starter project:
 5. Add strict date parsing, duplicate detection, safe text validation, and rollback on persistence failures.
 6. Add regression tests and expand the end-to-end UI test plan for each user-visible behavior.
 7. Apply Checkstyle, the project Java coding standard, and the project Git conventions.
-8. Update the User Guide and this Developer Guide to match the current implementation.
+8. Update [`UserGuide.md`](UserGuide.md) and this Developer Guide to match the
+   current implementation.
 
 Changes are kept in focused commits with imperative, capitalized subjects. Behavior changes should update the relevant JUnit tests and, when console behavior changes, the corresponding cases and expected output in [`test/ui-test-plan.md`](../test/ui-test-plan.md).
 
