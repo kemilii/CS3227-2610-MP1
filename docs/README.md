@@ -19,6 +19,22 @@ tasks automatically.
 Tasks are saved in `data/homehub.txt` and reloaded the next time HomeHub starts.
 Commands and their keywords must be entered in lowercase.
 
+### Run the release JAR
+
+The latest bundled release is available at `release/homehub.jar`. It includes
+the JavaFX libraries needed by the application and requires JDK 25.
+
+```bash
+java -jar release/homehub.jar
+```
+
+To regenerate the release JAR after making changes, run:
+
+```bash
+./gradlew shadowJar
+cp build/libs/homehub.jar release/homehub.jar
+```
+
 ## Command reference
 
 Replace text in angle brackets with your own values; do not type the angle
