@@ -1,7 +1,7 @@
 # HomeHub
 
-HomeHub is a Java desktop household task manager for chores, deadlines, and
-events. Moss, its household concierge, helps users keep their task board tidy.
+HomeHub is a Java desktop pantry inventory manager. Moss, its household
+concierge, helps users track stock quantities and expiry dates.
 
 ## Prerequisites
 

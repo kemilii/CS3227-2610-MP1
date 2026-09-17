@@ -2,7 +2,6 @@ package homehub.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Files;
@@ -12,112 +11,47 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import homehub.exception.HomeHubException;
-import homehub.model.Deadline;
-import homehub.model.Event;
-import homehub.model.Task;
-import homehub.model.TaskList;
-import homehub.model.Todo;
+import homehub.model.PantryItem;
+import homehub.model.PantryList;
 
-/** Tests persistence and recovery of the supported task representations. */
+/** Tests pantry persistence and safe handling of malformed inventory records. */
 class StorageTest {
     @TempDir
     Path temporaryDirectory;
 
     @Test
-    void saveAndLoad_mixedTasksAndStatuses_preservesTaskData() throws Exception {
-        Storage storage = storageAt("nested/data/homehub.txt");
-        TaskList tasks = new TaskList();
-        Task todo = new Todo("wash dishes");
-        Task deadline = new Deadline("pay bill", "2026-09-01");
-        Task event = new Event("meeting", "2026-09-02 14:00", "2026-09-02 16:00");
-        todo.markAsDone();
-        event.markAsDone();
-        tasks.add(todo);
-        tasks.add(deadline);
-        tasks.add(event);
+    void saveAndLoad_inventoryEntries_preservesDetailsAndQuantity() throws Exception {
+        Storage storage = storageAt("nested/pantry.txt");
+        PantryList pantry = new PantryList();
+        pantry.add(new PantryItem("rice", 2, "kg", "2026-09-30"));
+        pantry.add(new PantryItem("milk", 1, "carton", "2026-10-15"));
 
-        storage.save(tasks);
-        ArrayList<Task> loaded = storage.load();
+        storage.save(pantry);
+        ArrayList<PantryItem> loaded = storage.load();
 
-        assertEquals(3, loaded.size());
-        assertEquals("[T][X] wash dishes", loaded.get(0).toDisplayString());
-        assertEquals("[D][ ] pay bill (by: Sept 01 2026)", loaded.get(1).toDisplayString());
-        assertEquals("[E][X] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)",
-                loaded.get(2).toDisplayString());
-        assertTrue(Files.exists(temporaryDirectory.resolve("nested/data/homehub.txt")));
+        assertEquals(2, loaded.size());
+        assertEquals("rice", loaded.get(0).getName());
+        assertEquals(2, loaded.get(0).getQuantity());
+        assertTrue(Files.exists(temporaryDirectory.resolve("nested/pantry.txt")));
     }
 
     @Test
-    void load_missingFile_returnsEmptyTaskCollection() throws Exception {
-        ArrayList<Task> loaded = storageAt("data/homehub.txt").load();
+    void load_missingOrMalformedFile_returnsOnlyValidPantryEntries() throws Exception {
+        Path file = temporaryDirectory.resolve("pantry.txt");
+        Files.write(file, java.util.List.of(
+                "T | 0 | old task",
+                "P | rice | 2 | kg | 2026-09-30",
+                "P | broken | nope | kg | 2026-09-30",
+                "not a pantry record"));
 
-        assertTrue(loaded.isEmpty());
+        ArrayList<PantryItem> loaded = storageAt("pantry.txt").load();
+
+        assertEquals(1, loaded.size());
+        assertEquals("rice", loaded.get(0).getName());
+        assertFalse(storageAt("missing.txt").load().size() > 0);
     }
 
-    @Test
-    void load_malformedRecords_ignoresInvalidRecordsAndLoadsValidOnes() throws Exception {
-        Path file = temporaryDirectory.resolve("data/homehub.txt");
-        Files.createDirectories(file.getParent());
-        Files.writeString(file, String.join("\n",
-                "",
-                "T | 0 | valid todo",
-                "D | 1 | valid deadline | 2026-02-28",
-                "E | 0 | valid event | 2026-03-01 | 2026-03-02",
-                "X | 0 | unknown type",
-                "T | 2 | invalid status",
-                "T | 0 |",
-                "D | 0 | missing date",
-                "E | 0 | missing end | 2026-03-01 |",
-                "T | 0 | too many fields | extra"));
-
-        ArrayList<Task> loaded = storageAt("data/homehub.txt").load();
-
-        assertEquals(3, loaded.size());
-        assertEquals("valid todo", loaded.get(0).getDescription());
-        assertEquals("valid deadline", loaded.get(1).getDescription());
-        assertEquals("valid event", loaded.get(2).getDescription());
-    }
-
-    @Test
-    void load_recordWithInvalidDate_throwsHomeHubException() throws Exception {
-        Path file = temporaryDirectory.resolve("data/homehub.txt");
-        Files.createDirectories(file.getParent());
-        Files.writeString(file, "D | 0 | invalid deadline | 2026-02-30");
-
-        assertThrows(HomeHubException.class, () -> storageAt("data/homehub.txt").load());
-    }
-
-    @Test
-    void load_duplicateTaskDetails_throwsHomeHubException() throws Exception {
-        Path file = temporaryDirectory.resolve("data/homehub.txt");
-        Files.createDirectories(file.getParent());
-        Files.writeString(file, String.join("\n",
-                "T | 0 | duplicate",
-                "T | 1 | duplicate"));
-
-        assertThrows(HomeHubException.class, () -> storageAt("data/homehub.txt").load());
-    }
-
-    @Test
-    void constructor_missingOrBlankPath_rejectsInvalidStorageConfiguration() {
-        assertThrows(IllegalArgumentException.class, () -> new Storage(null));
-        assertThrows(IllegalArgumentException.class, () -> new Storage("  "));
-    }
-
-    @Test
-    void save_duplicateTaskDetails_rejectsWithoutWritingFile() throws Exception {
-        Storage storage = storageAt("data/homehub.txt");
-        TaskList tasks = new TaskList();
-        Task duplicate = new Todo("duplicate");
-        tasks.add(duplicate);
-        tasks.add(duplicate);
-
-        assertThrows(HomeHubException.class, () -> storage.save(tasks));
-        assertFalse(Files.exists(temporaryDirectory.resolve("data/homehub.txt")));
-    }
-
-    private Storage storageAt(String relativePath) {
-        return new Storage(temporaryDirectory.resolve(relativePath).toString());
+    private Storage storageAt(String fileName) {
+        return new Storage(temporaryDirectory.resolve(fileName).toString());
     }
 }

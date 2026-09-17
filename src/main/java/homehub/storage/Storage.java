@@ -7,23 +7,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 import homehub.exception.HomeHubException;
-import homehub.model.Deadline;
-import homehub.model.Event;
-import homehub.model.Task;
-import homehub.model.TaskList;
-import homehub.model.Todo;
+import homehub.model.PantryItem;
+import homehub.model.PantryList;
 
-/** Reads and writes HomeHub tasks to a configured local data file. */
+/** Reads and writes HomeHub pantry inventory to a configured local data file. */
 public class Storage {
-    private static final String TODO_TYPE = "T";
-    private static final String DEADLINE_TYPE = "D";
-    private static final String EVENT_TYPE = "E";
-    private static final String DONE_STATUS = "1";
-    private static final String PENDING_STATUS = "0";
-    private static final int MINIMUM_FIELD_COUNT = 3;
-    private static final int TODO_FIELD_COUNT = 3;
-    private static final int DEADLINE_FIELD_COUNT = 4;
-    private static final int EVENT_FIELD_COUNT = 5;
+    private static final String PANTRY_TYPE = "P";
+    private static final int LEGACY_FIELD_COUNT = 5;
+    private static final int FIELD_COUNT = 8;
 
     private final Path filePath;
 
@@ -40,24 +31,24 @@ public class Storage {
     }
 
     /**
-     * Saves the current tasks, replacing the previous file contents.
+     * Saves the current pantry inventory, replacing the previous file contents.
      *
-     * @param taskList tasks to save.
+     * @param pantry pantry entries to save.
      * @throws HomeHubException if the file cannot be written.
      */
-    public void save(TaskList taskList) throws HomeHubException {
-        assert taskList != null : "Saving requires an initialized task list";
-        ArrayList<Task> tasks = taskList.asArrayList();
+    public void save(PantryList pantry) throws HomeHubException {
+        assert pantry != null : "Saving requires an initialized pantry list";
+        ArrayList<PantryItem> items = pantry.asArrayList();
         ArrayList<String> lines = new ArrayList<>();
-        if (containsDuplicateTaskDetails(tasks)) {
-            throw new HomeHubException("Tasks contain invalid or duplicate details and cannot be saved.");
+        if (containsDuplicateItemDetails(items)) {
+            throw new HomeHubException("Pantry entries contain invalid or duplicate details and cannot be saved.");
         }
-        for (Task task : tasks) {
-            assert task != null : "A task list must not contain null tasks when saved";
-            if (containsInvalidDescription(task)) {
-                throw new HomeHubException("Tasks contain invalid or duplicate details and cannot be saved.");
+        for (PantryItem item : items) {
+            assert item != null : "A pantry list must not contain null items when saved";
+            if (containsInvalidText(item)) {
+                throw new HomeHubException("Pantry entries contain invalid or duplicate details and cannot be saved.");
             }
-            lines.add(task.toStorageString());
+            lines.add(item.toStorageString());
         }
         try {
             Path parent = filePath.toAbsolutePath().normalize().getParent();
@@ -66,87 +57,77 @@ public class Storage {
             }
             Files.write(filePath, lines);
         } catch (IOException | SecurityException exception) {
-            throw new HomeHubException("I couldn't save your tasks to disk.");
+            throw new HomeHubException("I couldn't save your pantry inventory to disk.");
         }
     }
 
     /**
-     * Loads tasks from the local data file; a missing file means no tasks.
+     * Loads pantry entries from the local data file; a missing file means an empty pantry.
      *
-     * @return the loaded tasks.
-     * @throws HomeHubException if the file cannot be read or contains an invalid date.
+     * @return the loaded pantry entries.
+     * @throws HomeHubException if the file cannot be read.
      */
-    public ArrayList<Task> load() throws HomeHubException {
-        ArrayList<Task> tasks = new ArrayList<>();
+    public ArrayList<PantryItem> load() throws HomeHubException {
+        ArrayList<PantryItem> items = new ArrayList<>();
         try {
             if (!Files.exists(filePath)) {
-                return tasks;
+                return items;
             }
             for (String line : Files.readAllLines(filePath)) {
-                Task task = parseTask(line);
-                if (task != null) {
-                    if (containsTaskWithSameDetails(tasks, task)) {
-                        throw new HomeHubException("Your saved tasks contain duplicate task details.");
+                PantryItem item = parseItem(line);
+                if (item != null) {
+                    if (containsItemWithSameDetails(items, item)) {
+                        throw new HomeHubException("Your saved pantry contains duplicate inventory entries.");
                     }
-                    tasks.add(task);
+                    items.add(item);
                 }
             }
-            return tasks;
+            return items;
         } catch (IOException | SecurityException exception) {
-            throw new HomeHubException("I couldn't load your saved tasks.");
+            throw new HomeHubException("I couldn't load your pantry inventory.");
         }
     }
 
-    private Task parseTask(String line) throws HomeHubException {
+    private PantryItem parseItem(String line) {
         if (line == null || line.trim().isEmpty()) {
             return null;
         }
         String[] fields = line.split("\\s*\\|\\s*", -1);
-        if (fields.length < MINIMUM_FIELD_COUNT || fields[1].isEmpty()
-                || fields[2].trim().isEmpty() || containsControlCharacters(fields[2])) {
+        if ((fields.length != LEGACY_FIELD_COUNT && fields.length != FIELD_COUNT) || !PANTRY_TYPE.equals(fields[0])
+                || fields[1].trim().isEmpty() || fields[2].trim().isEmpty()
+                || fields[3].trim().isEmpty() || fields[4].trim().isEmpty()) {
             return null;
         }
-        Task task = createTask(fields);
-        if (task == null) {
-            return null;
-        }
-        assert task != null : "A recognized storage record must create a task";
-        if (fields[1].equals(DONE_STATUS)) {
-            task.markAsDone();
-        } else if (!fields[1].equals(PENDING_STATUS)) {
-            return null;
-        }
-        return task;
-    }
-
-    private Task createTask(String[] fields) throws HomeHubException {
-        switch (fields[0]) {
-            case TODO_TYPE:
-                return fields.length == TODO_FIELD_COUNT ? new Todo(fields[2].trim()) : null;
-            case DEADLINE_TYPE:
-                return fields.length == DEADLINE_FIELD_COUNT && !fields[3].isEmpty()
-                        ? new Deadline(fields[2].trim(), fields[3].trim()) : null;
-            case EVENT_TYPE:
-                return fields.length == EVENT_FIELD_COUNT && !fields[3].isEmpty() && !fields[4].isEmpty()
-                        ? new Event(fields[2].trim(), fields[3].trim(), fields[4].trim()) : null;
-            default:
+        try {
+            int quantity = Integer.parseInt(fields[2].trim());
+            String category = fields.length == FIELD_COUNT ? fields[5].trim() : PantryItem.DEFAULT_CATEGORY;
+            String location = fields.length == FIELD_COUNT ? fields[6].trim() : PantryItem.DEFAULT_LOCATION;
+            int minimumQuantity = fields.length == FIELD_COUNT ? Integer.parseInt(fields[7].trim()) : 0;
+            PantryItem item = new PantryItem(fields[1].trim(), quantity, fields[3].trim(), fields[4].trim(),
+                    category, location, minimumQuantity);
+            if (containsControlCharacters(fields[1]) || containsControlCharacters(fields[3])
+                    || containsControlCharacters(category) || containsControlCharacters(location)) {
                 return null;
+            }
+            return item;
+        } catch (HomeHubException | NumberFormatException exception) {
+            return null;
         }
     }
 
-    private boolean containsTaskWithSameDetails(ArrayList<Task> tasks, Task candidate) {
-        for (Task task : tasks) {
-            if (task.hasSameDetailsAs(candidate)) {
+    private boolean containsItemWithSameDetails(ArrayList<PantryItem> items, PantryItem candidate) {
+        for (PantryItem item : items) {
+            if (item.hasSameDetailsAs(candidate)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean containsDuplicateTaskDetails(ArrayList<Task> tasks) {
-        for (int firstIndex = 0; firstIndex < tasks.size(); firstIndex++) {
-            for (int secondIndex = firstIndex + 1; secondIndex < tasks.size(); secondIndex++) {
-                if (tasks.get(firstIndex).hasSameDetailsAs(tasks.get(secondIndex))) {
+    private boolean containsDuplicateItemDetails(ArrayList<PantryItem> items) {
+        for (int firstIndex = 0; firstIndex < items.size(); firstIndex++) {
+            for (int secondIndex = firstIndex + 1; secondIndex < items.size(); secondIndex++) {
+                if (items.get(firstIndex).hasSameDetailsAs(items.get(secondIndex))) {
                     return true;
                 }
             }
@@ -154,10 +135,13 @@ public class Storage {
         return false;
     }
 
-    private boolean containsInvalidDescription(Task task) {
-        String description = task.getDescription();
-        return description == null || description.trim().isEmpty() || containsControlCharacters(description)
-                || description.contains("|");
+    private boolean containsInvalidText(PantryItem item) {
+        return containsInvalidText(item.getName()) || containsInvalidText(item.getUnit());
+    }
+
+    private boolean containsInvalidText(String value) {
+        return value == null || value.trim().isEmpty() || containsControlCharacters(value)
+                || value.contains("|");
     }
 
     private boolean containsControlCharacters(String value) {

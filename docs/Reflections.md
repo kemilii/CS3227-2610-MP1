@@ -6,6 +6,22 @@ I used a large language model (LLM) as an AI-assisted software engineering partn
 
 My main conclusion is that an LLM is most useful when it is placed inside a disciplined engineering process. It can generate code very quickly, but speed alone does not guarantee correctness. The strongest results came when I gave it clear constraints, expected behavior, and a way to verify the result. The weakest results came when I left important design decisions implicit and accepted a plausible-looking answer too quickly.
 
+## Reflection 0: responding to scope feedback
+
+The first implementation was too close to the CS2103 individual project because
+it kept the same task, deadline, event, completion, and deletion workflow. For
+the resubmission, I treated the feedback as a product-level scope problem
+rather than trying to rename the existing commands. HomeHub is now a pantry
+inventory manager with a different domain model and user workflow: entries
+have quantities, measurement units, and expiry dates; users restock or consume
+stock; and they can search or filter by expiry date. The old task classes and
+completion commands were removed, and the persistence format was replaced.
+
+This redesign also changed the tests and documentation so that the repository
+no longer presents a task manager as its primary behavior. Keeping the familiar
+Moss persona and JavaFX shell preserves the useful application structure, but
+the actual domain operations are now inventory operations.
+
 ## Reflection 1: project ideation and scope control
 
 One of my first prompts was:

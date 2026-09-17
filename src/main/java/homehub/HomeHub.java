@@ -1,70 +1,58 @@
 package homehub;
 
+import java.time.LocalDate;
+
 import homehub.command.CommandType;
+import homehub.command.PantryCommands;
 import homehub.command.ParsedCommand;
 import homehub.command.Parser;
-import homehub.command.TaskCommands;
 import homehub.exception.HomeHubException;
-import homehub.model.Task;
-import homehub.model.TaskList;
-import homehub.model.TaskStatus;
+import homehub.model.ExpiryDate;
+import homehub.model.PantryItem;
+import homehub.model.PantryList;
 import homehub.storage.Storage;
 import homehub.ui.Ui;
 
-/** A household task manager that supports both command-line and graphical interfaces. */
+/** A household pantry inventory manager with command-line and graphical interfaces. */
 public class HomeHub {
-    private static final String DEFAULT_STORAGE_PATH = "data/homehub.txt";
+    private static final String DEFAULT_STORAGE_PATH = "data/pantry.txt";
 
     private final Parser parser;
     private final Storage storage;
-    private TaskList tasks;
+    private PantryList pantry;
     private CommandType commandType;
     private boolean exitRequested;
     private String startupError;
 
-    /** Creates a HomeHub instance backed by the default task file. */
+    /** Creates a HomeHub instance backed by the default pantry file. */
     public HomeHub() {
         this(new Storage(DEFAULT_STORAGE_PATH), null);
     }
 
-    /**
-     * Creates a HomeHub instance backed by the supplied storage service.
-     *
-     * @param storage persistence service for household tasks.
-     */
+    /** Creates a HomeHub instance backed by the supplied storage service. */
     public HomeHub(Storage storage) {
         this(storage, null);
     }
 
-    /**
-     * Creates a HomeHub instance and reports storage errors through the supplied UI.
-     *
-     * @param storage persistence service for household tasks.
-     * @param startupUi UI used to report an error while loading saved tasks.
-     */
+    /** Creates a HomeHub instance and reports loading errors through the supplied UI. */
     public HomeHub(Storage storage, Ui startupUi) {
         assert storage != null : "HomeHub requires initialized storage";
-        this.parser = new Parser();
+        parser = new Parser();
         this.storage = storage;
-        this.exitRequested = false;
+        exitRequested = false;
         try {
-            this.tasks = new TaskList(storage.load());
+            pantry = new PantryList(storage.load());
         } catch (HomeHubException exception) {
-            this.tasks = new TaskList();
+            pantry = new PantryList();
             if (startupUi == null) {
-                this.startupError = exception.getMessage();
+                startupError = exception.getMessage();
             } else {
                 startupUi.showError(exception.getMessage());
             }
         }
     }
 
-    /**
-     * Processes a command entered in the graphical interface.
-     *
-     * @param input user's message.
-     * @return HomeHub's user-facing response.
-     */
+    /** Processes a command entered in the graphical interface and returns its response. */
     public String getResponse(String input) {
         ResponseUi responseUi = new ResponseUi();
         if (startupError != null) {
@@ -73,8 +61,7 @@ public class HomeHub {
         }
         if (input == null) {
             commandType = CommandType.UNKNOWN;
-            responseUi.showError(Moss.NAME + " does not recognise that command yet. Try todo, deadline, event, list, "
-                    + "find, mark, unmark, delete, or help.");
+            responseUi.showError(unknownCommandMessage());
             return responseUi.getResponse();
         }
         try {
@@ -97,21 +84,15 @@ public class HomeHub {
         return exitRequested;
     }
 
-    /**
-     * Runs the HomeHub command-line application.
-     *
-     * @param args command-line arguments, which are not used.
-     */
+    /** Runs the HomeHub command-line application. */
     public static void main(String[] args) {
         Ui ui = new Ui();
         HomeHub homeHub = new HomeHub(new Storage(DEFAULT_STORAGE_PATH), ui);
-
         ui.showWelcome();
 
         String command;
         while ((command = ui.readCommand()) != null) {
             ui.showSeparator();
-
             try {
                 homeHub.executeCommand(command, ui);
                 if (homeHub.isExitRequested()) {
@@ -127,15 +108,9 @@ public class HomeHub {
     }
 
     private void executeCommand(String input, Ui ui) throws HomeHubException {
-        assert input != null : "A command input must not be null";
-        assert ui != null : "Command execution requires initialized user interface";
         ParsedCommand parsedCommand = parser.parse(input);
-        assert parsedCommand != null : "The parser must return a command for every input";
-        assert parsedCommand.type() != null : "A parsed command must have a command type";
-        assert parsedCommand.arguments() != null : "A parsed command must have normalized arguments";
         commandType = parsedCommand.type();
-        TaskCommands taskCommands = new TaskCommands(storage, ui);
-
+        PantryCommands pantryCommands = new PantryCommands(storage, ui);
         switch (parsedCommand.type()) {
             case BYE:
                 requireNoArguments(parsedCommand.arguments(), "bye");
@@ -144,118 +119,149 @@ public class HomeHub {
                 break;
             case LIST:
                 requireNoArguments(parsedCommand.arguments(), "list");
-                ui.showTaskList(tasks);
+                ui.showPantry(pantry);
+                break;
+            case ADD:
+                pantryCommands.addItem(pantry, parsedCommand.arguments());
+                break;
+            case SEARCH:
+                requireArgument(parsedCommand.arguments(), "search", "a keyword");
+                ui.showMatchingItems(pantry.findMatchingItems(parsedCommand.arguments()));
+                break;
+            case EXPIRING:
+                showExpiringItems(parsedCommand.arguments(), ui);
+                break;
+            case LOW_STOCK:
+                requireNoArguments(parsedCommand.arguments(), "lowstock");
+                ui.showLowStockItems(pantry.findLowStockItems());
+                break;
+            case SUMMARY:
+                requireNoArguments(parsedCommand.arguments(), "summary");
+                ui.showSummary(pantry);
+                break;
+            case MOVE:
+                moveItem(parsedCommand.arguments(), ui);
+                break;
+            case RESTOCK:
+                changeQuantity(parsedCommand.arguments(), true, ui);
+                break;
+            case CONSUME:
+                changeQuantity(parsedCommand.arguments(), false, ui);
+                break;
+            case DELETE:
+                deleteItem(parsedCommand.arguments(), ui);
                 break;
             case HELP:
                 requireNoArguments(parsedCommand.arguments(), "help");
                 ui.showHelp();
                 break;
-            case FIND:
-                if (parsedCommand.arguments().isEmpty()) {
-                    throw new HomeHubException("Please provide a keyword after find.");
-                }
-                ui.showMatchingTasks(tasks.findMatchingTasks(parsedCommand.arguments()));
-                break;
-            case MARK:
-                markTask(parsedCommand.arguments(), true, ui);
-                break;
-            case UNMARK:
-                markTask(parsedCommand.arguments(), false, ui);
-                break;
-            case DELETE:
-                deleteTask(parsedCommand.arguments(), ui);
-                break;
-            case TODO:
-                taskCommands.addTodo(tasks, parsedCommand.arguments());
-                break;
-            case DEADLINE:
-                taskCommands.addDeadline(tasks, parsedCommand.arguments());
-                break;
-            case EVENT:
-                taskCommands.addEvent(tasks, parsedCommand.arguments());
-                break;
             default:
-                throw new HomeHubException(Moss.NAME + " does not recognise that command yet. Try todo, deadline, "
-                        + "event, list, find, mark, unmark, delete, or help.");
+                throw new HomeHubException(unknownCommandMessage());
         }
     }
 
+    private void showExpiringItems(String arguments, Ui ui) throws HomeHubException {
+        requireArgument(arguments, "expiring", "a cutoff date");
+        LocalDate cutoff = ExpiryDate.parse(arguments);
+        ui.showExpiringItems(pantry.findExpiringItems(cutoff), cutoff);
+    }
+
+    private void changeQuantity(String arguments, boolean isRestocking, Ui ui) throws HomeHubException {
+        String[] fields = arguments.trim().split("\\s+");
+        if (fields.length != 2 || fields[0].isEmpty() || fields[1].isEmpty()) {
+            String action = isRestocking ? "restock" : "consume";
+            throw new HomeHubException("Use: " + action + " <item number> <positive quantity>.");
+        }
+        int itemNumber;
+        int amount;
+        try {
+            itemNumber = Integer.parseInt(fields[0]);
+            amount = Integer.parseInt(fields[1]);
+        } catch (NumberFormatException exception) {
+            throw new HomeHubException("Item number and quantity must be whole numbers.");
+        }
+        PantryItem item = getItem(itemNumber);
+        int previousQuantity = item.getQuantity();
+        if (isRestocking) {
+            item.restock(amount);
+        } else {
+            item.consume(amount);
+        }
+        try {
+            storage.save(pantry);
+        } catch (HomeHubException exception) {
+            item.setQuantity(previousQuantity);
+            throw exception;
+        }
+        ui.showQuantityChanged(item, amount, isRestocking);
+    }
+
+    private void moveItem(String arguments, Ui ui) throws HomeHubException {
+        String[] fields = arguments.trim().split("\\s+");
+        if (fields.length != 2 || fields[0].isEmpty() || fields[1].isEmpty()) {
+            throw new HomeHubException("Use: move <item number> <location>.");
+        }
+        int itemNumber;
+        try {
+            itemNumber = Integer.parseInt(fields[0]);
+        } catch (NumberFormatException exception) {
+            throw new HomeHubException("The item number must be a whole number.");
+        }
+        PantryItem item = getItem(itemNumber);
+        String previousLocation = item.getLocation();
+        item.moveTo(fields[1]);
+        try {
+            storage.save(pantry);
+        } catch (HomeHubException exception) {
+            item.moveTo(previousLocation);
+            throw exception;
+        }
+        ui.showMovedItem(item);
+    }
+
+    private void deleteItem(String arguments, Ui ui) throws HomeHubException {
+        if (arguments.trim().isEmpty()) {
+            throw new HomeHubException("Please provide an item number after delete.");
+        }
+        int itemNumber;
+        try {
+            itemNumber = Integer.parseInt(arguments.trim());
+        } catch (NumberFormatException exception) {
+            throw new HomeHubException("The item number must be a whole number.");
+        }
+        PantryItem removedItem = getItem(itemNumber);
+        pantry.remove(itemNumber - 1);
+        try {
+            storage.save(pantry);
+        } catch (HomeHubException exception) {
+            pantry.add(itemNumber - 1, removedItem);
+            throw exception;
+        }
+        ui.showDeletedItem(removedItem, pantry.size());
+    }
+
+    private PantryItem getItem(int itemNumber) throws HomeHubException {
+        if (itemNumber < 1 || itemNumber > pantry.size()) {
+            throw new HomeHubException("That pantry item number does not exist.");
+        }
+        return pantry.get(itemNumber - 1);
+    }
+
     private void requireNoArguments(String arguments, String command) throws HomeHubException {
-        assert arguments != null : "Parsed commands must provide normalized arguments";
         if (!arguments.isEmpty()) {
             throw new HomeHubException("The " + command + " command does not take arguments.");
         }
     }
 
-    private void markTask(String arguments, boolean markAsDone, Ui ui) throws HomeHubException {
-        assert tasks != null : "Task operations require an initialized task list";
-        assert arguments != null : "Parsed task commands must provide argument text";
-        assert storage != null : "Task operations require initialized storage";
-        assert ui != null : "Task operations require initialized user interface";
-        String action = markAsDone ? "mark" : "unmark";
-        String taskNumberText = arguments;
-        if (taskNumberText.isEmpty()) {
-            throw new HomeHubException("Please provide a task number after " + action + ".");
-        }
-        try {
-            int taskNumber = Integer.parseInt(taskNumberText);
-            if (taskNumber < 1 || taskNumber > tasks.size()) {
-                throw new HomeHubException("That task number does not exist.");
-            }
-            Task task = tasks.get(taskNumber - 1);
-            assert task != null : "A task list must not contain null tasks";
-            TaskStatus previousStatus = task.getStatus();
-            if (markAsDone) {
-                task.markAsDone();
-            } else {
-                task.markAsNotDone();
-            }
-            assert task.getStatus() == (markAsDone ? TaskStatus.DONE : TaskStatus.PENDING)
-                    : "Marking a task must update its status to the requested state";
-            try {
-                storage.save(tasks);
-            } catch (HomeHubException exception) {
-                task.setStatus(previousStatus);
-                throw exception;
-            }
-            assert tasks.get(taskNumber - 1) == task : "Saving a task must not replace it in memory";
-            ui.showMarkedTask(task, markAsDone);
-        } catch (NumberFormatException exception) {
-            throw new HomeHubException("The task number must be a whole number.");
+    private void requireArgument(String arguments, String command, String expected) throws HomeHubException {
+        if (arguments.trim().isEmpty()) {
+            throw new HomeHubException("Please provide " + expected + " after " + command + ".");
         }
     }
 
-    private void deleteTask(String arguments, Ui ui) throws HomeHubException {
-        assert tasks != null : "Task operations require an initialized task list";
-        assert arguments != null : "Parsed task commands must provide argument text";
-        assert storage != null : "Task operations require initialized storage";
-        assert ui != null : "Task operations require initialized user interface";
-        String taskNumberText = arguments;
-        if (taskNumberText.isEmpty()) {
-            throw new HomeHubException("Please provide a task number after delete.");
-        }
-        try {
-            int taskNumber = Integer.parseInt(taskNumberText);
-            if (taskNumber < 1 || taskNumber > tasks.size()) {
-                throw new HomeHubException("That task number does not exist.");
-            }
-            int taskCountBefore = tasks.size();
-            Task removedTask = tasks.remove(taskNumber - 1);
-            assert removedTask != null : "A task list must not contain null tasks";
-            assert tasks.size() == taskCountBefore - 1 : "Deleting a task must reduce the list by one";
-            try {
-                storage.save(tasks);
-            } catch (HomeHubException exception) {
-                tasks.add(taskNumber - 1, removedTask);
-                assert tasks.size() == taskCountBefore : "A failed deletion must restore the original list size";
-                assert tasks.get(taskNumber - 1) == removedTask
-                        : "A failed deletion must restore the removed task at its original index";
-                throw exception;
-            }
-            ui.showDeletedTask(removedTask, tasks.size());
-        } catch (NumberFormatException exception) {
-            throw new HomeHubException("The task number must be a whole number.");
-        }
+    private String unknownCommandMessage() {
+        return Moss.NAME + " does not recognise that command yet. Try add, list, search, restock, consume, "
+                + "expiring, lowstock, summary, move, delete, or help.";
     }
 
     /** Captures command output for display in a GUI response bubble. */
@@ -264,7 +270,7 @@ public class HomeHub {
 
         @Override
         public void showGoodbye() {
-            printLine("All tucked away. See you soon! 👋");
+            printLine("Pantry secured. See you soon! 👋");
         }
 
         @Override

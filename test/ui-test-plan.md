@@ -1,87 +1,25 @@
 # HomeHub UI test plan
 
-### Session: 2026-08-30 (SE-EDU Java standard update)
-
-- Working-tree revision: uncommitted changes present.
-- Java-selection command: `JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/current`.
-- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
-- `javac --version`: `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: fresh temporary directories for UI-001 through UI-009; one shared temporary directory for UI-010.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
-- Overall result: PASS.
-- UI-001 through UI-009: PASS; exit status 0, empty stderr, and exact stdout.
-- UI-010 first launch and second launch: PASS; exit status 0, empty stderr, and exact stdout.
-- UI-010 persistence-file assertion: PASS; deleted deadline absent and saved records matched the expected content.
-- Complete console input/output record: [ui-test-session-2026-08-30.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-30.txt).
-
-### Test session record — 2026-08-30 (package organisation)
-
-- Java 25 compilation succeeded with `javac --release 25 -d <compiled-classes> $(find src/main/java -name '*.java')`.
-- The documented input blocks for UI-001 through UI-010 were executed in order using `homehub.HomeHub` from fresh temporary working directories where applicable.
-- All ten processes exited with status 0 and produced empty stderr. The complete captured console records were retained during this verification run; no UI behavior or expected output changed.
-
-### Test session record — 2026-08-31 (Checkstyle setup verification)
-
-- Working-tree revision: uncommitted changes present.
-- Java-selection command: `export JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu; export PATH="$JAVA_HOME/bin:$PATH"`.
-- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
-- `javac --version`: `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: fresh temporary directories for UI-001 through UI-009 and UI-011; one shared temporary directory for both UI-010 launches.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
-- Overall result: PASS.
-- UI-001 through UI-009 and UI-011: PASS; exit status 0, empty stderr, and exact stdout.
-- UI-010 first launch and second launch: PASS; exit status 0, empty stderr, and exact stdout.
-- UI-010 persistence-file assertions: PASS; the deleted deadline was absent and the saved records matched the expected content.
-- Complete console input/output record: [ui-test-session-2026-08-31.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31.txt).
-
-### Test session record — 2026-09-01 (release compliance audit)
-
-- Working-tree revision: `8d1fd8b`.
-- Java-selection command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu PATH=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin:$PATH`.
-- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
-- Compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: fresh temporary directories for UI-001 through UI-009 and UI-011 through UI-013; one shared temporary directory for both UI-010 launches.
-- Input notation: each `␠` marker was translated to one literal space as required by UI-008.
-- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
-- Overall result: PASS.
-- UI-001 through UI-009 and UI-011 through UI-013: PASS; exit status 0, empty stderr, and exact stdout.
-- UI-010 first launch and second launch: PASS; exit status 0, empty stderr, and exact stdout.
-- Complete console input/output record: [ui-test-session-2026-09-01-compliance-audit.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-09-01-compliance-audit.txt).
+This plan tests HomeHub through its command-line pantry inventory interface.
+Cases are run in order, each in a fresh temporary working directory. Output is
+compared exactly after normalising only CRLF to LF; stderr must be empty and
+each process must exit successfully.
 
 ## Scope and execution information
 
-This plan tests HomeHub through its command-line interface. Each test case is an
-end-to-end process test and must start with the stated task-file precondition.
-
-- Required Java version: JDK 25. Verify both `java --version` and `javac --version`; a run using another JDK is not a valid pass.
-- Compile command: `javac --release 25 -d <compiled-classes> $(find src/main/java -name '*.java')`
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <compiled-classes> homehub.HomeHub`
-- Input: provide every line shown in the test case, including a final newline after the last command.
-- Output comparison: for cases with an `Expected output` block, compare stdout exactly after normalising only CRLF to LF. Preserve all other whitespace, blank lines, and the final newline. Assertion-based cases must still retain the complete actual stdout and check every stated result.
-- Error output: stderr must be empty unless a test case explicitly says otherwise.
-- Process result: the process must exit with status 0 and must not exceed the test harness timeout.
-- Execution order: run test cases top to bottom and stop at the first failure.
-- Isolation: UI-001 through UI-009 each run in a fresh temporary working directory with no `data/homehub.txt`. UI-010 deliberately reuses one temporary directory across two launches.
-- Locale: use the JVM properties above so month names such as `Sept` are deterministic.
-
-`<compiled-classes>` is a placeholder, not a literal shell argument. The
-harness must create a temporary classes directory and a separate temporary
-working directory for each isolated case.
+- Required runtime: OpenJDK 25.0.3 (Zulu25.34+17-CA).
+- Java selection and UTF-8 locale: `env LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu PATH=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin:$PATH`.
+- Compile command: `javac -encoding UTF-8 --release 25 -d <compiled-classes> $(find src/main/java -name '*.java' ! -name 'Main.java' ! -name 'MainWindow.java' ! -name 'DialogBox.java' ! -name 'Launcher.java')`.
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <compiled-classes> homehub.HomeHub`.
+- Timeout: 20 seconds per process.
+- Input: provide every line in the case, including a final newline.
+- Persistence: cases use fresh temporary working directories with no initial pantry file.
 
 ## Test cases
 
 ### UI-001: Exit immediately
 
-Aim: Verify that HomeHub displays its welcome screen and exits with the expected goodbye message.
+Aim: Verify the welcome screen and pantry-specific goodbye message.
 
 Inputs:
 
@@ -94,21 +32,21 @@ Expected output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly. 🏡
+Let's keep the household fresh and accounted for. 🏡
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon! 👋
+Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
 
-### UI-002: Add and list a task
+### UI-002: Add and list pantry stock
 
-Aim: Verify that a todo task is added and displayed by the list command.
+Aim: Verify that an inventory entry records its quantity, unit, and expiry date.
 
 Inputs:
 
 ```text
-todo wash dishes
+add rice /qty 2 /unit kg /expires 2026-09-30
 list
 bye
 ```
@@ -118,40 +56,83 @@ Expected output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly. 🏡
+Let's keep the household fresh and accounted for. 🏡
 ____________________________________________________________
 ____________________________________________________________
-✨ On it. I've added this task:
-  [T][ ] wash dishes
-That makes 1 tasks on the board. 🎯
+✨ Added to the pantry:
+  [P] rice — 2 kg (expires: Sep 30 2026)
+There are 1 pantry entries tracked. 🧺
 ____________________________________________________________
 ____________________________________________________________
-📋 Moss's household board:
-1.[T][ ] wash dishes
+🧺 Moss's pantry inventory:
+1.[P] rice — 2 kg (expires: Sep 30 2026)
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon! 👋
+Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
 
-### UI-003: Interleave invalid and valid task commands
+### UI-003: Consume, restock, search, and expiry filter
 
-Aim: Verify that invalid todo, deadline, event, unknown-command, and task-number inputs do not modify the internal task list, while valid commands continue to add and complete the correct tasks.
+Aim: Verify the inventory-specific operations update quantities and return relevant views.
 
 Inputs:
 
 ```text
-todo
-todo mop floor
-deadline pay bill
-deadline pay bill /by 2026-09-01
-event meeting /from 2026-09-02
-event meeting /from 2026-09-02 14:00 /to 2026-09-02 16:00
-blah
-list
-mark 9
-list
+add rice /qty 2 /unit kg /expires 2026-09-30
+consume 1 1
+restock 1 3
+search RICE
+expiring 2026-10-01
+bye
+```
+
+Expected output:
+
+```text
+____________________________________________________________
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household fresh and accounted for. 🏡
+____________________________________________________________
+____________________________________________________________
+✨ Added to the pantry:
+  [P] rice — 2 kg (expires: Sep 30 2026)
+There are 1 pantry entries tracked. 🧺
+____________________________________________________________
+____________________________________________________________
+Used from the pantry: 📉
+  [P] rice — 1 kg (expires: Sep 30 2026)
+Quantity changed by 1.
+____________________________________________________________
+____________________________________________________________
+Restocked the pantry: 📈
+  [P] rice — 4 kg (expires: Sep 30 2026)
+Quantity changed by 3.
+____________________________________________________________
+____________________________________________________________
+🔎 Moss found these pantry entries:
+1.[P] rice — 4 kg (expires: Sep 30 2026)
+____________________________________________________________
+____________________________________________________________
+⏳ Pantry entries expiring by Oct 01 2026:
+1.[P] rice — 4 kg (expires: Sep 30 2026)
+____________________________________________________________
+____________________________________________________________
+Pantry secured. See you soon! 👋
+____________________________________________________________
+```
+
+### UI-004: Reject invalid pantry input
+
+Aim: Verify invalid inventory commands do not corrupt the pantry and legacy task commands are not supported.
+
+Inputs:
+
+```text
 mark 1
+add rice /qty 0 /unit kg /expires 2026-09-30
+add rice /qty 2 /unit kg /expires 2026-02-30
+consume 1 1
 list
 bye
 ```
@@ -161,605 +142,37 @@ Expected output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly. 🏡
+Let's keep the household fresh and accounted for. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Moss says: 💬 A todo description cannot be empty.
+Moss says: 💬 Moss does not recognise that command yet. Try add, list, search, restock, consume, expiring, lowstock, summary, move, delete, or help.
 ____________________________________________________________
 ____________________________________________________________
-✨ On it. I've added this task:
-  [T][ ] mop floor
-That makes 1 tasks on the board. 🎯
+Moss says: 💬 Quantity must be a positive whole number.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: 💬 Use: deadline <description> /by <date or time>.
+Moss says: 💬 Expiry dates must use yyyy-MM-dd format.
 ____________________________________________________________
 ____________________________________________________________
-✨ On it. I've added this task:
-  [D][ ] pay bill (by: Sept 01 2026)
-That makes 2 tasks on the board. 🎯
+Moss says: 💬 That pantry item number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: 💬 Use: event <description> /from <start> /to <end>.
+🧺 Moss's pantry inventory:
 ____________________________________________________________
 ____________________________________________________________
-✨ On it. I've added this task:
-  [E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-That makes 3 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 Moss does not recognise that command yet. Try todo, deadline, event, list, find, mark, unmark, delete, or help.
-____________________________________________________________
-____________________________________________________________
-📋 Moss's household board:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-📋 Moss's household board:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Done and dusted. This task is complete: ✅
-  [T][X] mop floor
-____________________________________________________________
-____________________________________________________________
-📋 Moss's household board:
-1.[T][X] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-All tucked away. See you soon! 👋
+Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
 
-### UI-004: Delete tasks and preserve remaining state
+### UI-005: Help and empty pantry
 
-Aim: Verify that deleting a valid task removes only that task, renumbers the remaining tasks, and that an invalid deletion does not change the list.
-
-Inputs:
-
-```text
-todo first task
-todo second task
-delete 1
-list
-delete 5
-list
-bye
-```
-
-Expected output:
-
-```text
-____________________________________________________________
-🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly. 🏡
-____________________________________________________________
-____________________________________________________________
-✨ On it. I've added this task:
-  [T][ ] first task
-That makes 1 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-✨ On it. I've added this task:
-  [T][ ] second task
-That makes 2 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-Cleared from the board: 🗑️
-  [T][ ] first task
-That leaves 1 tasks to keep tidy. ✨
-____________________________________________________________
-____________________________________________________________
-📋 Moss's household board:
-1.[T][ ] second task
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-📋 Moss's household board:
-1.[T][ ] second task
-____________________________________________________________
-____________________________________________________________
-All tucked away. See you soon! 👋
-____________________________________________________________
-```
-
-### UI-005: Reject invalid dates without corrupting task state
-
-Aim: Verify that invalid calendar dates, invalid date text, and invalid task numbers are rejected while valid tasks remain correctly ordered and can still be marked or deleted.
-
-Inputs:
-
-```text
-todo alpha
-deadline due /by 2026-02-30
-list
-deadline due /by 2026-02-28
-event outing /from nope /to 2026-03-02
-event outing /from 2026-03-01 /to 2026-03-02
-mark 3
-list
-delete 2
-delete 4
-list
-bye
-```
-
-Expected output:
-
-```text
-____________________________________________________________
-🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly. 🏡
-____________________________________________________________
-____________________________________________________________
-✨ On it. I've added this task:
-  [T][ ] alpha
-That makes 1 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-📋 Moss's household board:
-1.[T][ ] alpha
-____________________________________________________________
-____________________________________________________________
-✨ On it. I've added this task:
-  [D][ ] due (by: Feb 28 2026)
-That makes 2 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-✨ On it. I've added this task:
-  [E][ ] outing (from: Mar 01 2026 to: Mar 02 2026)
-That makes 3 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-Done and dusted. This task is complete: ✅
-  [E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
-____________________________________________________________
-____________________________________________________________
-📋 Moss's household board:
-1.[T][ ] alpha
-2.[D][ ] due (by: Feb 28 2026)
-3.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
-____________________________________________________________
-____________________________________________________________
-Cleared from the board: 🗑️
-  [D][ ] due (by: Feb 28 2026)
-That leaves 2 tasks to keep tidy. ✨
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-📋 Moss's household board:
-1.[T][ ] alpha
-2.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
-____________________________________________________________
-____________________________________________________________
-All tucked away. See you soon! 👋
-____________________________________________________________
-```
-
-### UI-006: Mark and unmark tasks
-
-Aim: Verify that `mark` changes a task to done, `unmark` changes it back to
-pending, and both operations preserve the task list.
-
-Inputs:
-
-```text
-todo wash dishes
-mark 1
-unmark 1
-list
-bye
-```
-
-Expected output:
-
-```text
-____________________________________________________________
-🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly. 🏡
-____________________________________________________________
-____________________________________________________________
-✨ On it. I've added this task:
-  [T][ ] wash dishes
-That makes 1 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-Done and dusted. This task is complete: ✅
-  [T][X] wash dishes
-____________________________________________________________
-____________________________________________________________
-Back on the board. This task is pending: 🔄
-  [T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-📋 Moss's household board:
-1.[T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-All tucked away. See you soon! 👋
-____________________________________________________________
-```
-
-### UI-007: Validate task-number arguments
-
-Aim: Verify that missing, non-numeric, zero, negative, and out-of-range task
-numbers are rejected without changing task state.
-
-Inputs:
-
-```text
-todo one task
-mark
-mark nope
-mark 0
-mark -1
-delete
-delete nope
-delete 0
-delete -1
-delete 9
-list
-bye
-```
-
-Expected output:
-
-```text
-____________________________________________________________
-🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly. 🏡
-____________________________________________________________
-____________________________________________________________
-✨ On it. I've added this task:
-  [T][ ] one task
-That makes 1 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 Please provide a task number after mark.
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 The task number must be a whole number.
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 Please provide a task number after delete.
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 The task number must be a whole number.
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-📋 Moss's household board:
-1.[T][ ] one task
-____________________________________________________________
-____________________________________________________________
-All tucked away. See you soon! 👋
-____________________________________________________________
-```
-
-### UI-008: Handle whitespace and empty input
-
-Aim: Verify that command detection and command handling agree on whitespace
-normalisation.
-
-Inputs:
-
-In the input notation below, `␠` represents one literal space and the first
-line is an empty line. The harness must translate the notation before running
-the case.
-
-```text
-
-␠␠todo spaced task␠␠
-␠␠list␠␠
-␠␠bye␠␠
-```
-
-Expected output:
-
-```text
-____________________________________________________________
-🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly. 🏡
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 Moss does not recognise that command yet. Try todo, deadline, event, list, find, mark, unmark, delete, or help.
-____________________________________________________________
-____________________________________________________________
-✨ On it. I've added this task:
-  [T][ ] spaced task
-That makes 1 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-📋 Moss's household board:
-1.[T][ ] spaced task
-____________________________________________________________
-____________________________________________________________
-All tucked away. See you soon! 👋
-____________________________________________________________
-```
-
-### UI-009: Validate command syntax and date/time boundaries
-
-Aim: Verify empty fields, duplicate markers, malformed date/time values, and
-the documented date format are handled consistently.
-
-Inputs:
-
-```text
-deadline /by 2026-10-15
-deadline review /by
-deadline review /by 2028-02-29
-deadline invalid-time /by 2026-03-01 25:00
-deadline invalid-format /by 2026-03-01T14:00
-event outing /from 2026-10-15 /to
-event outing /to 2026-10-16 /from 2026-10-15
-event outing /from 2026-10-15 /from 2026-10-16 /to 2026-10-17
-list
-bye
-```
-
-Expected output:
-
-```text
-____________________________________________________________
-🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly. 🏡
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 Use: deadline <description> /by <date or time>.
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 Use: deadline <description> /by <date or time>.
-____________________________________________________________
-____________________________________________________________
-✨ On it. I've added this task:
-  [D][ ] review (by: Feb 29 2028)
-That makes 1 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-📋 Moss's household board:
-1.[D][ ] review (by: Feb 29 2028)
-____________________________________________________________
-____________________________________________________________
-All tucked away. See you soon! 👋
-____________________________________________________________
-```
-
-### UI-010: Persist and reload tasks
-
-Aim: Verify that saved tasks, completion state, deletion, and date/time fields
-survive a new HomeHub process.
-
-Precondition: use one clean temporary working directory for both launches.
-
-Inputs:
-
-First launch:
-
-```text
-todo persisted
-deadline review /by 2026-10-15
-event meeting /from 2026-10-15 14:00 /to 2026-10-15 16:00
-mark 1
-delete 2
-bye
-```
-
-Inputs:
-
-Second launch:
-
-```text
-list
-bye
-```
-
-Expected output:
-
-First launch:
-
-```text
-____________________________________________________________
-🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly. 🏡
-____________________________________________________________
-____________________________________________________________
-✨ On it. I've added this task:
-  [T][ ] persisted
-That makes 1 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-✨ On it. I've added this task:
-  [D][ ] review (by: Oct 15 2026)
-That makes 2 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-✨ On it. I've added this task:
-  [E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
-That makes 3 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-Done and dusted. This task is complete: ✅
-  [T][X] persisted
-____________________________________________________________
-____________________________________________________________
-Cleared from the board: 🗑️
-  [D][ ] review (by: Oct 15 2026)
-That leaves 2 tasks to keep tidy. ✨
-____________________________________________________________
-____________________________________________________________
-All tucked away. See you soon! 👋
-____________________________________________________________
-```
-
-Expected output:
-
-Second launch:
-
-```text
-____________________________________________________________
-🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly. 🏡
-____________________________________________________________
-____________________________________________________________
-📋 Moss's household board:
-1.[T][X] persisted
-2.[E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-All tucked away. See you soon! 👋
-____________________________________________________________
-```
-
-Additional assertions:
-
-- The second launch lists exactly two tasks: the completed todo and the pending event, in their original relative order.
-- The deleted deadline is absent.
-- The saved file contains equivalent records, with no stale deleted task:
-
-```text
-T | 1 | persisted
-E | 0 | meeting | 2026-10-15 14:00 | 2026-10-15 16:00
-```
-
-- Both launches exit with status 0 and produce empty stderr.
-
-### UI-011: Find tasks by description keyword
-
-Aim: Verify that `find` displays matching tasks in their original order,
-searches case-insensitively within descriptions, leaves the task list unchanged,
-and reports invalid or unmatched searches clearly.
-
-Inputs:
-
-```text
-todo read book
-deadline return book /by 2026-06-06
-todo clean room
-mark 1
-mark 2
-find book
-find BOOK
-find movie
-find
-list
-bye
-```
-
-Expected output:
-
-```text
-____________________________________________________________
-🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly. 🏡
-____________________________________________________________
-____________________________________________________________
-✨ On it. I've added this task:
-  [T][ ] read book
-That makes 1 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-✨ On it. I've added this task:
-  [D][ ] return book (by: Jun 06 2026)
-That makes 2 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-✨ On it. I've added this task:
-  [T][ ] clean room
-That makes 3 tasks on the board. 🎯
-____________________________________________________________
-____________________________________________________________
-Done and dusted. This task is complete: ✅
-  [T][X] read book
-____________________________________________________________
-____________________________________________________________
-Done and dusted. This task is complete: ✅
-  [D][X] return book (by: Jun 06 2026)
-____________________________________________________________
-____________________________________________________________
-🔎 Moss found these matching tasks:
-1.[T][X] read book
-2.[D][X] return book (by: Jun 06 2026)
-____________________________________________________________
-____________________________________________________________
-🔎 Moss found these matching tasks:
-1.[T][X] read book
-2.[D][X] return book (by: Jun 06 2026)
-____________________________________________________________
-____________________________________________________________
-🫧 Moss couldn't find any tasks matching that keyword.
-____________________________________________________________
-____________________________________________________________
-Moss says: 💬 Please provide a keyword after find.
-____________________________________________________________
-____________________________________________________________
-📋 Moss's household board:
-1.[T][X] read book
-2.[D][X] return book (by: Jun 06 2026)
-3.[T][ ] clean room
-____________________________________________________________
-____________________________________________________________
-All tucked away. See you soon! 👋
-____________________________________________________________
-```
-
-### UI-012: Display command help
-
-Aim: Verify that `help` documents every supported command and the accepted
-date/time formats without changing task state.
+Aim: Verify that help documents every supported command and an empty pantry is displayed clearly.
 
 Inputs:
 
 ```text
 help
+list
 bye
 ```
 
@@ -768,46 +181,103 @@ Expected output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly. 🏡
+Let's keep the household fresh and accounted for. 🏡
 ____________________________________________________________
 ____________________________________________________________
-📖 Moss's command guide:
-todo <description> - add a household task.
-deadline <description> /by <date or time> - add a task with a deadline.
-event <description> /from <start> /to <end> - add a scheduled event.
-list - show every task on the household board.
-find <keyword> - find tasks by description.
-mark <task number> - mark a task as done.
-unmark <task number> - mark a task as pending.
-delete <task number> - remove a task from the board.
-help - show this command guide.
+📖 Moss's pantry guide:
+add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>] - add pantry stock.
+list - show every tracked pantry entry.
+search <keyword> - find pantry entries by name.
+restock <item number> <quantity> - increase available stock.
+consume <item number> <quantity> - reduce available stock.
+expiring <yyyy-MM-dd> - show entries expiring by a cutoff date.
+lowstock - show entries at or below their minimum stock level.
+summary - show a stock health summary.
+move <item number> <location> - move an entry to another storage location.
+delete <item number> - remove an entry from the pantry.
+help - show this pantry guide.
 bye - close HomeHub.
-Date/time format: yyyy-MM-dd or yyyy-MM-dd HH:mm.
-Examples: 2026-09-01 or 2026-09-01 14:30.
+Date format: yyyy-MM-dd. Example: 2026-09-30.
 ____________________________________________________________
 ____________________________________________________________
-All tucked away. See you soon! 👋
+🧺 Moss's pantry inventory:
+____________________________________________________________
+____________________________________________________________
+Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
 
-### UI-013: Reject malformed and contradictory task input
+### UI-006: Duplicate and no-match queries
 
-Aim: Verify that extra command arguments, duplicate tasks, unsafe text, and
-events whose end is not after their start are rejected without corrupting the
-task list.
+Aim: Verify duplicate entries are rejected and search/expiry queries handle both matches and misses.
 
 Inputs:
 
 ```text
-list now
-help now
-bye now
-todo wash dishes
-todo wash dishes
-todo invalid | task
-event meeting /from 2026-09-02 /to 2026-09-01
-event meeting /from 2026-09-02 /to 2026-09-02
-todo safe task
+add rice /qty 2 /unit kg /expires 2026-09-30
+add milk /qty 1 /unit carton /expires 2026-10-15
+add RICE /qty 5 /unit KG /expires 2026-09-30
+search RICE
+search tea
+expiring 2026-10-01
+expiring 2026-09-01
+bye
+```
+
+Expected output:
+
+```text
+____________________________________________________________
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household fresh and accounted for. 🏡
+____________________________________________________________
+____________________________________________________________
+✨ Added to the pantry:
+  [P] rice — 2 kg (expires: Sep 30 2026)
+There are 1 pantry entries tracked. 🧺
+____________________________________________________________
+____________________________________________________________
+✨ Added to the pantry:
+  [P] milk — 1 carton (expires: Oct 15 2026)
+There are 2 pantry entries tracked. 🧺
+____________________________________________________________
+____________________________________________________________
+Moss says: 💬 That pantry entry is already being tracked.
+____________________________________________________________
+____________________________________________________________
+🔎 Moss found these pantry entries:
+1.[P] rice — 2 kg (expires: Sep 30 2026)
+____________________________________________________________
+____________________________________________________________
+🫧 Moss couldn't find any pantry entries matching that keyword.
+____________________________________________________________
+____________________________________________________________
+⏳ Pantry entries expiring by Oct 01 2026:
+1.[P] rice — 2 kg (expires: Sep 30 2026)
+____________________________________________________________
+____________________________________________________________
+✅ Moss found no pantry entries expiring by Sep 01 2026.
+____________________________________________________________
+____________________________________________________________
+Pantry secured. See you soon! 👋
+____________________________________________________________
+```
+
+### UI-007: Quantity validation and deletion
+
+Aim: Verify stock cannot become negative, invalid item references do not mutate the pantry, and deletion renumbers entries.
+
+Inputs:
+
+```text
+add rice /qty 2 /unit kg /expires 2026-09-30
+add milk /qty 1 /unit carton /expires 2026-10-15
+consume 1 10
+restock 1 0
+restock 9 1
+consume x 1
+delete 1
+delete 5
 list
 bye
 ```
@@ -817,3535 +287,555 @@ Expected output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household running smoothly. 🏡
+Let's keep the household fresh and accounted for. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Moss says: 💬 The list command does not take arguments.
+✨ Added to the pantry:
+  [P] rice — 2 kg (expires: Sep 30 2026)
+There are 1 pantry entries tracked. 🧺
 ____________________________________________________________
 ____________________________________________________________
-Moss says: 💬 The help command does not take arguments.
+✨ Added to the pantry:
+  [P] milk — 1 carton (expires: Oct 15 2026)
+There are 2 pantry entries tracked. 🧺
 ____________________________________________________________
 ____________________________________________________________
-Moss says: 💬 The bye command does not take arguments.
+Moss says: 💬 You cannot consume more than the available stock.
 ____________________________________________________________
 ____________________________________________________________
-✨ On it. I've added this task:
-  [T][ ] wash dishes
-That makes 1 tasks on the board. 🎯
+Moss says: 💬 Quantity must be a positive whole number.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: 💬 That task is already on the board.
+Moss says: 💬 That pantry item number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: 💬 A todo description cannot contain the '|' character.
+Moss says: 💬 Item number and quantity must be whole numbers.
 ____________________________________________________________
 ____________________________________________________________
-Moss says: 💬 An event must end after it starts.
+Removed from the pantry: 🗑️
+  [P] rice — 2 kg (expires: Sep 30 2026)
+That leaves 1 pantry entries tracked. ✨
 ____________________________________________________________
 ____________________________________________________________
-Moss says: 💬 An event must end after it starts.
+Moss says: 💬 That pantry item number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-✨ On it. I've added this task:
-  [T][ ] safe task
-That makes 2 tasks on the board. 🎯
+🧺 Moss's pantry inventory:
+1.[P] milk — 1 carton (expires: Oct 15 2026)
 ____________________________________________________________
 ____________________________________________________________
-📋 Moss's household board:
-1.[T][ ] wash dishes
-2.[T][ ] safe task
-____________________________________________________________
-____________________________________________________________
-All tucked away. See you soon! 👋
+Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
 
-## Coverage matrix
+### UI-008: Syntax and missing-argument errors
 
-| Behavior | Covered by |
-| --- | --- |
-| Startup, immediate exit, separators | UI-001 |
-| Add and list todo | UI-002 |
-| Invalid creation syntax and unknown command | UI-003, UI-009 |
-| Valid deadline and event creation | UI-003, UI-005 |
-| Invalid calendar date and invalid date text | UI-005, UI-009 |
-| Mark task | UI-003, UI-005, UI-006 |
-| Unmark task | UI-006 |
-| Delete and renumber tasks | UI-004, UI-005 |
-| Missing, malformed, and out-of-range indices | UI-007 |
-| Empty and whitespace-padded input | UI-008 |
-| Persistence and reload | UI-010 |
-| Find tasks by case-insensitive description keyword | UI-011 |
-| Find no-match and missing-keyword behavior | UI-011 |
-| Display command usage and date/time formats | UI-012 |
-| Reject malformed, duplicate, and contradictory task input | UI-013 |
+Aim: Verify malformed add markers and missing arguments produce actionable errors without changing inventory.
 
-## Test-case pass criteria
-
-For every case, record the exit status, stderr result, timeout result, and the
-stdout comparison result. For cases with an exact-output block, include the
-complete actual stdout in the execution report or save it as an attached test
-artifact. For assertion-based cases, report every failed assertion and the
-first differing output line.
-
-## Test execution record
-
-### Session: 2026-09-01 (find no-match message final verification)
-
-- Working-tree revision: uncommitted changes present.
-- Java-selection command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu PATH=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin:$PATH`.
-- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
-- Locale JVM properties: `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: UI-001 through UI-009 and UI-011 through UI-013 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
-- UI-001 through UI-013: PASS; all 13 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
-- Complete console input/output record: [ui-test-session-2026-09-01-find-no-match-final.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-09-01-find-no-match-final.txt).
-
-### Session: 2026-09-01 (find no-match message verification)
-
-- Working-tree revision: uncommitted changes present.
-- Java-selection command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu PATH=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin:$PATH`.
-- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
-- Locale JVM properties: `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: UI-001 through UI-009 and UI-011 through UI-013 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
-- UI-001 through UI-013: PASS; all 13 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
-- Complete console input/output record: [ui-test-session-2026-09-01-find-no-match.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-09-01-find-no-match.txt).
-
-### Session: 2026-09-01 (Moss emoji message verification)
-
-- Working-tree revision: uncommitted changes present.
-- Java-selection command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu PATH=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin:$PATH`.
-- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
-- Locale JVM properties: `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: UI-001 through UI-009 and UI-011 through UI-013 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
-- UI-001 through UI-013: PASS; all 13 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
-- Complete console input/output record: [ui-test-session-2026-09-01-emojis.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-09-01-emojis.txt).
-
-Keep the test specification above stable and record each run separately using
-the following template. Do not record a run as PASS if it used a different JDK,
-locale, working-directory setup, or input contract.
-
-### Session: 2026-09-01 (robust error handling final regression after model validation)
-
-- Working-tree base revision: `9762f3c`.
-- Java selection: `/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin/java` and `javac`.
-- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
-- CLI regression compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
-- CLI launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: UI-001 through UI-009 and UI-011 through UI-013 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
-- UI-008 notation was translated so each `␠` marker represented one literal space, as required by the test case.
-- Timeout: 20 seconds per process.
-- Overall result: PASS; all 14 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
-- Complete console input/output record: [ui-test-session-2026-09-01-errors-final.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-09-01-errors-final.txt).
-
-### Session: 2026-09-01 (robust error handling regression)
-
-- Working-tree base revision: `9762f3c`.
-- Java selection: `/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin/java` and `javac`.
-- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
-- Verification command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu ./gradlew check`.
-- CLI regression compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
-- CLI launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: UI-001 through UI-009 and UI-011 through UI-013 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
-- Timeout: 20 seconds per process.
-- Overall result: PASS; all 14 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
-- UI-013 confirmed clear errors for extra arguments, duplicate tasks, unsafe text, and non-increasing event ranges.
-- Complete console input/output record: [ui-test-session-2026-09-01-errors.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-09-01-errors.txt).
-
-### Session: 2026-08-31 (help command regression)
-
-- Working-tree base revision: `f8ebb3d`.
-- Java selection: `/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin/java` and `javac`.
-- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
-- Verification command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu ./gradlew check`.
-- CLI regression compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
-- CLI launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: UI-001 through UI-009, UI-011, and UI-012 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
-- Timeout: 20 seconds per process.
-- Overall result: PASS; all 13 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
-- UI-012 confirmed that `help` lists every command and both supported date/time formats.
-- Complete console input/output record: [ui-test-session-2026-08-31-help-command.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-help-command.txt).
-
-### Session: 2026-08-31 (Moss personality regression)
-
-- Working-tree base revision: `d5eb45a`.
-- Java selection: `/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin/java` and `javac`.
-- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
-- Verification command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu ./gradlew check`.
-- CLI regression compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
-- CLI launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: UI-001 through UI-009 and UI-011 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
-- Timeout: 20 seconds per process.
-- Overall result: PASS; all 12 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
-- The CLI and GUI now use the Moss name and personality wording consistently.
-- Complete console input/output record: [ui-test-session-2026-08-31-moss-personality.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-moss-personality.txt).
-
-### Session: YYYY-MM-DD (short description)
-
-- Commit or worktree revision:
-- OS and architecture:
-- Java vendor and `java --version`:
-- `javac --version`:
-- Locale JVM properties:
-- Compile command:
-- Launch command:
-- Working-directory setup and persistence-file precondition:
-- Timeout:
-- Output comparison policy:
-- Overall result:
-
-For each executed case, record:
-
-1. Test-case ID and input.
-2. Exit status and timeout result.
-3. Whether stderr was empty.
-4. Exact-output or assertion result.
-5. The complete console input/output record, or a link to the captured artifact.
-6. If failed, the first differing line and a unified diff.
-
-### Session: 2026-08-31 (Java assertions verification)
-
-- Commit or worktree revision: `73f14b4` with the assertion changes uncommitted.
-- OS and architecture: Darwin 23.6.0 x86_64.
-- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
-- `javac --version`: `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java -ea -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup and persistence-file precondition: fresh temporary directories for UI-001 through UI-009 and UI-011; one shared fresh temporary directory for both UI-010 launches.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
-- Overall result: PASS; all UI-001 through UI-011 cases passed with assertions enabled.
-- Complete console input/output record: [ui-test-session-2026-08-31-assertions.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-assertions.txt).
-
-### Session: 2026-08-31 (documented UI verification after assertion changes)
-
-- Commit or worktree revision: `73f14b4` with the assertion changes uncommitted.
-- OS and architecture: Darwin 23.6.0 x86_64.
-- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
-- `javac --version`: `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup and persistence-file precondition: fresh temporary directories for UI-001 through UI-009 and UI-011; one shared fresh temporary directory for both UI-010 launches.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
-- Overall result: PASS; all UI-001 through UI-011 cases passed in documented order.
-- Complete console input/output record: [ui-test-session-2026-08-31-documentation.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-documentation.txt).
-
-### Session: 2026-08-31 (UI output-hook refactor verification)
-
-- Commit or worktree revision: `3a5870b` with the UI output-hook refactor uncommitted.
-- OS and architecture: Darwin 23.6.0 x86_64.
-- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
-- `javac --version`: `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java [-ea] -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup and persistence-file precondition: fresh temporary directories for UI-001 through UI-009 and UI-011; one shared fresh temporary directory for both UI-010 launches. The UI-008 `␠` notation was translated to literal spaces as specified.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; terminal newline included; all other stdout compared exactly; stderr required to be empty.
-- Overall result: PASS; all 12 documented launches passed in order both with assertions disabled and with assertions enabled.
-- Complete documented console input/output record: [ui-test-session-2026-08-31-ui-output-hook-documentation.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-ui-output-hook-documentation.txt).
-- Complete assertions-enabled console input/output record: [ui-test-session-2026-08-31-ui-output-hook-assertions.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-ui-output-hook-assertions.txt).
-
-### Session: 2026-08-31 (task-command marker refactor verification)
-
-- Commit or worktree revision: `5784704` with the task-command marker refactor uncommitted.
-- OS and architecture: Darwin 23.6.0 x86_64.
-- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
-- `javac --version`: `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java [-ea] -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup and persistence-file precondition: fresh temporary directories for UI-001 through UI-009 and UI-011; one shared fresh temporary directory for both UI-010 launches. The UI-008 `␠` notation was translated to literal spaces as specified.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; terminal newline included; all other stdout compared exactly; stderr required to be empty.
-- Overall result: PASS; all 12 documented launches passed in order both with assertions disabled and with assertions enabled.
-- Complete documented console input/output record: [ui-test-session-2026-08-31-task-command-markers-documentation.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-task-command-markers-documentation.txt).
-- Complete assertions-enabled console input/output record: [ui-test-session-2026-08-31-task-command-markers-assertions.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-task-command-markers-assertions.txt).
-
-### Session: 2026-08-31 (storage-record parsing cleanup verification)
-
-- Commit or worktree revision: `7630065` with the storage-record parsing cleanup uncommitted.
-- OS and architecture: Darwin 23.6.0 x86_64.
-- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
-- `javac --version`: `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java [-ea] -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup and persistence-file precondition: fresh temporary directories for UI-001 through UI-009 and UI-011; one shared fresh temporary directory for both UI-010 launches. The UI-008 `␠` notation was translated to literal spaces as specified.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; terminal newline included; all other stdout compared exactly; stderr required to be empty.
-- Overall result: PASS; all 12 documented launches passed in order both with assertions disabled and with assertions enabled.
-- Complete documented console input/output record: [ui-test-session-2026-08-31-storage-records-documentation.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-storage-records-documentation.txt).
-- Complete assertions-enabled console input/output record: [ui-test-session-2026-08-31-storage-records-assertions.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-storage-records-assertions.txt).
-
-### Session: 2026-08-31 (command-type enum refactor verification)
-
-- Commit or worktree revision: `b359baf` with the command-type enum refactor uncommitted.
-- OS and architecture: Darwin 23.6.0 x86_64.
-- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
-- `javac --version`: `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java [-ea] -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup and persistence-file precondition: fresh temporary directories for UI-001 through UI-009 and UI-011; one shared fresh temporary directory for both UI-010 launches. The UI-008 `␠` notation was translated to literal spaces as specified.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; terminal newline included; all other stdout compared exactly; stderr required to be empty.
-- Overall result: PASS; all 12 documented launches passed in order both with assertions disabled and with assertions enabled.
-- Complete documented console input/output record: [ui-test-session-2026-08-31-command-type-enum-documentation.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-command-type-enum-documentation.txt).
-- Complete assertions-enabled console input/output record: [ui-test-session-2026-08-31-command-type-enum-assertions.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-command-type-enum-assertions.txt).
-
-### Session: 2026-08-30 (test-ui preflight)
-
-- Working-tree revision: uncommitted changes present.
-- Java-selection command: `sdk use java 25.0.3.fx-zulu`
-- Java-selection result: BLOCKED; `sdk` was not available.
-- Installed Java: `java 17.0.14`, `javac 17.0.14`.
-- Test-plan validation result: BLOCKED; UI-006 through UI-010 use `Expected results` assertions rather than complete fenced `Expected output` blocks required by the test-ui contract.
-- Test cases executed: none.
-- Console input/output: none; no HomeHub process was launched.
-- Overall result: BLOCKED before compilation.
-
-### Session: 2026-08-30 (test-ui run)
-
-- Working-tree revision: uncommitted changes present.
-- Java-selection command: `source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use java 25.0.3.fx-zulu`.
-- Java version: OpenJDK 25.0.3; `javac 25.0.3`.
-- Compile command: `javac --release 25 -d <temporary-classes> src/main/java/*.java`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> HomeHub`.
-- Working-directory setup: each executed case used a fresh temporary working directory with no `data/homehub.txt`.
-- Output comparison: raw stdout and stderr were captured separately; stdout was compared byte-for-byte with no normalisation.
-- Execution policy: documented order, stop at first failure.
-- Overall result: FAIL at UI-003; UI-004 through UI-010 were not run.
-
-#### UI-001: PASS
-
-Console input:
+Inputs:
 
 ```text
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-002: PASS
-
-Console input:
-
-```text
-todo wash dishes
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] wash dishes
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-003: FAIL
-
-Console input:
-
-```text
-todo
-todo mop floor
-deadline pay bill
-deadline pay bill /by 2026-09-01
-event meeting /from 2026-09-02
-event meeting /from 2026-09-02 14:00 /to 2026-09-02 16:00
-blah
-list
-mark 9
-list
-mark 1
-list
-bye
-```
-
-Actual console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! A todo description cannot be empty.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] mop floor
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] pay bill (by: Sept 01 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-Now you have 3 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, or delete.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [T][X] mop floor
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][X] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Expected console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! A todo description cannot be empty.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] mop floor
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] pay bill (by: Sept 01 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-Now you have 3 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [T][X] mop floor
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][X] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. First difference: the unknown-command help
-message omits `unmark` in actual output.
-
-### Session: 2026-08-30 (post-help-text fix test-ui run)
-
-- Working-tree revision: uncommitted changes present.
-- Java-selection command: `source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use java 25.0.3.fx-zulu`.
-- Java version: OpenJDK 25.0.3; `javac 25.0.3`.
-- Compile command: `javac --release 25 -d <temporary-classes> src/main/java/*.java`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> HomeHub`.
-- Working-directory setup: each executed case used a fresh temporary working directory with no `data/homehub.txt`.
-- Output comparison: raw stdout and stderr were captured separately; stdout was compared byte-for-byte with no normalisation.
-- Execution policy: documented order, stop at first failure.
-- Overall result: FAIL at UI-008; UI-009 and UI-010 were not run.
-
-#### UI-001: PASS
-
-Console input:
-
-```text
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-002: PASS
-
-Console input:
-
-```text
-todo wash dishes
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] wash dishes
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-003: PASS
-
-Console input:
-
-```text
-todo
-todo mop floor
-deadline pay bill
-deadline pay bill /by 2026-09-01
-event meeting /from 2026-09-02
-event meeting /from 2026-09-02 14:00 /to 2026-09-02 16:00
-blah
-list
-mark 9
-list
-mark 1
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! A todo description cannot be empty.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] mop floor
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] pay bill (by: Sept 01 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-Now you have 3 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [T][X] mop floor
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][X] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-004: PASS
-
-Console input:
-
-```text
-todo first task
-todo second task
-delete 1
-list
-delete 5
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] first task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] second task
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Noted. I've removed this task:
-  [T][ ] first task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] second task
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] second task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-005: PASS
-
-Console input:
-
-```text
-todo alpha
-deadline due /by 2026-02-30
-list
-deadline due /by 2026-02-28
-event outing /from nope /to 2026-03-02
-event outing /from 2026-03-01 /to 2026-03-02
-mark 3
-list
-delete 2
-delete 4
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] alpha
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] alpha
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] due (by: Feb 28 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [E][ ] outing (from: Mar 01 2026 to: Mar 02 2026)
-Now you have 3 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] alpha
-2.[D][ ] due (by: Feb 28 2026)
-3.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
-____________________________________________________________
-____________________________________________________________
-Noted. I've removed this task:
-  [D][ ] due (by: Feb 28 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] alpha
-2.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-006: PASS
-
-Console input:
-
-```text
-todo wash dishes
-mark 1
-unmark 1
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] wash dishes
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [T][X] wash dishes
-____________________________________________________________
-____________________________________________________________
-I've marked this household task as not done:
-  [T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-007: PASS
-
-Console input:
-
-```text
-todo one task
-mark
-mark nope
-mark 0
-mark -1
+add rice /qty 2 /unit kg
+add rice /qty 2 /expires 2026-09-30 /unit kg
+search
+expiring
 delete
-delete nope
-delete 0
-delete -1
-delete 9
 list
 bye
 ```
 
-Console output:
+Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household fresh and accounted for. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
-  [T][ ] one task
-Now you have 1 tasks in the list.
+Moss says: 💬 Use: add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>].
 ____________________________________________________________
 ____________________________________________________________
-Oops! Please provide a task number after mark.
+Moss says: 💬 Use: add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>].
 ____________________________________________________________
 ____________________________________________________________
-Oops! The task number must be a whole number.
+Moss says: 💬 Please provide a keyword after search.
 ____________________________________________________________
 ____________________________________________________________
-Oops! That task number does not exist.
+Moss says: 💬 Please provide a cutoff date after expiring.
 ____________________________________________________________
 ____________________________________________________________
-Oops! That task number does not exist.
+Moss says: 💬 Please provide an item number after delete.
 ____________________________________________________________
 ____________________________________________________________
-Oops! Please provide a task number after delete.
+🧺 Moss's pantry inventory:
 ____________________________________________________________
 ____________________________________________________________
-Oops! The task number must be a whole number.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] one task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
+Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
 
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+### UI-009: Metadata, low-stock alert, summary, and relocation
 
-#### UI-008: FAIL
+Aim: Verify that optional item metadata drives low-stock reporting, summary counts, and location changes.
 
-Console input notation:
-
-```text
-
-␠␠todo spaced task␠␠
-␠␠list␠␠
-␠␠bye␠␠
-```
-
-The `␠` markers were translated to literal spaces before execution.
-
-Actual console output:
+Inputs:
 
 ```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] do spaced task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] do spaced task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Expected console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] spaced task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] spaced task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. First difference: the task description is
-`do spaced task` instead of `spaced task`.
-
-### Session: 2026-08-30 (test-ui rerun)
-
-- Working-tree revision: uncommitted changes present.
-- Java-selection command: `source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use java 25.0.3.fx-zulu`.
-- Java version: OpenJDK 25.0.3; `javac 25.0.3`.
-- Compile command: `javac --release 25 -d <temporary-classes> src/main/java/*.java`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> HomeHub`.
-- Working-directory setup: each case used a fresh temporary working directory with no `data/homehub.txt`.
-- Output comparison: raw stdout and stderr were captured separately; stdout was compared byte-for-byte with no normalisation.
-- Execution policy: documented order, stop at first failure.
-- Overall result: FAIL at UI-008; UI-009 and UI-010 were not run.
-
-UI-001 through UI-007 were executed with the documented inputs and produced
-the same complete console records as the immediately preceding post-help-text
-fix session above. All exited with status 0, produced empty stderr, and passed
-exact stdout comparison.
-
-#### UI-008: FAIL
-
-Console input notation:
-
-```text
-
-␠␠todo spaced task␠␠
-␠␠list␠␠
-␠␠bye␠␠
-```
-
-The `␠` markers were translated to literal spaces before execution.
-
-Actual console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] do spaced task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] do spaced task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Expected console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] spaced task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] spaced task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. First difference: the task description is
-`do spaced task` instead of `spaced task`.
-
-### Session: 2026-08-30 (full test-ui run after all fixes)
-
-- Working-tree revision: uncommitted changes present.
-- Java-selection command: `source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk use java 25.0.3.fx-zulu`.
-- Java version: OpenJDK 25.0.3; `javac 25.0.3`.
-- Compile command: `javac --release 25 -d <temporary-classes> src/main/java/*.java`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> HomeHub`.
-- Working-directory setup: UI-001 through UI-009 used fresh temporary directories; UI-010 reused one fresh directory across both launches.
-- Output comparison: raw stdout and stderr were captured separately; stdout was compared byte-for-byte with no normalisation.
-- Execution policy: documented order, stop at first failure.
-- Overall result: PASS; UI-001 through UI-010 passed, with empty stderr and exit status 0.
-
-Issues found and resolved during testing:
-
-1. UI-003: the unknown-command help omitted the supported `unmark` command. Fixed in `src/main/java/HomeHub.java`.
-2. UI-008: leading whitespace was classified correctly but then removed from the wrong position during command handling, producing `do spaced task`. Fixed by trimming each input line before dispatch in `src/main/java/HomeHub.java`.
-3. UI-009: the parser accepted an ISO `T` separator even though the documented format requires `yyyy-MM-dd HH:mm`. Fixed by removing the undocumented ISO parsing branch in `src/main/java/Task.java`.
-
-UI-001 through UI-007 produced the same complete console records as the
-preceding successful records above. UI-008, UI-009, and UI-010 produced the
-following complete outputs.
-
-#### UI-008: PASS
-
-Console input notation:
-
-```text
-
-␠␠todo spaced task␠␠
-␠␠list␠␠
-␠␠bye␠␠
-```
-
-The `␠` markers were translated to literal spaces before execution.
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] spaced task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] spaced task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-009: PASS
-
-Console input:
-
-```text
-deadline /by 2026-10-15
-deadline review /by
-deadline review /by 2028-02-29
-deadline invalid-time /by 2026-03-01 25:00
-deadline invalid-format /by 2026-03-01T14:00
-event outing /from 2026-10-15 /to
-event outing /to 2026-10-16 /from 2026-10-15
-event outing /from 2026-10-15 /from 2026-10-16 /to 2026-10-17
+add flour /qty 1 /unit bag /expires 2099-12-01 /category baking /location cabinet /min 2
+lowstock
+summary
+move 1 freezer
 list
 bye
 ```
 
-Console output:
+Expected output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household fresh and accounted for. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
+✨ Added to the pantry:
+  [P] flour — 1 bag (expires: Dec 01 2099; category: baking; location: cabinet; min: 2)
+There are 1 pantry entries tracked. 🧺
 ____________________________________________________________
 ____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
+📉 Low-stock pantry entries:
+1.[P] flour — 1 bag (expires: Dec 01 2099; category: baking; location: cabinet; min: 2)
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
-  [D][ ] review (by: Feb 29 2028)
-Now you have 1 tasks in the list.
+📊 Pantry summary:
+Entries tracked: 1
+Low-stock entries: 1
+Expired entries: 0
 ____________________________________________________________
 ____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+Moved within the home: 🚚
+  [P] flour — 1 bag (expires: Dec 01 2099; category: baking; location: freezer; min: 2)
 ____________________________________________________________
 ____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+🧺 Moss's pantry inventory:
+1.[P] flour — 1 bag (expires: Dec 01 2099; category: baking; location: freezer; min: 2)
 ____________________________________________________________
 ____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[D][ ] review (by: Feb 29 2028)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
+Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
 
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+## Test session record — 2026-09-17
 
-#### UI-010: PASS
+- Java runtime: OpenJDK 25.0.3 (Zulu25.34+17-CA).
+- Compile command: `javac -encoding UTF-8 --release 25 -d <compiled-classes> $(find src/main/java -name '*.java' ! -name 'Main.java' ! -name 'MainWindow.java' ! -name 'DialogBox.java' ! -name 'Launcher.java')`.
+- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <compiled-classes> homehub.HomeHub`.
+- Working-directory setup: a fresh temporary directory for each case.
+- Output comparison: exact stdout after CRLF-to-LF normalisation; stderr was empty.
+- Overall result: PASS. UI-001 through UI-009 passed with exit status 0.
 
-First-launch console input:
+### UI-001 console record
+
+Inputs:
 
 ```text
-todo persisted
-deadline review /by 2026-10-15
-event meeting /from 2026-10-15 14:00 /to 2026-10-15 16:00
-mark 1
-delete 2
 bye
 ```
 
-First-launch console output:
+Actual output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household fresh and accounted for. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
-  [T][ ] persisted
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] review (by: Oct 15 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
-Now you have 3 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [T][X] persisted
-____________________________________________________________
-____________________________________________________________
-Noted. I've removed this task:
-  [D][ ] review (by: Oct 15 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
+Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
 
-Second-launch console input:
+Result: PASS; stderr empty; exit status 0.
+
+### UI-005 console record
+
+Inputs:
 
 ```text
+help
 list
 bye
 ```
 
-Second-launch console output:
+Actual output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household fresh and accounted for. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][X] persisted
-2.[E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
+📖 Moss's pantry guide:
+add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>] - add pantry stock.
+list - show every tracked pantry entry.
+search <keyword> - find pantry entries by name.
+restock <item number> <quantity> - increase available stock.
+consume <item number> <quantity> - reduce available stock.
+expiring <yyyy-MM-dd> - show entries expiring by a cutoff date.
+lowstock - show entries at or below their minimum stock level.
+summary - show a stock health summary.
+move <item number> <location> - move an entry to another storage location.
+delete <item number> - remove an entry from the pantry.
+help - show this pantry guide.
+bye - close HomeHub.
+Date format: yyyy-MM-dd. Example: 2026-09-30.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+🧺 Moss's pantry inventory:
+____________________________________________________________
+____________________________________________________________
+Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
 
-Exit status: 0 for both launches. Stderr: empty for both launches. Exact
-stdout comparison: PASS. Saved file verification:
+Result: PASS; stderr empty; exit status 0.
+
+### UI-006 console record
+
+Inputs:
 
 ```text
-T | 1 | persisted
-E | 0 | meeting | 2026-10-15 14:00 | 2026-10-15 16:00
-```
-
-### Session: 2026-08-31 (JavaFX Hello World implementation)
-
-- Commit or worktree revision: uncommitted changes present.
-- OS and architecture: macOS on Apple Silicon.
-- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
-- `javac --version`: `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup and persistence-file precondition: fresh temporary directories for UI-001 through UI-009 and UI-011 with no `data/homehub.txt`; one shared clean temporary directory for both UI-010 launches. The UI-008 `␠` notation was translated to literal spaces as specified.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
-- Overall result: PASS; all 12 documented launches passed with exit status 0 and empty stderr.
-- UI-001 through UI-009 and UI-011: documented inputs, exact outputs, and statuses are captured in [ui-test-session-2026-08-31-javafx-hello-world.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-javafx-hello-world.txt).
-- UI-010 first and second launches: documented inputs, exact outputs, statuses, and saved-file assertion are captured in the same artifact.
-- No failures occurred, so there is no first-difference report.
-
-### Session: 2026-08-31 (JavaFX Part 2 GUI implementation)
-
-- Commit or worktree revision: uncommitted changes present.
-- OS and architecture: macOS on Apple Silicon.
-- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
-- `javac --version`: `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup and persistence-file precondition: fresh temporary directories for UI-001 through UI-009 and UI-011 with no `data/homehub.txt`; one shared clean temporary directory for both UI-010 launches. The UI-008 `␠` notation was translated to literal spaces as specified.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
-- Overall result: PASS; all 12 documented launches passed with exit status 0 and empty stderr.
-- UI-001 through UI-009 and UI-011: documented inputs, exact outputs, and statuses are captured in [ui-test-session-2026-08-31-javafx-part2.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-javafx-part2.txt).
-- UI-010 first and second launches: documented inputs, exact outputs, statuses, and saved-file assertion are captured in the same artifact.
-- No failures occurred, so there is no first-difference report.
-
-### Session: 2026-08-31 (JavaFX Part 3 interaction implementation)
-
-- Commit or worktree revision: uncommitted changes present.
-- OS and architecture: macOS on Apple Silicon.
-- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
-- `javac --version`: `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup and persistence-file precondition: fresh temporary directories for UI-001 through UI-009 and UI-011 with no `data/homehub.txt`; one shared clean temporary directory for both UI-010 launches. The UI-008 `␠` notation was translated to literal spaces as specified.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
-- Overall result: PASS; all 12 documented launches passed with exit status 0 and empty stderr.
-- UI-001 through UI-009 and UI-011: documented inputs, exact outputs, and statuses are captured in [ui-test-session-2026-08-31-javafx-part3.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-javafx-part3.txt).
-- UI-010 first and second launches: documented inputs, exact outputs, statuses, and saved-file assertion are captured in the same artifact.
-- No failures occurred, so there is no first-difference report.
-
-### Session: 2026-08-31 (JavaFX Part 4 FXML implementation)
-
-- Commit or worktree revision: uncommitted changes present.
-- OS and architecture: macOS on Apple Silicon.
-- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
-- `javac --version`: `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup and persistence-file precondition: fresh temporary directories for UI-001 through UI-009 and UI-011 with no `data/homehub.txt`; one shared clean temporary directory for both UI-010 launches. The UI-008 `␠` notation was translated to literal spaces as specified.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
-- Overall result: PASS; all 12 documented launches passed with exit status 0 and empty stderr.
-- UI-001 through UI-009 and UI-011: documented inputs, exact outputs, and statuses are captured in [ui-test-session-2026-08-31-javafx-part4.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-javafx-part4.txt).
-- UI-010 first and second launches: documented inputs, exact outputs, statuses, and saved-file assertion are captured in the same artifact.
-- Manual GUI launch: `./gradlew run` reached `:run` without an FXML startup exception; the process was stopped after startup because the GUI remains open.
-- No failures occurred, so there is no first-difference report.
-
-### Session: 2026-08-31 (JavaFX Part 5 styling implementation)
-
-- Commit or worktree revision: uncommitted changes present.
-- OS and architecture: macOS on Apple Silicon.
-- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
-- `javac --version`: `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup and persistence-file precondition: fresh temporary directories for UI-001 through UI-009 and UI-011 with no `data/homehub.txt`; one shared clean temporary directory for both UI-010 launches. The UI-008 `␠` notation was translated to literal spaces as specified.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
-- Overall result: PASS; all 12 documented launches passed with exit status 0 and empty stderr.
-- UI-001 through UI-009 and UI-011: documented inputs, exact outputs, and statuses are captured in [ui-test-session-2026-08-31-javafx-part5.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-javafx-part5.txt).
-- UI-010 first and second launches: documented inputs, exact outputs, statuses, and saved-file assertion are captured in the same artifact.
-- Manual GUI launch: `./gradlew run` reached `:run` without a CSS/FXML startup exception; the process was stopped after startup because the GUI remains open.
-- No failures occurred, so there is no first-difference report.
-
-## Historical execution records (superseded)
-
-The records below are retained for traceability only. They were run under Java
-17 and include inputs such as `Friday` and `2pm`, which are not part of the
-current documented date format. They must not be used as evidence for the
-current plan; future runs belong in the template above.
-
-### Session: 2026-08-30 (interleaved edge cases)
-
-- Java requested: 25 (`sdk use java 25.0.3.fx-zulu` was unavailable; Java 17.0.14 was used)
-- Compile command: `javac -d <temporary-directory> src/main/java/*.java`
-- Launch command for each case: `java -cp <temporary-directory> HomeHub`
-- Each case ran from a clean temporary working directory; stdout and stderr were captured separately and stdout was compared exactly with its expected-output block.
-- UI-001, UI-002, UI-003, UI-004, and UI-005: PASS; all exited with status 0 and produced no stderr.
-- UI-005 input: `todo alpha`, `deadline due /by 2026-02-30`, `list`, `deadline due /by 2026-02-28`, `event outing /from nope /to 2026-03-02`, `event outing /from 2026-03-01 /to 2026-03-02`, `mark 3`, `list`, `delete 2`, `delete 4`, `list`, `bye`.
-- UI-005 actual output: identical to the complete `Expected output` block above; invalid dates and indices left the internal task state unchanged.
-
-### Session: 2026-08-30 (dates and times)
-
-- Java requested: 25 (`sdk use java 25.0.3.fx-zulu` was unavailable; Java 17.0.14 was used)
-- Compile command: `javac -d <temporary-directory> src/main/java/*.java`
-- Launch command: `java -cp <temporary-directory> HomeHub`
-- UI-001 through UI-004: PASS; exact stdout matched the corresponding expected output, stderr was empty, and all processes exited with status 0.
-- Additional date/time input: `deadline report /by 2019-10-15`, `event meeting /from 2019-10-15 14:00 /to 2019-10-15 16:00`, `list`, `bye`: PASS.
-- Reload verification: started HomeHub again with `list`, `bye`; both parsed tasks were restored with formatted dates/times.
-
-### Session: 2026-08-30
-
-- Java requested: 25 (`sdk use java 25.0.3.fx-zulu` was unavailable; Java 17.0.14 was used)
-- Compile command: `javac -d <temporary-directory> src/main/java/*.java`
-- Launch command: `java -cp <temporary-directory> HomeHub`
-- Result: all documented cases passed exact stdout comparison; no failure occurred.
-
-#### UI-001
-
-Console input:
-
-```text
+add rice /qty 2 /unit kg /expires 2026-09-30
+add milk /qty 1 /unit carton /expires 2026-10-15
+add RICE /qty 5 /unit KG /expires 2026-09-30
+search RICE
+search tea
+expiring 2026-10-01
+expiring 2026-09-01
 bye
 ```
 
-Console output:
+Actual output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household fresh and accounted for. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+✨ Added to the pantry:
+  [P] rice — 2 kg (expires: Sep 30 2026)
+There are 1 pantry entries tracked. 🧺
+____________________________________________________________
+____________________________________________________________
+✨ Added to the pantry:
+  [P] milk — 1 carton (expires: Oct 15 2026)
+There are 2 pantry entries tracked. 🧺
+____________________________________________________________
+____________________________________________________________
+Moss says: 💬 That pantry entry is already being tracked.
+____________________________________________________________
+____________________________________________________________
+🔎 Moss found these pantry entries:
+1.[P] rice — 2 kg (expires: Sep 30 2026)
+____________________________________________________________
+____________________________________________________________
+🫧 Moss couldn't find any pantry entries matching that keyword.
+____________________________________________________________
+____________________________________________________________
+⏳ Pantry entries expiring by Oct 01 2026:
+1.[P] rice — 2 kg (expires: Sep 30 2026)
+____________________________________________________________
+____________________________________________________________
+✅ Moss found no pantry entries expiring by Sep 01 2026.
+____________________________________________________________
+____________________________________________________________
+Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
 
-Status: PASS
+Result: PASS; stderr empty; exit status 0.
 
-### Session: 2026-08-30 (task command extraction)
+### UI-007 console record
 
-- Java version: `openjdk 25.0.3`; compiler: `javac 25.0.3`.
-- Compile command: `javac --release 25 -d <temporary-directory> src/main/java/*.java`
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-directory> HomeHub`
-- Fresh temporary working directory; add/list inputs covering todo, deadline, and event commands were executed.
-- Result: PASS; task creation and list output matched the documented behavior, process exited with status 0, and stderr was empty.
-
-### Session: 2026-08-30 (Parser argument extraction)
-
-- Java version: `openjdk 25.0.3`; compiler: `javac 25.0.3`.
-- Compile command: `javac --release 25 -d <temporary-directory> src/main/java/*.java`
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-directory> HomeHub`
-- Fresh temporary working directory; UI-006 inputs were executed in documented order.
-- Result: PASS; mark/unmark/list behavior matched the documented expected output, process exited with status 0, and stderr was empty.
-
-### Session: 2026-08-30 (Parser extraction)
-
-- Java version: `openjdk 25.0.3`; compiler: `javac 25.0.3`.
-- Compile command: `javac --release 25 -d <temporary-directory> src/main/java/*.java`
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-directory> HomeHub`
-- Fresh temporary working directory; UI-002 inputs were executed in documented order.
-- Result: PASS; add/list behavior matched the documented expected output, process exited with status 0, and stderr was empty.
-
-### Session: 2026-08-30 (TaskList extraction)
-
-- Java version: `openjdk 25.0.3`; compiler: `javac 25.0.3`.
-- Compile command: `javac --release 25 -d <temporary-directory> src/main/java/*.java`
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-directory> HomeHub`
-- Fresh temporary working directory; UI-004 inputs were executed in documented order.
-- Result: PASS; delete/list behavior matched the documented expected output, process exited with status 0, and stderr was empty.
-
-### Session: 2026-08-30 (Storage extraction)
-
-- Java version: `openjdk 25.0.3`; compiler: `javac 25.0.3`.
-- Compile command: `javac --release 25 -d <temporary-directory> src/main/java/*.java`
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-directory> HomeHub`
-- Fresh temporary working directory; input: `todo wash dishes`, `list`, `bye`.
-- Result: PASS; process exited with status 0, stdout matched the documented add/list behavior, and stderr was empty.
-- The persistence implementation was moved behind `Storage` without changing the file format or observable UI behavior.
-
-### Session: 2026-08-30 (Ui extraction)
-
-- Java version: `openjdk 25.0.3`; compiler: `javac 25.0.3`.
-- `sdk use java 25.0.3.fx-zulu` was unavailable because `sdk` is not installed; the already-selected Java 25.0.3 runtime was used.
-- Compile command: `javac --release 25 -d <temporary-directory> src/main/java/*.java`
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-directory> HomeHub`
-- Fresh temporary working directories were used. UI-001 (bye), UI-002 (add/list), and UI-004 (delete/list) were rerun; each exited with status 0, produced empty stderr, and matched the documented expected output. The complete captured stdout is preserved in the terminal session for this run.
-- The extracted `Ui` class did not change observable console behavior.
-
-### Session: 2026-08-30 (persistence write happy path)
-
-- Java requested: 25 (`sdk use java 25.0.3.fx-zulu` was unavailable; Java 17.0.14 was used)
-- Compile command: `javac -d <temporary-directory> src/main/java/*.java`
-- Launch command: `java -cp <temporary-directory> HomeHub`
-- Console input: `todo clean kitchen`, `deadline pay bill /by Friday`, `event inspection /from 2pm /to 4pm`, `mark 1`, `delete 2`, `bye`
-- Result: PASS; the application exited successfully with no stderr output.
-- Saved file verification: `data/homehub.txt` contained:
+Inputs:
 
 ```text
-T | 1 | clean kitchen
-E | 0 | inspection | 2pm | 4pm
-```
-
-### Session: 2026-08-30 (test-ui rerun)
-
-- Java requested: 25 (`sdk` was unavailable; Java 17.0.14 was used)
-- Compile command: `javac -d <temporary-directory> src/main/java/*.java`
-- Launch command: `java -cp <temporary-directory> HomeHub`
-- Actual stdout was captured without normalization and compared byte-for-byte with each test case's expected output.
-- No stderr was produced; all processes exited with status 0.
-
-#### UI-001 through UI-004
-
-The documented inputs were executed in order. The complete actual console outputs were identical to the corresponding `Expected output` blocks above for UI-001, UI-002, UI-003, and UI-004.
-
-Status: PASS
-
-### Session: 2026-08-30 (enum integration)
-
-- Java requested: 25 (`sdk` was unavailable; Java 17.0.14 was used)
-- Compile command: `javac -d <temporary-directory> src/main/java/*.java`
-- Launch command: `java -cp <temporary-directory> HomeHub`
-- Result: UI-001 through UI-004 passed exact stdout comparison; no stderr was produced and all processes exited successfully.
-
-#### UI-004
-
-Console input:
-
-```text
-todo first task
-todo second task
+add rice /qty 2 /unit kg /expires 2026-09-30
+add milk /qty 1 /unit carton /expires 2026-10-15
+consume 1 10
+restock 1 0
+restock 9 1
+consume x 1
 delete 1
-list
 delete 5
 list
 bye
 ```
 
-Console output:
+Actual output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household fresh and accounted for. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
-  [T][ ] first task
-Now you have 1 tasks in the list.
+✨ Added to the pantry:
+  [P] rice — 2 kg (expires: Sep 30 2026)
+There are 1 pantry entries tracked. 🧺
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
-  [T][ ] second task
-Now you have 2 tasks in the list.
+✨ Added to the pantry:
+  [P] milk — 1 carton (expires: Oct 15 2026)
+There are 2 pantry entries tracked. 🧺
 ____________________________________________________________
 ____________________________________________________________
-Noted. I've removed this task:
-  [T][ ] first task
-Now you have 1 tasks in the list.
+Moss says: 💬 You cannot consume more than the available stock.
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] second task
+Moss says: 💬 Quantity must be a positive whole number.
 ____________________________________________________________
 ____________________________________________________________
-Oops! That task number does not exist.
+Moss says: 💬 That pantry item number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] second task
+Moss says: 💬 Item number and quantity must be whole numbers.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Removed from the pantry: 🗑️
+  [P] rice — 2 kg (expires: Sep 30 2026)
+That leaves 1 pantry entries tracked. ✨
+____________________________________________________________
+____________________________________________________________
+Moss says: 💬 That pantry item number does not exist.
+____________________________________________________________
+____________________________________________________________
+🧺 Moss's pantry inventory:
+1.[P] milk — 1 carton (expires: Oct 15 2026)
+____________________________________________________________
+____________________________________________________________
+Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
 
-Status: PASS
+Result: PASS; stderr empty; exit status 0.
 
-### Session: 2026-08-30 (edge cases)
+### UI-008 console record
 
-- Java requested: 25 (`sdk use java 25.0.3.fx-zulu` was unavailable; Java 17.0.14 was used)
-- Compile command: `javac -d <temporary-directory> src/main/java/*.java`
-- Launch command: `java -cp <temporary-directory> HomeHub`
-- Result: UI-001, UI-002, and UI-003 passed exact stdout comparison; no stderr was produced and all processes exited successfully.
-
-#### UI-001
-
-Console input:
+Inputs:
 
 ```text
-bye
-```
-
-Console output: See the identical exact output recorded under the initial UI-001 session above.
-
-Status: PASS
-
-#### UI-002
-
-Console input:
-
-```text
-todo wash dishes
-list
-bye
-```
-
-Console output: See the identical exact output recorded under the initial UI-002 session above.
-
-Status: PASS
-
-#### UI-003
-
-Console input:
-
-```text
-todo
-todo mop floor
-deadline pay bill
-deadline pay bill /by Friday
-event meeting /from 2pm
-event meeting /from 2pm /to 4pm
-blah
-list
-mark 9
-list
-mark 1
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! A todo description cannot be empty.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] mop floor
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] pay bill (by: Friday)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [E][ ] meeting (from: 2pm to: 4pm)
-Now you have 3 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, or delete.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Friday)
-3.[E][ ] meeting (from: 2pm to: 4pm)
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Friday)
-3.[E][ ] meeting (from: 2pm to: 4pm)
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [T][X] mop floor
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][X] mop floor
-2.[D][ ] pay bill (by: Friday)
-3.[E][ ] meeting (from: 2pm to: 4pm)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Status: PASS
-
-#### UI-002
-
-Console input:
-
-```text
-todo wash dishes
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] wash dishes
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Status: PASS
-### Session: 2026-08-30 (JUnit test addition verification)
-
-- Working-tree revision: uncommitted changes present (new JUnit test).
-- Java-selection command: `JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/current` with its `bin` directory first in `PATH`.
-- Java version: openjdk 25.0.3 2026-04-21 LTS
-OpenJDK Runtime Environment Zulu25.34+17-CA (build 25.0.3+9-LTS)
-OpenJDK 64-Bit Server VM Zulu25.34+17-CA (build 25.0.3+9-LTS, mixed mode, sharing)
-- `javac --version`: javac 25.0.3
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: UI-001 through UI-009 used fresh temporary directories without `data/homehub.txt`; UI-010 reused one temporary directory across both launches.
-- Timeout: 30 seconds per process.
-- Output comparison: stdout compared exactly; stderr required to be empty; exit status required to be 0.
-- Overall result: PASS; all ten UI cases passed in documented order.
-
-#### UI-001: PASS
-
-Console input:
-
-```text
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-002: PASS
-
-Console input:
-
-```text
-todo wash dishes
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] wash dishes
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-003: PASS
-
-Console input:
-
-```text
-todo
-todo mop floor
-deadline pay bill
-deadline pay bill /by 2026-09-01
-event meeting /from 2026-09-02
-event meeting /from 2026-09-02 14:00 /to 2026-09-02 16:00
-blah
-list
-mark 9
-list
-mark 1
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! A todo description cannot be empty.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] mop floor
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] pay bill (by: Sept 01 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-Now you have 3 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [T][X] mop floor
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][X] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-004: PASS
-
-Console input:
-
-```text
-todo first task
-todo second task
-delete 1
-list
-delete 5
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] first task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] second task
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Noted. I've removed this task:
-  [T][ ] first task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] second task
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] second task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-005: PASS
-
-Console input:
-
-```text
-todo alpha
-deadline due /by 2026-02-30
-list
-deadline due /by 2026-02-28
-event outing /from nope /to 2026-03-02
-event outing /from 2026-03-01 /to 2026-03-02
-mark 3
-list
-delete 2
-delete 4
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] alpha
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] alpha
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] due (by: Feb 28 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [E][ ] outing (from: Mar 01 2026 to: Mar 02 2026)
-Now you have 3 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] alpha
-2.[D][ ] due (by: Feb 28 2026)
-3.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
-____________________________________________________________
-____________________________________________________________
-Noted. I've removed this task:
-  [D][ ] due (by: Feb 28 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] alpha
-2.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-006: PASS
-
-Console input:
-
-```text
-todo wash dishes
-mark 1
-unmark 1
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] wash dishes
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [T][X] wash dishes
-____________________________________________________________
-____________________________________________________________
-I've marked this household task as not done:
-  [T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-007: PASS
-
-Console input:
-
-```text
-todo one task
-mark
-mark nope
-mark 0
-mark -1
+add rice /qty 2 /unit kg
+add rice /qty 2 /expires 2026-09-30 /unit kg
+search
+expiring
 delete
-delete nope
-delete 0
-delete -1
-delete 9
 list
 bye
 ```
 
-Console output:
+Actual output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household fresh and accounted for. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
-  [T][ ] one task
-Now you have 1 tasks in the list.
+Moss says: 💬 Use: add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>].
 ____________________________________________________________
 ____________________________________________________________
-Oops! Please provide a task number after mark.
+Moss says: 💬 Use: add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>].
 ____________________________________________________________
 ____________________________________________________________
-Oops! The task number must be a whole number.
+Moss says: 💬 Please provide a keyword after search.
 ____________________________________________________________
 ____________________________________________________________
-Oops! That task number does not exist.
+Moss says: 💬 Please provide a cutoff date after expiring.
 ____________________________________________________________
 ____________________________________________________________
-Oops! That task number does not exist.
+Moss says: 💬 Please provide an item number after delete.
 ____________________________________________________________
 ____________________________________________________________
-Oops! Please provide a task number after delete.
+🧺 Moss's pantry inventory:
 ____________________________________________________________
 ____________________________________________________________
-Oops! The task number must be a whole number.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] one task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
+Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
 
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+Result: PASS; stderr empty; exit status 0.
 
-#### UI-008: PASS
+### UI-009 console record
 
-Console input:
-
-```text
-
-␠␠todo spaced task␠␠
-␠␠list␠␠
-␠␠bye␠␠
-```
-
-Console output:
+Inputs:
 
 ```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] spaced task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] spaced task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-009: PASS
-
-Console input:
-
-```text
-deadline /by 2026-10-15
-deadline review /by
-deadline review /by 2028-02-29
-deadline invalid-time /by 2026-03-01 25:00
-deadline invalid-format /by 2026-03-01T14:00
-event outing /from 2026-10-15 /to
-event outing /to 2026-10-16 /from 2026-10-15
-event outing /from 2026-10-15 /from 2026-10-16 /to 2026-10-17
+add flour /qty 1 /unit bag /expires 2099-12-01 /category baking /location cabinet /min 2
+lowstock
+summary
+move 1 freezer
 list
 bye
 ```
 
-Console output:
+Actual output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household fresh and accounted for. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
+✨ Added to the pantry:
+  [P] flour — 1 bag (expires: Dec 01 2099; category: baking; location: cabinet; min: 2)
+There are 1 pantry entries tracked. 🧺
 ____________________________________________________________
 ____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
+📉 Low-stock pantry entries:
+1.[P] flour — 1 bag (expires: Dec 01 2099; category: baking; location: cabinet; min: 2)
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
-  [D][ ] review (by: Feb 29 2028)
-Now you have 1 tasks in the list.
+📊 Pantry summary:
+Entries tracked: 1
+Low-stock entries: 1
+Expired entries: 0
 ____________________________________________________________
 ____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+Moved within the home: 🚚
+  [P] flour — 1 bag (expires: Dec 01 2099; category: baking; location: freezer; min: 2)
 ____________________________________________________________
 ____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
+🧺 Moss's pantry inventory:
+1.[P] flour — 1 bag (expires: Dec 01 2099; category: baking; location: freezer; min: 2)
 ____________________________________________________________
 ____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[D][ ] review (by: Feb 29 2028)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
+Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
 
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+Result: PASS; stderr empty; exit status 0.
 
-#### UI-010 first launch: PASS
+### UI-002 console record
 
-Console input:
+Inputs:
 
 ```text
-todo persisted
-deadline review /by 2026-10-15
-event meeting /from 2026-10-15 14:00 /to 2026-10-15 16:00
+add rice /qty 2 /unit kg /expires 2026-09-30
+list
+bye
+```
+
+Actual output:
+
+```text
+____________________________________________________________
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household fresh and accounted for. 🏡
+____________________________________________________________
+____________________________________________________________
+✨ Added to the pantry:
+  [P] rice — 2 kg (expires: Sep 30 2026)
+There are 1 pantry entries tracked. 🧺
+____________________________________________________________
+____________________________________________________________
+🧺 Moss's pantry inventory:
+1.[P] rice — 2 kg (expires: Sep 30 2026)
+____________________________________________________________
+____________________________________________________________
+Pantry secured. See you soon! 👋
+____________________________________________________________
+```
+
+Result: PASS; stderr empty; exit status 0.
+
+### UI-003 console record
+
+Inputs:
+
+```text
+add rice /qty 2 /unit kg /expires 2026-09-30
+consume 1 1
+restock 1 3
+search RICE
+expiring 2026-10-01
+bye
+```
+
+Actual output:
+
+```text
+____________________________________________________________
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household fresh and accounted for. 🏡
+____________________________________________________________
+____________________________________________________________
+✨ Added to the pantry:
+  [P] rice — 2 kg (expires: Sep 30 2026)
+There are 1 pantry entries tracked. 🧺
+____________________________________________________________
+____________________________________________________________
+Used from the pantry: 📉
+  [P] rice — 1 kg (expires: Sep 30 2026)
+Quantity changed by 1.
+____________________________________________________________
+____________________________________________________________
+Restocked the pantry: 📈
+  [P] rice — 4 kg (expires: Sep 30 2026)
+Quantity changed by 3.
+____________________________________________________________
+____________________________________________________________
+🔎 Moss found these pantry entries:
+1.[P] rice — 4 kg (expires: Sep 30 2026)
+____________________________________________________________
+____________________________________________________________
+⏳ Pantry entries expiring by Oct 01 2026:
+1.[P] rice — 4 kg (expires: Sep 30 2026)
+____________________________________________________________
+____________________________________________________________
+Pantry secured. See you soon! 👋
+____________________________________________________________
+```
+
+Result: PASS; stderr empty; exit status 0.
+
+### UI-004 console record
+
+Inputs:
+
+```text
 mark 1
-delete 2
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] persisted
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] review (by: Oct 15 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
-Now you have 3 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [T][X] persisted
-____________________________________________________________
-____________________________________________________________
-Noted. I've removed this task:
-  [D][ ] review (by: Oct 15 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-010 second launch: PASS
-
-Console input:
-
-```text
+add rice /qty 0 /unit kg /expires 2026-09-30
+add rice /qty 2 /unit kg /expires 2026-02-30
+consume 1 1
 list
 bye
 ```
 
-Console output:
+Actual output:
 
 ```text
 ____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+🌿 Welcome to HomeHub. Moss is on duty.
+Let's keep the household fresh and accounted for. 🏡
 ____________________________________________________________
 ____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][X] persisted
-2.[E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
+Moss says: 💬 Moss does not recognise that command yet. Try add, list, search, restock, consume, expiring, lowstock, summary, move, delete, or help.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-### Session: 2026-08-31 (shared GUI command logic regression)
-
-- Working-tree base revision: `73f14b4`.
-- OS and architecture: Darwin 23.6.0 x86_64.
-- Java selection: `export JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu; export PATH="$JAVA_HOME/bin:$PATH"`.
-- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
-- `javac --version`: `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: UI-001 through UI-009 and UI-011 used fresh temporary directories; UI-010 reused one temporary directory across both launches. The UI-008 notation was translated as specified.
-- Timeout: 20 seconds per process.
-- Output comparison policy: stdout compared exactly after CRLF-to-LF normalization; stderr required to be empty; exit status required to be 0.
-- Overall result: PASS.
-
-Each executed case passed with exit status 0, empty stderr, no timeout, and exact
-stdout comparison. UI-010's persistence assertion also passed: the completed
-todo and pending event were retained, and the deleted deadline was absent.
-
-Inputs and complete actual console output for UI-001 through UI-011 are retained
-in [ui-test-session-2026-08-31-gui-features.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-gui-features.txt).
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-### Session: 2026-08-31 (GUI polish regression)
-
-- Working-tree base revision: `9f7ff22`.
-- Java selection: `/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu/bin/java` and `javac`.
-- Java vendor and versions: OpenJDK 25.0.3 (Zulu25.34+17-CA), `javac 25.0.3`.
-- Verification command: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu ./gradlew check`.
-- CLI regression compile command: `javac --release 25 -d <temporary-classes> <non-JavaFX production sources>`.
-- CLI launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: UI-001 through UI-009 and UI-011 used fresh temporary directories; UI-010 reused one temporary directory across both launches.
-- Timeout: 20 seconds per process.
-- Overall result: PASS; all 12 documented launches passed in order with exact stdout, empty stderr, and exit status 0.
-- CLI behavior was unchanged by this GUI-only update.
-- GUI startup smoke test: `env JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/25.0.3.fx-zulu ./gradlew run` loaded the updated FXML and CSS without a startup exception; the process was stopped intentionally after reaching `:run` because the application remains open.
-- Complete console input/output record: [ui-test-session-2026-08-31-gui-polish.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-31-gui-polish.txt).
-
-### Session: 2026-08-30 (find feature)
-
-- Commit or worktree revision: uncommitted changes present.
-- OS and architecture: Darwin x86_64.
-- Java vendor and `java --version`: OpenJDK 25.0.3 (Zulu25.34+17-CA).
-- `javac --version`: `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: fresh temporary directories for UI-001 through UI-009 and UI-011; one shared fresh temporary directory for UI-010.
-- Timeout: 20 seconds per process.
-- Output comparison policy: CRLF normalized to LF; all other stdout compared exactly; stderr required to be empty.
-- Overall result: PASS.
-- UI-001: PASS — input `bye`; exit status 0; no timeout; stderr empty; exact stdout.
-- UI-002: PASS — input `todo wash dishes`, `list`, `bye`; exit status 0; no timeout; stderr empty; exact stdout.
-- UI-003: PASS — documented invalid and valid creation, listing, marking, and exit inputs; exit status 0; no timeout; stderr empty; exact stdout.
-- UI-004: PASS — documented add, delete, list, invalid delete, list, and exit inputs; exit status 0; no timeout; stderr empty; exact stdout.
-- UI-005: PASS — documented invalid-date, valid-task, mark, delete, list, and exit inputs; exit status 0; no timeout; stderr empty; exact stdout.
-- UI-006: PASS — documented add, mark, unmark, list, and exit inputs; exit status 0; no timeout; stderr empty; exact stdout.
-- UI-007: PASS — documented invalid task-number inputs, list, and exit; exit status 0; no timeout; stderr empty; exact stdout.
-- UI-008: PASS — documented whitespace-notation inputs translated before execution; exit status 0; no timeout; stderr empty; exact stdout.
-- UI-009: PASS — documented invalid syntax/date/time inputs, list, and exit; exit status 0; no timeout; stderr empty; exact stdout.
-- UI-010 first launch: PASS — documented persistence setup inputs; exit status 0; no timeout; stderr empty; exact stdout.
-- UI-010 second launch: PASS — documented reload inputs; exit status 0; no timeout; stderr empty; exact stdout; saved-file assertion passed.
-- UI-011: PASS — documented find, no-match, missing-keyword, list, and exit inputs; exit status 0; no timeout; stderr empty; exact stdout.
-- Complete console input/output records, including actual and expected stdout for every case: [ui-test-session-2026-08-30-find.txt](/Users/camelliaaa/Desktop/NUS/Courses/Y4S1/CS3227/CS3227-2610-MP1/_temp/ui-test-session-2026-08-30-find.txt).
-### Session: 2026-08-30 (core business-logic test coverage)
-
-- Working-tree revision: uncommitted changes present (expanded JUnit coverage).
-- Java-selection command: `JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/current` with its `bin` directory first in `PATH`.
-- Java version: `openjdk 25.0.3 2026-04-21 LTS / OpenJDK Runtime Environment Zulu25.34+17-CA (build 25.0.3+9-LTS) / OpenJDK 64-Bit Server VM Zulu25.34+17-CA (build 25.0.3+9-LTS, mixed mode, sharing)`
-- `javac --version`: `javac 25.0.3`
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: UI-001 through UI-009 used fresh temporary directories without `data/homehub.txt`; UI-010 reused one temporary directory across both launches.
-- Timeout: 30 seconds per process.
-- Output comparison: stdout compared exactly; stderr required to be empty; exit status required to be 0.
-- Overall result: PASS; all ten UI cases passed in documented order.
-
-#### UI-001: PASS
-
-Console input:
-
-```text
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
+Moss says: 💬 Quantity must be a positive whole number.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Moss says: 💬 Expiry dates must use yyyy-MM-dd format.
+____________________________________________________________
+____________________________________________________________
+Moss says: 💬 That pantry item number does not exist.
+____________________________________________________________
+____________________________________________________________
+🧺 Moss's pantry inventory:
+____________________________________________________________
+____________________________________________________________
+Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
 
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-002: PASS
-
-Console input:
-
-```text
-todo wash dishes
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] wash dishes
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-003: PASS
-
-Console input:
-
-```text
-todo
-todo mop floor
-deadline pay bill
-deadline pay bill /by 2026-09-01
-event meeting /from 2026-09-02
-event meeting /from 2026-09-02 14:00 /to 2026-09-02 16:00
-blah
-list
-mark 9
-list
-mark 1
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! A todo description cannot be empty.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] mop floor
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] pay bill (by: Sept 01 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-Now you have 3 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [T][X] mop floor
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][X] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-004: PASS
-
-Console input:
-
-```text
-todo first task
-todo second task
-delete 1
-list
-delete 5
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] first task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] second task
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Noted. I've removed this task:
-  [T][ ] first task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] second task
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] second task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-005: PASS
-
-Console input:
-
-```text
-todo alpha
-deadline due /by 2026-02-30
-list
-deadline due /by 2026-02-28
-event outing /from nope /to 2026-03-02
-event outing /from 2026-03-01 /to 2026-03-02
-mark 3
-list
-delete 2
-delete 4
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] alpha
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] alpha
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] due (by: Feb 28 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [E][ ] outing (from: Mar 01 2026 to: Mar 02 2026)
-Now you have 3 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] alpha
-2.[D][ ] due (by: Feb 28 2026)
-3.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
-____________________________________________________________
-____________________________________________________________
-Noted. I've removed this task:
-  [D][ ] due (by: Feb 28 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] alpha
-2.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-006: PASS
-
-Console input:
-
-```text
-todo wash dishes
-mark 1
-unmark 1
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] wash dishes
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [T][X] wash dishes
-____________________________________________________________
-____________________________________________________________
-I've marked this household task as not done:
-  [T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-007: PASS
-
-Console input:
-
-```text
-todo one task
-mark
-mark nope
-mark 0
-mark -1
-delete
-delete nope
-delete 0
-delete -1
-delete 9
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] one task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Please provide a task number after mark.
-____________________________________________________________
-____________________________________________________________
-Oops! The task number must be a whole number.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Oops! Please provide a task number after delete.
-____________________________________________________________
-____________________________________________________________
-Oops! The task number must be a whole number.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] one task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-008: PASS
-
-Console input:
-
-```text
-
-␠␠todo spaced task␠␠
-␠␠list␠␠
-␠␠bye␠␠
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] spaced task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] spaced task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-009: PASS
-
-Console input:
-
-```text
-deadline /by 2026-10-15
-deadline review /by
-deadline review /by 2028-02-29
-deadline invalid-time /by 2026-03-01 25:00
-deadline invalid-format /by 2026-03-01T14:00
-event outing /from 2026-10-15 /to
-event outing /to 2026-10-16 /from 2026-10-15
-event outing /from 2026-10-15 /from 2026-10-16 /to 2026-10-17
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] review (by: Feb 29 2028)
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[D][ ] review (by: Feb 29 2028)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-010 first launch: PASS
-
-Console input:
-
-```text
-todo persisted
-deadline review /by 2026-10-15
-event meeting /from 2026-10-15 14:00 /to 2026-10-15 16:00
-mark 1
-delete 2
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] persisted
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] review (by: Oct 15 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
-Now you have 3 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [T][X] persisted
-____________________________________________________________
-____________________________________________________________
-Noted. I've removed this task:
-  [D][ ] review (by: Oct 15 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-010 second launch: PASS
-
-Console input:
-
-```text
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][X] persisted
-2.[E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-### Session: 2026-08-30 (Shadow JAR configuration verification)
-
-- Working-tree revision: uncommitted `build.gradle` change; application behavior unchanged.
-- Java-selection command: `sdk use java 25.0.3.fx-zulu` was unavailable in the terminal; Java 25.0.3 was selected directly using `JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/current`.
-- Java version: OpenJDK 25.0.3; `javac 25.0.3`.
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `find src/main/java -name '*.java' -print0 | xargs -0 javac --release 25 -d <temporary-classes>`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: UI-001 through UI-009 used fresh temporary directories without `data/homehub.txt`; UI-010 reused one fresh temporary directory across both launches.
-- Timeout: 30 seconds per process.
-- Output comparison policy: CRLF normalised to LF only; all other whitespace compared exactly; stderr required to be empty; exit status required to be 0.
-- Overall result: PASS; all documented cases passed in order.
-
-For each case, the console input was executed exactly as shown in the
-corresponding test-case block above. The complete actual console output was
-captured and matched that case's complete `Expected output` block exactly.
-
-#### UI-001 through UI-009: PASS
-
-- Exit status: 0 for every case; stderr was empty; no case timed out.
-- Exact stdout comparison: PASS for every case.
-- Inputs and complete outputs: the documented UI-001 through UI-009 records above; actual output was identical.
-
-#### UI-010 first launch and second launch: PASS
-
-- First-launch input: `todo persisted`, `deadline review /by 2026-10-15`, `event meeting /from 2026-10-15 14:00 /to 2026-10-15 16:00`, `mark 1`, `delete 2`, `bye`.
-- Second-launch input: `list`, `bye`.
-- Exit status: 0 for both launches; stderr was empty; neither launch timed out.
-- Exact stdout comparison: PASS for both launches; persistence assertions passed.
-- Inputs and complete outputs: the documented UI-010 records above; actual output was identical.
-
-### Session: 2026-08-30 (expanded ParserTest verification)
-
-- Working-tree revision: uncommitted changes present (expanded JUnit test).
-- Java-selection command: `JAVA_HOME=/Users/camelliaaa/.sdkman/candidates/java/current` with its `bin` directory first in `PATH`.
-- Java version: `openjdk 25.0.3 2026-04-21 LTS / OpenJDK Runtime Environment Zulu25.34+17-CA (build 25.0.3+9-LTS) / OpenJDK 64-Bit Server VM Zulu25.34+17-CA (build 25.0.3+9-LTS, mixed mode, sharing)`
-- `javac --version`: `javac 25.0.3`
-- Locale JVM properties: `-Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG`.
-- Compile command: `javac --release 25 -d <temporary-classes> $(find src/main/java -name '*.java')`.
-- Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <temporary-classes> homehub.HomeHub`.
-- Working-directory setup: UI-001 through UI-009 used fresh temporary directories without `data/homehub.txt`; UI-010 reused one temporary directory across both launches.
-- Timeout: 30 seconds per process.
-- Output comparison: stdout compared exactly; stderr required to be empty; exit status required to be 0.
-- Overall result: PASS; all ten UI cases passed in documented order.
-
-#### UI-001: PASS
-
-Console input:
-
-```text
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-002: PASS
-
-Console input:
-
-```text
-todo wash dishes
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] wash dishes
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-003: PASS
-
-Console input:
-
-```text
-todo
-todo mop floor
-deadline pay bill
-deadline pay bill /by 2026-09-01
-event meeting /from 2026-09-02
-event meeting /from 2026-09-02 14:00 /to 2026-09-02 16:00
-blah
-list
-mark 9
-list
-mark 1
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! A todo description cannot be empty.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] mop floor
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] pay bill (by: Sept 01 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-Now you have 3 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [T][X] mop floor
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][X] mop floor
-2.[D][ ] pay bill (by: Sept 01 2026)
-3.[E][ ] meeting (from: Sept 02 2026 14:00 to: Sept 02 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-004: PASS
-
-Console input:
-
-```text
-todo first task
-todo second task
-delete 1
-list
-delete 5
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] first task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] second task
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Noted. I've removed this task:
-  [T][ ] first task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] second task
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] second task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-005: PASS
-
-Console input:
-
-```text
-todo alpha
-deadline due /by 2026-02-30
-list
-deadline due /by 2026-02-28
-event outing /from nope /to 2026-03-02
-event outing /from 2026-03-01 /to 2026-03-02
-mark 3
-list
-delete 2
-delete 4
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] alpha
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] alpha
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] due (by: Feb 28 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [E][ ] outing (from: Mar 01 2026 to: Mar 02 2026)
-Now you have 3 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] alpha
-2.[D][ ] due (by: Feb 28 2026)
-3.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
-____________________________________________________________
-____________________________________________________________
-Noted. I've removed this task:
-  [D][ ] due (by: Feb 28 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] alpha
-2.[E][X] outing (from: Mar 01 2026 to: Mar 02 2026)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-006: PASS
-
-Console input:
-
-```text
-todo wash dishes
-mark 1
-unmark 1
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] wash dishes
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [T][X] wash dishes
-____________________________________________________________
-____________________________________________________________
-I've marked this household task as not done:
-  [T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] wash dishes
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-007: PASS
-
-Console input:
-
-```text
-todo one task
-mark
-mark nope
-mark 0
-mark -1
-delete
-delete nope
-delete 0
-delete -1
-delete 9
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] one task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Please provide a task number after mark.
-____________________________________________________________
-____________________________________________________________
-Oops! The task number must be a whole number.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Oops! Please provide a task number after delete.
-____________________________________________________________
-____________________________________________________________
-Oops! The task number must be a whole number.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Oops! That task number does not exist.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] one task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-008: PASS
-
-Console input:
-
-```text
-
-␠␠todo spaced task␠␠
-␠␠list␠␠
-␠␠bye␠␠
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! I don't recognise that command. Try todo, deadline, event, list, mark, unmark, or delete.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] spaced task
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][ ] spaced task
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-009: PASS
-
-Console input:
-
-```text
-deadline /by 2026-10-15
-deadline review /by
-deadline review /by 2028-02-29
-deadline invalid-time /by 2026-03-01 25:00
-deadline invalid-format /by 2026-03-01T14:00
-event outing /from 2026-10-15 /to
-event outing /to 2026-10-16 /from 2026-10-15
-event outing /from 2026-10-15 /from 2026-10-16 /to 2026-10-17
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: deadline <description> /by <date or time>.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] review (by: Feb 29 2028)
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-Oops! Dates must use yyyy-MM-dd or yyyy-MM-dd HH:mm format.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Oops! Use: event <description> /from <start> /to <end>.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[D][ ] review (by: Feb 29 2028)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-010 first launch: PASS
-
-Console input:
-
-```text
-todo persisted
-deadline review /by 2026-10-15
-event meeting /from 2026-10-15 14:00 /to 2026-10-15 16:00
-mark 1
-delete 2
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [T][ ] persisted
-Now you have 1 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [D][ ] review (by: Oct 15 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Got it. I've added this task:
-  [E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
-Now you have 3 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Nice! I've marked this household task as done:
-  [T][X] persisted
-____________________________________________________________
-____________________________________________________________
-Noted. I've removed this task:
-  [D][ ] review (by: Oct 15 2026)
-Now you have 2 tasks in the list.
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
-
-#### UI-010 second launch: PASS
-
-Console input:
-
-```text
-list
-bye
-```
-
-Console output:
-
-```text
-____________________________________________________________
-Welcome to HomeHub!
-Manage your household tasks here.
-____________________________________________________________
-____________________________________________________________
-Here are the household tasks in your HomeHub:
-1.[T][X] persisted
-2.[E][ ] meeting (from: Oct 15 2026 14:00 to: Oct 15 2026 16:00)
-____________________________________________________________
-____________________________________________________________
-Bye. Hope to see you again soon!
-____________________________________________________________
-```
-
-Exit status: 0. Stderr: empty. Exact stdout comparison: PASS.
+Result: PASS; stderr empty; exit status 0.

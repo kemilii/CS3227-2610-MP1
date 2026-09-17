@@ -73,11 +73,8 @@ public class DialogBox extends HBox {
     private void changeDialogStyle(CommandType commandType) {
         assert commandType != null : "A response style requires a command type";
         switch (commandType) {
-            case TODO, DEADLINE, EVENT:
+            case ADD, RESTOCK, CONSUME, EXPIRING, SEARCH, LOW_STOCK, SUMMARY, MOVE:
                 dialog.getStyleClass().add("add-label");
-                break;
-            case MARK, UNMARK:
-                dialog.getStyleClass().add("marked-label");
                 break;
             case DELETE:
                 dialog.getStyleClass().add("delete-label");

@@ -39,11 +39,6 @@
     -fx-border-color: #e5c27b;
 }
 
-.homehub-message .marked-label {
-    -fx-background-color: #e6f0e5;
-    -fx-border-color: #b5cfad;
-}
-
 .homehub-message .delete-label,
 .homehub-message .error-label {
     -fx-background-color: #fff0e8;

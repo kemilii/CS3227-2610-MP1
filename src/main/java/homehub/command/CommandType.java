@@ -1,9 +1,10 @@
 package homehub.command;
 
-/** Represents a command understood by HomeHub. */
+/** Represents a command understood by HomeHub's pantry inventory assistant. */
 public enum CommandType {
-    BYE("bye"), LIST("list"), MARK("mark"), UNMARK("unmark"), DELETE("delete"),
-    TODO("todo"), DEADLINE("deadline"), EVENT("event"), FIND("find"), HELP("help"), UNKNOWN("");
+    BYE("bye"), LIST("list"), ADD("add"), SEARCH("search"), RESTOCK("restock"), CONSUME("consume"),
+    EXPIRING("expiring"), LOW_STOCK("lowstock"), SUMMARY("summary"), MOVE("move"), DELETE("delete"),
+    HELP("help"), UNKNOWN("");
 
     private final String keyword;
 

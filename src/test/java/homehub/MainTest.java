@@ -39,19 +39,19 @@ class MainTest {
     }
 
     @Test
-    void homeHubResponse_listsCurrentTasks() {
+    void homeHubResponse_listsCurrentPantry() {
         HomeHub homeHub = new HomeHub(new Storage(temporaryDirectory.resolve("homehub.txt").toString()));
 
-        assertEquals("📋 Moss's household board:", homeHub.getResponse("list"));
+        assertEquals("🧺 Moss's pantry inventory:", homeHub.getResponse("list"));
     }
 
     @Test
     void homeHubResponse_recordsCommandTypeForStyling() {
         HomeHub homeHub = new HomeHub(new Storage(temporaryDirectory.resolve("styling-homehub.txt").toString()));
 
-        homeHub.getResponse("todo wash dishes");
+        homeHub.getResponse("add rice /qty 2 /unit kg /expires 2026-09-30");
 
-        assertEquals(CommandType.TODO, homeHub.getCommandType());
+        assertEquals(CommandType.ADD, homeHub.getCommandType());
     }
 
     @Test
@@ -86,7 +86,7 @@ class MainTest {
         assertTrue(fxml.contains("styleClass=\"welcome-card\""));
         assertTrue(fxml.contains("Moss · your calm household concierge"));
         assertTrue(fxml.contains("Ask Moss:"));
-        assertTrue(fxml.contains("🌿 Hello, I'm Moss."));
+        assertTrue(fxml.contains("🌿 Hello, I'm Moss. I'll keep your pantry fresh"));
     }
 
     @Test

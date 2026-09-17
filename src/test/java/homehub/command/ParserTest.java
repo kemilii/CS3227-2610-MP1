@@ -4,66 +4,32 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-/** Tests parsing of HomeHub command input into normalized parsed commands. */
+/** Tests parsing of pantry inventory commands. */
 class ParserTest {
     private final Parser parser = new Parser();
 
     @Test
-    void parse_supportedCommands_returnsCorrectParsedCommands() {
+    void parse_supportedCommands_returnsCommandAndArguments() {
         assertEquals(new ParsedCommand(CommandType.BYE, ""), parser.parse("bye"));
-        assertEquals(new ParsedCommand(CommandType.LIST, ""), parser.parse("list"));
-        assertEquals(new ParsedCommand(CommandType.MARK, "2"), parser.parse("mark 2"));
-        assertEquals(new ParsedCommand(CommandType.UNMARK, "2"), parser.parse("unmark 2"));
+        assertEquals(new ParsedCommand(CommandType.ADD, "rice /qty 2 /unit kg /expires 2026-09-30"),
+                parser.parse("add rice /qty 2 /unit kg /expires 2026-09-30"));
+        assertEquals(new ParsedCommand(CommandType.SEARCH, "milk"), parser.parse("search milk"));
+        assertEquals(new ParsedCommand(CommandType.RESTOCK, "2 3"), parser.parse("restock 2 3"));
+        assertEquals(new ParsedCommand(CommandType.CONSUME, "1 1"), parser.parse("consume 1 1"));
+        assertEquals(new ParsedCommand(CommandType.EXPIRING, "2026-10-01"), parser.parse("expiring 2026-10-01"));
+        assertEquals(new ParsedCommand(CommandType.LOW_STOCK, ""), parser.parse("lowstock"));
+        assertEquals(new ParsedCommand(CommandType.SUMMARY, ""), parser.parse("summary"));
+        assertEquals(new ParsedCommand(CommandType.MOVE, "1 freezer"), parser.parse("move 1 freezer"));
         assertEquals(new ParsedCommand(CommandType.DELETE, "2"), parser.parse("delete 2"));
-        assertEquals(new ParsedCommand(CommandType.TODO, "wash dishes"), parser.parse("todo wash dishes"));
-        assertEquals(new ParsedCommand(CommandType.DEADLINE, "pay bill /by 2026-09-01"),
-                parser.parse("deadline pay bill /by 2026-09-01"));
-        assertEquals(new ParsedCommand(CommandType.EVENT, "meeting /from 2026-09-02 /to 2026-09-03"),
-                parser.parse("event meeting /from 2026-09-02 /to 2026-09-03"));
-        assertEquals(new ParsedCommand(CommandType.FIND, "book"), parser.parse("find book"));
         assertEquals(new ParsedCommand(CommandType.HELP, ""), parser.parse("help"));
     }
 
     @Test
-    void parse_commandWithWhitespace_returnsTrimmedArguments() {
-        ParsedCommand parsed = parser.parse("  todo   wash   dishes  ");
-
-        assertEquals(CommandType.TODO, parsed.type());
-        assertEquals("wash   dishes", parsed.arguments());
-    }
-
-    @Test
-    void parse_commandWithTabsAndNewlines_returnsNormalizedArguments() {
-        ParsedCommand parsed = parser.parse("\tdeadline\tpay bill /by 2026-09-01\n");
-
-        assertEquals(new ParsedCommand(CommandType.DEADLINE, "pay bill /by 2026-09-01"), parsed);
-    }
-
-    @Test
-    void parse_commandWithoutArguments_returnsEmptyArguments() {
-        assertEquals("", parser.parse("bye").arguments());
-        assertEquals("", parser.parse(" list ").arguments());
-    }
-
-    @Test
-    void parse_blankInput_returnsUnknownCommandWithEmptyArguments() {
-        assertEquals(new ParsedCommand(CommandType.UNKNOWN, ""), parser.parse(""));
-        assertEquals(new ParsedCommand(CommandType.UNKNOWN, ""), parser.parse("   "));
-        assertEquals(new ParsedCommand(CommandType.UNKNOWN, ""), parser.parse("\t\n"));
+    void parse_whitespaceAndUnknownInput_returnsNormalizedResult() {
+        assertEquals(new ParsedCommand(CommandType.ADD, "rice /qty 2 /unit kg /expires 2026-09-30"),
+                parser.parse("  add   rice /qty 2 /unit kg /expires 2026-09-30  "));
+        assertEquals(new ParsedCommand(CommandType.UNKNOWN, ""), parser.parse("mark 1"));
         assertEquals(new ParsedCommand(CommandType.UNKNOWN, ""), parser.parse(null));
-    }
-
-    @Test
-    void parse_unrecognizedCommand_returnsUnknownCommandWithEmptyArguments() {
-        assertEquals(new ParsedCommand(CommandType.UNKNOWN, ""), parser.parse("complete task"));
-        assertEquals(new ParsedCommand(CommandType.UNKNOWN, ""), parser.parse("TODO task"));
-    }
-
-    @Test
-    void fromInput_supportedAndUnknownCommands_returnsCorrespondingTypes() {
-        assertEquals(CommandType.BYE, CommandType.fromInput("bye"));
-        assertEquals(CommandType.TODO, CommandType.fromInput("todo clean room"));
-        assertEquals(CommandType.HELP, CommandType.fromInput("help"));
-        assertEquals(CommandType.UNKNOWN, CommandType.fromInput("not-a-command"));
+        assertEquals(CommandType.ADD, CommandType.fromInput("add rice /qty 1 /unit bag /expires 2026-09-30"));
     }
 }

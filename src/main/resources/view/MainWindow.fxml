@@ -40,7 +40,7 @@
                             </children>
                         </HBox>
                         <Label styleClass="command-hint"
-                               text="Ask Moss: help, todo, deadline, event, list, find, mark, unmark, delete"
+                               text="Ask Moss: add, list, search, restock, consume, expiring, lowstock, summary, move, delete, help"
                                wrapText="true" />
                     </children>
                 </VBox>
@@ -58,7 +58,7 @@
                             </padding>
                             <children>
                                 <Label styleClass="welcome-card"
-                                       text="🌿 Hello, I'm Moss. I'll keep your household tasks tidy :D"
+                                       text="🌿 Hello, I'm Moss. I'll keep your pantry fresh and accounted for :D"
                                        wrapText="true" />
                             </children>
                         </VBox>
@@ -73,7 +73,7 @@
                     <children>
                         <TextField fx:id="userInput"
                                    onAction="#handleUserInput"
-                                   promptText="Type a command, e.g. todo wash dishes"
+                                   promptText="Type a command, e.g. add rice /qty 2 /unit kg /expires 2026-09-30"
                                    HBox.hgrow="ALWAYS" />
                         <Button fx:id="sendButton"
                                 mnemonicParsing="false"

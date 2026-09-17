@@ -1,12 +1,14 @@
 package homehub.ui;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import homehub.Moss;
-import homehub.model.Task;
-import homehub.model.TaskList;
+import homehub.model.ExpiryDate;
+import homehub.model.PantryItem;
+import homehub.model.PantryList;
 
-/** Handles HomeHub's interaction with the command-line user. */
+/** Handles HomeHub's command-line pantry inventory interaction. */
 public class Ui {
     private static final String SEPARATOR = "____________________________________________________________";
     private final Scanner scanner;
@@ -20,13 +22,13 @@ public class Ui {
     public void showWelcome() {
         showSeparator();
         printLine("🌿 Welcome to HomeHub. " + Moss.NAME + " is on duty.");
-        printLine("Let's keep the household running smoothly. 🏡");
+        printLine("Let's keep the household fresh and accounted for. 🏡");
         showSeparator();
     }
 
     /** Displays the goodbye message. */
     public void showGoodbye() {
-        printLine("All tucked away. See you soon! 👋");
+        printLine("Pantry secured. See you soon! 👋");
         showSeparator();
     }
 
@@ -35,21 +37,23 @@ public class Ui {
         printLine(SEPARATOR);
     }
 
-    /** Displays every supported command and the accepted date/time formats. */
+    /** Displays the pantry commands and their accepted formats. */
     public void showHelp() {
-        printLine("📖 " + Moss.NAME + "'s command guide:");
-        printLine("todo <description> - add a household task.");
-        printLine("deadline <description> /by <date or time> - add a task with a deadline.");
-        printLine("event <description> /from <start> /to <end> - add a scheduled event.");
-        printLine("list - show every task on the household board.");
-        printLine("find <keyword> - find tasks by description.");
-        printLine("mark <task number> - mark a task as done.");
-        printLine("unmark <task number> - mark a task as pending.");
-        printLine("delete <task number> - remove a task from the board.");
-        printLine("help - show this command guide.");
+        printLine("📖 " + Moss.NAME + "'s pantry guide:");
+        printLine("add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> "
+                + "[/category <category>] [/location <location>] [/min <quantity>] - add pantry stock.");
+        printLine("list - show every tracked pantry entry.");
+        printLine("search <keyword> - find pantry entries by name.");
+        printLine("restock <item number> <quantity> - increase available stock.");
+        printLine("consume <item number> <quantity> - reduce available stock.");
+        printLine("expiring <yyyy-MM-dd> - show entries expiring by a cutoff date.");
+        printLine("lowstock - show entries at or below their minimum stock level.");
+        printLine("summary - show a stock health summary.");
+        printLine("move <item number> <location> - move an entry to another storage location.");
+        printLine("delete <item number> - remove an entry from the pantry.");
+        printLine("help - show this pantry guide.");
         printLine("bye - close HomeHub.");
-        printLine("Date/time format: yyyy-MM-dd or yyyy-MM-dd HH:mm.");
-        printLine("Examples: 2026-09-01 or 2026-09-01 14:30.");
+        printLine("Date format: yyyy-MM-dd. Example: 2026-09-30.");
     }
 
     /** Reads the next command, or returns {@code null} at end of input. */
@@ -62,58 +66,96 @@ public class Ui {
         printLine(Moss.ERROR_PREFIX + "💬 " + message);
     }
 
-    /** Displays all tasks. */
-    public void showTaskList(TaskList tasks) {
-        assert tasks != null : "Displaying tasks requires an initialized task list";
-        printLine("📋 " + Moss.NAME + "'s household board:");
-        for (int i = 0; i < tasks.size(); i++) {
-            printLine((i + 1) + "." + tasks.get(i).toDisplayString());
+    /** Displays all tracked pantry entries. */
+    public void showPantry(PantryList pantry) {
+        assert pantry != null : "Displaying the pantry requires an initialized pantry list";
+        printLine("🧺 " + Moss.NAME + "'s pantry inventory:");
+        for (int index = 0; index < pantry.size(); index++) {
+            printLine((index + 1) + "." + pantry.get(index).toDisplayString());
         }
     }
 
-    /**
-     * Displays tasks matching a search keyword.
-     *
-     * @param matchingTasks tasks whose descriptions matched the search keyword.
-     */
-    public void showMatchingTasks(TaskList matchingTasks) {
-        assert matchingTasks != null : "Displaying matching tasks requires a task list";
-        if (matchingTasks.size() == 0) {
-            printLine("🫧 " + Moss.NAME + " couldn't find any tasks matching that keyword.");
+    /** Displays entries whose expiry date is on or before the cutoff. */
+    public void showExpiringItems(PantryList items, LocalDate cutoff) {
+        assert items != null : "Displaying expiring items requires a pantry list";
+        assert cutoff != null : "Displaying expiring items requires a cutoff date";
+        if (items.size() == 0) {
+            printLine("✅ " + Moss.NAME + " found no pantry entries expiring by " + ExpiryDate.display(cutoff) + ".");
             return;
         }
-        printLine("🔎 " + Moss.NAME + " found these matching tasks:");
-        for (int i = 0; i < matchingTasks.size(); i++) {
-            printLine((i + 1) + "." + matchingTasks.get(i).toDisplayString());
+        printLine("⏳ Pantry entries expiring by " + ExpiryDate.display(cutoff) + ":");
+        for (int index = 0; index < items.size(); index++) {
+            printLine((index + 1) + "." + items.get(index).toDisplayString());
         }
     }
 
-    /** Displays the confirmation for an added task. */
-    public void showAddedTask(Task task, int taskCount) {
-        assert task != null : "An added-task confirmation requires a task";
-        assert taskCount > 0 : "An added-task confirmation requires a non-empty list";
-        printLine("✨ On it. I've added this task:");
-        printLine("  " + task.toDisplayString());
-        printLine("That makes " + taskCount + " tasks on the board. 🎯");
+    /** Displays entries matching a name keyword. */
+    public void showMatchingItems(PantryList items) {
+        assert items != null : "Displaying matching items requires a pantry list";
+        if (items.size() == 0) {
+            printLine("🫧 " + Moss.NAME + " couldn't find any pantry entries matching that keyword.");
+            return;
+        }
+        printLine("🔎 " + Moss.NAME + " found these pantry entries:");
+        for (int index = 0; index < items.size(); index++) {
+            printLine((index + 1) + "." + items.get(index).toDisplayString());
+        }
     }
 
-    /** Displays the confirmation for a marked or unmarked task. */
-    public void showMarkedTask(Task task, boolean markedAsDone) {
-        assert task != null : "A marked-task confirmation requires a task";
-        String message = markedAsDone
-                ? "Done and dusted. This task is complete: ✅"
-                : "Back on the board. This task is pending: 🔄";
+    /** Displays entries at or below their configured minimum quantities. */
+    public void showLowStockItems(PantryList items) {
+        assert items != null : "Displaying low-stock items requires a pantry list";
+        if (items.size() == 0) {
+            printLine("✅ " + Moss.NAME + " found no low-stock pantry entries.");
+            return;
+        }
+        printLine("📉 Low-stock pantry entries:");
+        for (int index = 0; index < items.size(); index++) {
+            printLine((index + 1) + "." + items.get(index).toDisplayString());
+        }
+    }
+
+    /** Displays counts that summarize pantry stock health. */
+    public void showSummary(PantryList pantry) {
+        assert pantry != null : "Displaying a summary requires an initialized pantry list";
+        printLine("📊 Pantry summary:");
+        printLine("Entries tracked: " + pantry.size());
+        printLine("Low-stock entries: " + pantry.findLowStockItems().size());
+        printLine("Expired entries: " + pantry.countExpiredItems(LocalDate.now()));
+    }
+
+    /** Displays confirmation for a newly added inventory entry. */
+    public void showAddedItem(PantryItem item, int entryCount) {
+        assert item != null : "An add confirmation requires a pantry item";
+        assert entryCount > 0 : "An add confirmation requires a non-empty pantry";
+        printLine("✨ Added to the pantry:");
+        printLine("  " + item.toDisplayString());
+        printLine("There are " + entryCount + " pantry entries tracked. 🧺");
+    }
+
+    /** Displays confirmation for a stock quantity change. */
+    public void showQuantityChanged(PantryItem item, int amount, boolean isRestocking) {
+        assert item != null : "A quantity confirmation requires a pantry item";
+        String message = isRestocking ? "Restocked the pantry: 📈" : "Used from the pantry: 📉";
         printLine(message);
-        printLine("  " + task.toDisplayString());
+        printLine("  " + item.toDisplayString());
+        printLine("Quantity changed by " + amount + ".");
     }
 
-    /** Displays the confirmation for a deleted task. */
-    public void showDeletedTask(Task task, int taskCount) {
-        assert task != null : "A deleted-task confirmation requires a task";
-        assert taskCount >= 0 : "A deleted-task confirmation requires a non-negative task count";
-        printLine("Cleared from the board: 🗑️");
-        printLine("  " + task.toDisplayString());
-        printLine("That leaves " + taskCount + " tasks to keep tidy. ✨");
+    /** Displays confirmation that an entry moved to a different location. */
+    public void showMovedItem(PantryItem item) {
+        assert item != null : "A move confirmation requires a pantry item";
+        printLine("Moved within the home: 🚚");
+        printLine("  " + item.toDisplayString());
+    }
+
+    /** Displays confirmation for a deleted inventory entry. */
+    public void showDeletedItem(PantryItem item, int entryCount) {
+        assert item != null : "A deletion confirmation requires a pantry item";
+        assert entryCount >= 0 : "A deletion confirmation requires a non-negative count";
+        printLine("Removed from the pantry: 🗑️");
+        printLine("  " + item.toDisplayString());
+        printLine("That leaves " + entryCount + " pantry entries tracked. ✨");
     }
 
     /** Writes one output line; subclasses can redirect the output destination. */
