@@ -1,7 +1,7 @@
 # HomeHub Developer Guide
 
 HomeHub is a Java 25 pantry inventory manager with a JavaFX desktop interface
-and a command-line interface. Moss is the assistant persona shown to users.
+and a command-line interface. Keke is the assistant persona shown to users.
 The product is deliberately centered on stock quantities and expiry dates, not
 on household work or completion tracking.
 

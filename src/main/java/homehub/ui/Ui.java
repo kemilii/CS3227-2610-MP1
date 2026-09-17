@@ -3,7 +3,7 @@ package homehub.ui;
 import java.time.LocalDate;
 import java.util.Scanner;
 
-import homehub.Moss;
+import homehub.Keke;
 import homehub.model.ExpiryDate;
 import homehub.model.PantryItem;
 import homehub.model.PantryList;
@@ -21,10 +21,10 @@ public class Ui {
     /** Displays the welcome message. */
     public void showWelcome() {
         showSeparator();
-        printLine("🌿 Welcome to HomeHub. " + Moss.NAME + " is on duty.");
+        printLine("🌿 Welcome to HomeHub. " + Keke.NAME + " is on duty.");
         printLine("HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.");
         printLine("Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.");
-        printLine("Type help anytime for the full command menu. 🏡");
+        printLine("Type 'help' anytime for the full command menu. 🏡");
         showSeparator();
     }
 
@@ -41,24 +41,29 @@ public class Ui {
 
     /** Displays the pantry commands and their accepted formats. */
     public void showHelp() {
-        printLine("📖 " + Moss.NAME + "'s pantry command menu (available anytime with help):");
+        printLine("📖 " + Keke.NAME + "'s pantry command menu:");
+        printLine("");
         printLine("Inventory:");
         printLine("add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> "
                 + "[/category <category>] [/location <location>] [/min <quantity>] - add pantry stock.");
         printLine("list - show every tracked pantry entry.");
         printLine("search <keyword> - find pantry entries by name.");
+        printLine("");
         printLine("Stock updates:");
         printLine("restock <item number> <quantity> - increase available stock.");
         printLine("consume <item number> <quantity> - reduce available stock.");
+        printLine("");
         printLine("Stock health and storage:");
         printLine("expiring <yyyy-MM-dd> - show entries expiring by a cutoff date.");
         printLine("lowstock - show entries at or below their minimum stock level.");
         printLine("summary - show a stock health summary.");
         printLine("move <item number> <location> - move an entry to another storage location.");
         printLine("delete <item number> - remove an entry from the pantry.");
+        printLine("");
         printLine("Other:");
         printLine("help - show this command menu.");
         printLine("bye - close HomeHub.");
+        printLine("");
         printLine("Date format: yyyy-MM-dd. Example: 2026-09-30.");
     }
 
@@ -69,13 +74,13 @@ public class Ui {
 
     /** Displays an error message. */
     public void showError(String message) {
-        printLine(Moss.ERROR_PREFIX + "💬 " + message);
+        printLine(Keke.ERROR_PREFIX + message);
     }
 
     /** Displays all tracked pantry entries. */
     public void showPantry(PantryList pantry) {
         assert pantry != null : "Displaying the pantry requires an initialized pantry list";
-        printLine("🧺 " + Moss.NAME + "'s pantry inventory:");
+        printLine("🧺 " + Keke.NAME + "'s pantry inventory:");
         for (int index = 0; index < pantry.size(); index++) {
             printLine((index + 1) + "." + pantry.get(index).toDisplayString());
         }
@@ -86,7 +91,7 @@ public class Ui {
         assert items != null : "Displaying expiring items requires a pantry list";
         assert cutoff != null : "Displaying expiring items requires a cutoff date";
         if (items.size() == 0) {
-            printLine("✅ " + Moss.NAME + " found no pantry entries expiring by " + ExpiryDate.display(cutoff) + ".");
+            printLine("✅ " + Keke.NAME + " found no pantry entries expiring by " + ExpiryDate.display(cutoff) + ".");
             return;
         }
         printLine("⏳ Pantry entries expiring by " + ExpiryDate.display(cutoff) + ":");
@@ -99,10 +104,10 @@ public class Ui {
     public void showMatchingItems(PantryList items) {
         assert items != null : "Displaying matching items requires a pantry list";
         if (items.size() == 0) {
-            printLine("🫧 " + Moss.NAME + " couldn't find any pantry entries matching that keyword.");
+            printLine("🫧 " + Keke.NAME + " couldn't find any pantry entries matching that keyword.");
             return;
         }
-        printLine("🔎 " + Moss.NAME + " found these pantry entries:");
+        printLine("🔎 " + Keke.NAME + " found these pantry entries:");
         for (int index = 0; index < items.size(); index++) {
             printLine((index + 1) + "." + items.get(index).toDisplayString());
         }
@@ -112,7 +117,7 @@ public class Ui {
     public void showLowStockItems(PantryList items) {
         assert items != null : "Displaying low-stock items requires a pantry list";
         if (items.size() == 0) {
-            printLine("✅ " + Moss.NAME + " found no low-stock pantry entries.");
+            printLine("✅ " + Keke.NAME + " found no low-stock pantry entries.");
             return;
         }
         printLine("📉 Low-stock pantry entries:");

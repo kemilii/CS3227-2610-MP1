@@ -2,6 +2,8 @@ package homehub;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import homehub.command.CommandType;
 import javafx.collections.FXCollections;
@@ -15,11 +17,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 /** Displays a HomeHub conversation message alongside its avatar. */
 public class DialogBox extends HBox {
+    private static final Pattern HELP_COMMAND_PATTERN = Pattern.compile(
+            "^(add|list|search|restock|consume|expiring|lowstock|summary|move|delete|help|bye)(?=\\s|$)");
+
     @FXML
-    private Label dialog;
+    private StackPane dialog;
+
+    @FXML
+    private Label plainDialog;
+
+    @FXML
+    private TextFlow helpDialog;
 
     @FXML
     private ImageView displayPicture;
@@ -30,7 +44,7 @@ public class DialogBox extends HBox {
      * @param message message to display.
      * @param image avatar to display beside the message.
      */
-    private DialogBox(String message, Image image) {
+    private DialogBox(String message, Image image, boolean isHelpMessage) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/DialogBox.fxml"));
             fxmlLoader.setController(this);
@@ -40,11 +54,52 @@ public class DialogBox extends HBox {
             throw new IllegalStateException("Unable to load the dialog box interface.", exception);
         }
 
-        assert dialog != null : "DialogBox.fxml must inject the dialog label";
+        assert dialog != null : "DialogBox.fxml must inject the dialog container";
+        assert plainDialog != null : "DialogBox.fxml must inject the plain dialog label";
+        assert helpDialog != null : "DialogBox.fxml must inject the help dialog flow";
         assert displayPicture != null : "DialogBox.fxml must inject the avatar image view";
-        dialog.setText(message);
+        if (isHelpMessage) {
+            showHelpMessage(message);
+        } else {
+            plainDialog.setText(message);
+        }
         displayPicture.setImage(image);
         HBox.setHgrow(dialog, Priority.ALWAYS);
+    }
+
+    /** Displays a help response with bold command names and readable spacing. */
+    private void showHelpMessage(String message) {
+        plainDialog.setManaged(false);
+        plainDialog.setVisible(false);
+        helpDialog.setManaged(true);
+        helpDialog.setVisible(true);
+        String[] lines = message.split("\\R", -1);
+        for (int index = 0; index < lines.length; index++) {
+            addHelpLine(lines[index]);
+            if (index < lines.length - 1) {
+                helpDialog.getChildren().add(createHelpText("\n"));
+            }
+        }
+    }
+
+    /** Adds one help line, emphasizing its command token when present. */
+    private void addHelpLine(String line) {
+        Matcher matcher = HELP_COMMAND_PATTERN.matcher(line);
+        if (!matcher.find()) {
+            helpDialog.getChildren().add(createHelpText(line));
+            return;
+        }
+        Text command = createHelpText(matcher.group(1));
+        command.getStyleClass().add("command-text");
+        helpDialog.getChildren().add(command);
+        helpDialog.getChildren().add(createHelpText(line.substring(matcher.group(1).length())));
+    }
+
+    /** Creates a help text node that receives the dialog's text color. */
+    private Text createHelpText(String content) {
+        Text text = new Text(content);
+        text.getStyleClass().add("message-text");
+        return text;
     }
 
     /** Flips this dialog box so that its image is displayed on the left. */
@@ -97,7 +152,7 @@ public class DialogBox extends HBox {
      * @return a right-aligned user dialog box.
      */
     public static DialogBox getUserDialog(String message, Image image) {
-        DialogBox dialogBox = new DialogBox(message, image);
+        DialogBox dialogBox = new DialogBox(message, image, false);
         dialogBox.configureUserMessage();
         return dialogBox;
     }
@@ -110,7 +165,7 @@ public class DialogBox extends HBox {
      * @return a left-aligned HomeHub dialog box.
      */
     public static DialogBox getHomeHubDialog(String message, Image image) {
-        DialogBox dialogBox = new DialogBox(message, image);
+        DialogBox dialogBox = new DialogBox(message, image, false);
         dialogBox.flip();
         return dialogBox;
     }
@@ -138,7 +193,7 @@ public class DialogBox extends HBox {
      */
     public static DialogBox getHomeHubDialog(String message, Image image, CommandType commandType,
             boolean isError) {
-        DialogBox dialogBox = new DialogBox(message, image);
+        DialogBox dialogBox = new DialogBox(message, image, commandType == CommandType.HELP);
         dialogBox.flip();
         if (isError) {
             dialogBox.markAsError();

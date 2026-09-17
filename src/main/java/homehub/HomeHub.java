@@ -69,7 +69,7 @@ public class HomeHub {
         } catch (HomeHubException exception) {
             responseUi.showError(exception.getMessage());
         } catch (RuntimeException exception) {
-            responseUi.showError(Moss.NAME + " could not process that input.");
+            responseUi.showError("HomeHub could not process that input.");
         }
         return responseUi.getResponse();
     }
@@ -101,7 +101,7 @@ public class HomeHub {
             } catch (HomeHubException exception) {
                 ui.showError(exception.getMessage());
             } catch (RuntimeException exception) {
-                ui.showError(Moss.NAME + " could not process that input.");
+                ui.showError("HomeHub could not process that input.");
             }
             ui.showSeparator();
         }
@@ -260,7 +260,7 @@ public class HomeHub {
     }
 
     private String unknownCommandMessage() {
-        return Moss.NAME + " does not recognise that command yet. Try add, list, search, restock, consume, "
+        return "That command is not supported yet. Try add, list, search, restock, consume, "
                 + "expiring, lowstock, summary, move, delete, or help.";
     }
 

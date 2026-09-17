@@ -42,7 +42,7 @@ class MainTest {
     void homeHubResponse_listsCurrentPantry() {
         HomeHub homeHub = new HomeHub(new Storage(temporaryDirectory.resolve("homehub.txt").toString()));
 
-        assertEquals("🧺 Moss's pantry inventory:", homeHub.getResponse("list"));
+        assertEquals("🧺 Keke's pantry inventory:", homeHub.getResponse("list"));
     }
 
     @Test
@@ -67,6 +67,19 @@ class MainTest {
     }
 
     @Test
+    void dialogBoxLayout_supportsRichHelpFormatting() throws IOException {
+        String fxml;
+        try (InputStream inputStream = Main.class.getResourceAsStream("/view/DialogBox.fxml")) {
+            assertNotNull(inputStream);
+            fxml = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        }
+
+        assertTrue(fxml.contains("fx:id=\"plainDialog\""));
+        assertTrue(fxml.contains("fx:id=\"helpDialog\""));
+        assertTrue(fxml.contains("TextFlow"));
+    }
+
+    @Test
     void stylesheetResources_areAvailableOnClasspath() {
         assertNotNull(Main.class.getResourceAsStream("/css/main.css"));
         assertNotNull(Main.class.getResourceAsStream("/css/dialog-box.css"));
@@ -84,15 +97,15 @@ class MainTest {
         assertTrue(fxml.contains("minHeight=\"420.0\""));
         assertTrue(fxml.contains("HBox.hgrow=\"ALWAYS\""));
         assertTrue(fxml.contains("styleClass=\"welcome-card\""));
-        assertTrue(fxml.contains("Moss · your calm household concierge"));
-        assertTrue(fxml.contains("Ask Moss:"));
-        assertTrue(fxml.contains("🌿 Hello, I'm Moss. I track pantry stock, expiry dates"));
+        assertTrue(fxml.contains("Keke · your smart pantry companion"));
+        assertTrue(fxml.contains("Ask Keke:"));
+        assertTrue(fxml.contains("🌿 Hello, I'm Keke. I track pantry stock, expiry dates"));
     }
 
     @Test
-    void mossPersona_hasDistinctIdentityAndErrorVoice() {
-        assertEquals("Moss", Moss.NAME);
-        assertEquals("your calm household concierge", Moss.ROLE);
-        assertEquals("Moss says: ", Moss.ERROR_PREFIX);
+    void kekePersona_hasDistinctIdentityAndErrorVoice() {
+        assertEquals("Keke", Keke.NAME);
+        assertEquals("your smart pantry companion", Keke.ROLE);
+        assertEquals("⚠️ ", Keke.ERROR_PREFIX);
     }
 }

@@ -1,6 +1,6 @@
 # HomeHub User Guide
 
-HomeHub is a household pantry inventory manager. Moss helps you record what is
+HomeHub is a household pantry inventory manager. Keke helps you record what is
 in the pantry, adjust stock as items are used or bought, and find entries that
 are nearing their expiry date. Every successful change is saved locally.
 
@@ -47,10 +47,10 @@ character.
 
 ```text
 ____________________________________________________________
-🌿 Welcome to HomeHub. Moss is on duty.
+🌿 Welcome to HomeHub. Keke is on duty.
 HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
 Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
-Type help anytime for the full command menu. 🏡
+Type 'help' anytime  for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 ✨ Added to the pantry:

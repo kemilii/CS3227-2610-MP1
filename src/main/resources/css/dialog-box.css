@@ -10,9 +10,21 @@
     -fx-border-radius: 11px;
     -fx-border-width: 1px;
     -fx-padding: 10px 13px;
+}
+
+.dialog-label .message-label,
+.dialog-label .help-flow {
     -fx-text-fill: #27382d;
     -fx-font-size: 13px;
     -fx-line-spacing: 2px;
+}
+
+.dialog-label .message-text {
+    -fx-fill: #27382d;
+}
+
+.command-text {
+    -fx-font-weight: bold;
 }
 
 .reply-label {
@@ -31,7 +43,12 @@
     -fx-border-color: #557a61;
     -fx-background-radius: 11px 11px 3px 11px;
     -fx-border-radius: 11px 11px 3px 11px;
+}
+
+.user-message .dialog-label .message-label,
+.user-message .dialog-label .message-text {
     -fx-text-fill: #ffffff;
+    -fx-fill: #ffffff;
 }
 
 .homehub-message .add-label {
@@ -46,7 +63,12 @@
 }
 
 .homehub-message .error-label {
+}
+
+.homehub-message .error-label .message-label,
+.homehub-message .error-label .message-text {
     -fx-text-fill: #8b3d28;
+    -fx-fill: #8b3d28;
     -fx-font-weight: bold;
 }
 

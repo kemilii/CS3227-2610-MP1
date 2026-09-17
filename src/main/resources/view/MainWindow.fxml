@@ -33,14 +33,14 @@
                                 <VBox spacing="1.0" HBox.hgrow="ALWAYS">
                                     <children>
                                         <Label styleClass="app-title" text="HomeHub" />
-                                        <Label styleClass="app-subtitle" text="Moss · your calm household concierge" />
+                                        <Label styleClass="app-subtitle" text="Keke · your smart pantry companion" />
                                     </children>
                                 </VBox>
-                                <Label styleClass="status-label" text="● MOSS ON DUTY" />
+                                <Label styleClass="status-label" text="● KEKE ON DUTY" />
                             </children>
                         </HBox>
                         <Label styleClass="command-hint"
-                               text="Ask Moss: add, list, search, restock, consume, expiring, lowstock, summary, move, delete, help"
+                                text="Ask Keke: add, list, search, restock, consume, expiring, lowstock, summary, move, delete, help"
                                wrapText="true" />
                     </children>
                 </VBox>
@@ -58,7 +58,7 @@
                             </padding>
                             <children>
                                 <Label styleClass="welcome-card"
-                                       text="🌿 Hello, I'm Moss. I track pantry stock, expiry dates, locations, and low-stock levels. Type help anytime for the full command menu."
+                                       text="🌿 Hello, I'm Keke. I track pantry stock, expiry dates, locations, and low-stock levels. Type 'help' anytime for the full command menu."
                                        wrapText="true" />
                             </children>
                         </VBox>

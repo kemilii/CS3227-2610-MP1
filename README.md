@@ -1,6 +1,6 @@
 # HomeHub
 
-HomeHub is a Java desktop pantry inventory manager. Moss, its household
+HomeHub is a Java desktop pantry inventory manager. Keke, its household
 concierge, helps users track stock quantities and expiry dates.
 
 ## Prerequisites

@@ -26,11 +26,11 @@ class HomeHubTest {
                 "  [P] rice — 2 kg (expires: Sep 30 2026)",
                 "There are 1 pantry entries tracked. 🧺"),
                 homeHub.getResponse("add rice /qty 2 /unit kg /expires 2026-09-30"));
-        assertEquals("🧺 Moss's pantry inventory:", homeHub.getResponse("list").split("\\R")[0]);
+        assertEquals("🧺 Keke's pantry inventory:", homeHub.getResponse("list").split("\\R")[0]);
         assertTrue(homeHub.getResponse("consume 1 1").contains("[P] rice — 1 kg"));
         assertTrue(homeHub.getResponse("restock 1 3").contains("[P] rice — 4 kg"));
         assertTrue(homeHub.getResponse("delete 1").contains("Removed from the pantry"));
-        assertEquals("🧺 Moss's pantry inventory:", homeHub.getResponse("list"));
+        assertEquals("🧺 Keke's pantry inventory:", homeHub.getResponse("list"));
     }
 
     @Test
@@ -60,11 +60,11 @@ class HomeHubTest {
     void getResponse_invalidCommands_leavePantryUnchanged() {
         HomeHub homeHub = homeHubAt("invalid.txt");
 
-        assertTrue(homeHub.getResponse("mark 1").contains("does not recognise"));
+        assertTrue(homeHub.getResponse("mark 1").contains("not supported"));
         assertTrue(homeHub.getResponse("add rice /qty 0 /unit kg /expires 2026-09-30").contains("positive"));
         assertTrue(homeHub.getResponse("consume 1 1").contains("does not exist"));
         assertTrue(homeHub.getResponse("expiring 2026-02-30").contains("yyyy-MM-dd"));
-        assertEquals("🧺 Moss's pantry inventory:", homeHub.getResponse("list"));
+        assertEquals("🧺 Keke's pantry inventory:", homeHub.getResponse("list"));
     }
 
     @Test

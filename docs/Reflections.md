@@ -19,7 +19,7 @@ completion commands were removed, and the persistence format was replaced.
 
 This redesign also changed the tests and documentation so that the repository
 no longer presents a task manager as its primary behavior. Keeping the familiar
-Moss persona and JavaFX shell preserves the useful application structure, but
+Keke persona and JavaFX shell preserves the useful application structure, but
 the actual domain operations are now inventory operations.
 
 ## Reflection 1: project ideation and scope control
