@@ -1,12 +1,13 @@
 # HomeHub interaction logs
 
-These logs summarize the 15 Codex tasks associated with the `CS3227-2610-MP1`
+These logs summarize the 16 Codex tasks associated with the `CS3227-2610-MP1`
 project. Each task has one corresponding log. The summaries record the user
 prompts, important decisions, implementation outcomes, verification results,
 and notable files changed during the task.
 
-The logs were reviewed and generated on 2026-09-01. No archived tasks were
-present for the project when the history was reviewed.
+The original logs were reviewed and generated on 2026-09-01. Log 016 records
+the subsequent project work completed on 2026-09-17. No archived tasks were
+present for the original history review.
 
 | Log | Task |
 | --- | --- |
@@ -25,3 +26,4 @@ present for the project when the history was reviewed.
 | [013](013-add-chatbot-user-guide.md) | Add chatbot user guide and developer guide |
 | [014](014-create-test-ui-skill.md) | Create `test-ui` skill |
 | [015](015-create-project-interaction-logs.md) | Create project interaction logs |
+| [016](016-complete-pantry-redesign-and-submission-readiness.md) | Complete pantry redesign and submission-readiness updates |

@@ -5,6 +5,19 @@ and a command-line interface. Keke is the assistant persona shown to users.
 The product is deliberately centered on stock quantities and expiry dates, not
 on household work or completion tracking.
 
+## Acknowledgements
+
+This project began from the CS3227 Java desktop starter template and retains
+its Gradle wrapper, JavaFX application structure, and course-oriented testing
+layout. The pantry domain model, command set, persistence format, Keke persona,
+and current documentation were designed for this project.
+
+The implementation uses OpenJFX and JUnit 5 through the dependencies declared
+in `build.gradle`; no library source code was copied into this repository. The
+project follows the [SE-EDU Java coding
+standard](https://se-education.org/guides/conventions/java/intermediate.html)
+and [SE-EDU Git conventions](https://se-education.org/guides/conventions/git.html).
+
 ## Requirements
 
 | Requirement | Product behavior |
@@ -46,7 +59,8 @@ Launcher -> Main -> MainWindow             HomeHub.main -> Ui
 | Collection | [`PantryList.java`](../src/main/java/homehub/model/PantryList.java) | Owns ordering, indexed access, duplicate checks, name search, and expiry filtering. |
 | Persistence | [`Storage.java`](../src/main/java/homehub/storage/Storage.java) | Reads and writes the local pantry file and skips malformed records. |
 | Presentation | [`Ui.java`](../src/main/java/homehub/ui/Ui.java) | Prints welcome text, confirmations, inventory views, and errors. |
-| JavaFX view | `Main.java`, `MainWindow.java`, `DialogBox.java`, and the FXML/CSS resources | Provides the graphical conversation shell and command-specific response styling. |
+| Assistant persona | [`Keke.java`](../src/main/java/homehub/Keke.java) | Stores Keke's display name, role description, and neutral error marker. |
+| JavaFX view | `Main.java`, `MainWindow.java`, `DialogBox.java`, and the FXML/CSS resources | Provides the graphical conversation shell, command-specific response styling, and rich help formatting. |
 
 ## Command processing
 
@@ -91,8 +105,10 @@ rather than silently merging quantities.
 The JavaFX application is launched through [`Launcher.java`](../src/main/java/homehub/Launcher.java).
 `MainWindow` forwards each submitted message to `HomeHub.getResponse()` and
 adds the captured response to the conversation. `DialogBox` styles add, stock,
-search, expiry, low-stock, summary, move, deletion, and error responses. The CLI remains available via
-`HomeHub.main()` and is the basis of the end-to-end UI test plan.
+search, expiry, low-stock, summary, move, deletion, and error responses. Help
+responses use a `TextFlow` so command names can be bold while section spacing
+is preserved. The CLI remains available via `HomeHub.main()` and is the basis
+of the end-to-end UI test plan.
 
 ## Build and test
 

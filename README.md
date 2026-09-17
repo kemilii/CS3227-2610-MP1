@@ -1,7 +1,8 @@
 # HomeHub
 
-HomeHub is a Java desktop pantry inventory manager. Keke, its household
-concierge, helps users track stock quantities and expiry dates.
+HomeHub is a Java desktop pantry inventory manager. Keke, your smart pantry
+companion, helps you track stock quantities, expiry dates, storage locations,
+and low-stock levels.
 
 ## Prerequisites
 

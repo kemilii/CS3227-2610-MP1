@@ -4,6 +4,12 @@ HomeHub is a household pantry inventory manager. Keke helps you record what is
 in the pantry, adjust stock as items are used or bought, and find entries that
 are nearing their expiry date. Every successful change is saved locally.
 
+The JavaFX header identifies Keke as your smart pantry companion. The welcome
+message gives a quick command overview, and the `help` command is always
+available when you need the complete guide. In the JavaFX view, command names
+in the help response are bold and command sections are separated with blank
+lines. Validation errors use a neutral `⚠️` marker.
+
 ## Getting started
 
 1. Select JDK 25.
@@ -43,6 +49,36 @@ positive whole number. Expiry dates must be valid dates in `yyyy-MM-dd` format.
 Names, categories, units, and locations cannot be empty or contain the `|`
 character.
 
+## Help menu
+
+The `help` command displays the full command menu:
+
+```text
+📖 Keke's pantry command menu:
+
+Inventory:
+add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>] - add pantry stock.
+list - show every tracked pantry entry.
+search <keyword> - find pantry entries by name.
+
+Stock updates:
+restock <item number> <quantity> - increase available stock.
+consume <item number> <quantity> - reduce available stock.
+
+Stock health and storage:
+expiring <yyyy-MM-dd> - show entries expiring by a cutoff date.
+lowstock - show entries at or below their minimum stock level.
+summary - show a stock health summary.
+move <item number> <location> - move an entry to another storage location.
+delete <item number> - remove an entry from the pantry.
+
+Other:
+help - show this command menu.
+bye - close HomeHub.
+
+Date format: yyyy-MM-dd. Example: 2026-09-30.
+```
+
 ## Example session
 
 ```text
@@ -50,7 +86,7 @@ ____________________________________________________________
 🌿 Welcome to HomeHub. Keke is on duty.
 HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
 Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
-Type 'help' anytime  for the full command menu. 🏡
+Type 'help' anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 ✨ Added to the pantry:
