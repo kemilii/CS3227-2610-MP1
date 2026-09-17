@@ -75,6 +75,24 @@ class GuiSmokeTest {
         submit("consume 1 3");
         assertConversationContains("cannot consume more than the available stock");
 
+        submit("add flour /qty 1 /unit bag /expires 2099-12-01 /category baking /location cabinet /min 2");
+        assertConversationContains("flour — 1 bag", "category: baking", "location: cabinet", "min: 2");
+
+        submit("search FLOUR");
+        assertConversationContains("Keke found these pantry entries", "flour — 1 bag");
+
+        submit("restock 2 2");
+        assertConversationContains("Restocked the pantry", "flour — 3 bag");
+
+        submit("consume 2 1");
+        assertConversationContains("Used from the pantry", "flour — 2 bag");
+
+        submit("move 2 freezer");
+        assertConversationContains("Moved within the home", "location: freezer");
+
+        submit("delete 2");
+        assertConversationContains("Removed from the pantry", "flour — 2 bag");
+
         submit("bye");
         assertConversationContains("Pantry secured. See you soon!");
         assertTrue(sendButton.isDisabled(), "Send button should be disabled after bye");

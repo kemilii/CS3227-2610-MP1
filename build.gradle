@@ -84,6 +84,46 @@ shadowJar {
     archiveFileName = 'homehub.jar'
 }
 
+tasks.register('verifyReleaseJar') {
+    description = 'Verifies that the checked-in release JAR matches the latest fat JAR.'
+    group = 'verification'
+    dependsOn tasks.named('shadowJar')
+    doLast {
+        File builtJar = tasks.named('shadowJar').get().archiveFile.get().asFile
+        File releaseJar = layout.projectDirectory.file('release/homehub.jar').asFile
+        if (!releaseJar.isFile()) {
+            throw new GradleException('The checked-in release JAR is missing: ' + releaseJar)
+        }
+        java.util.zip.ZipFile builtArchive = new java.util.zip.ZipFile(builtJar)
+        java.util.zip.ZipFile releaseArchive = new java.util.zip.ZipFile(releaseJar)
+        try {
+            Set<String> builtEntries = java.util.Collections.list(builtArchive.entries())*.name as Set
+            Set<String> releaseEntries = java.util.Collections.list(releaseArchive.entries())*.name as Set
+            if (builtEntries != releaseEntries) {
+                throw new GradleException('release/homehub.jar does not contain the same entries as build/libs/homehub.jar')
+            }
+            builtEntries.each { String entryName ->
+                byte[] builtBytes = builtArchive.getInputStream(builtArchive.getEntry(entryName)).withCloseable {
+                    input -> input.bytes
+                }
+                byte[] releaseBytes = releaseArchive.getInputStream(releaseArchive.getEntry(entryName)).withCloseable {
+                    input -> input.bytes
+                }
+                if (!java.util.Arrays.equals(builtBytes, releaseBytes)) {
+                    throw new GradleException('release/homehub.jar contains stale entry: ' + entryName)
+                }
+            }
+        } finally {
+            builtArchive.close()
+            releaseArchive.close()
+        }
+    }
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('verifyReleaseJar')
+}
+
 run {
     standardInput = System.in
 }

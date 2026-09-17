@@ -53,6 +53,9 @@ Run the JavaFX end-to-end smoke test on a desktop environment with:
 ./gradlew guiSmokeTest
 ```
 
+`./gradlew check` also verifies that the checked-in release JAR matches the
+latest fat JAR built from the current source.
+
 Build the executable fat JAR with its JavaFX dependencies included:
 
 ```bash

@@ -122,6 +122,7 @@ JDK 25 is required. Useful commands are:
 ./gradlew test
 ./gradlew check
 ./gradlew guiSmokeTest
+./gradlew verifyReleaseJar
 ./gradlew shadowJar
 ```
 
@@ -131,7 +132,9 @@ behavior. The exact CLI scenarios are maintained in
 [`test/ui-test-plan.md`](../test/ui-test-plan.md).
 The `guiSmokeTest` task launches the JavaFX window and exercises the main
 conversation flow on a desktop environment: adding and listing stock, opening
-help, rejecting invalid input, and exiting.
+help, searching, restocking, consuming, moving, deleting, rejecting invalid
+input, and exiting. The `check` task also verifies that the checked-in release
+JAR matches the latest `shadowJar` output.
 
 When adding a command, update `CommandType`, `HomeHub`, `Ui`, `DialogBox`, the
 unit tests, the user guide, and the relevant UI test-plan case together.
