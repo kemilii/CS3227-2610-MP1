@@ -58,7 +58,7 @@
                             </padding>
                             <children>
                                 <Label styleClass="welcome-card"
-                                       text="🌿 Hello, I'm Moss. I'll keep your pantry fresh and accounted for :D"
+                                       text="🌿 Hello, I'm Moss. I track pantry stock, expiry dates, locations, and low-stock levels. Type help anytime for the full command menu."
                                        wrapText="true" />
                             </children>
                         </VBox>

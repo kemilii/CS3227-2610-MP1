@@ -22,7 +22,9 @@ public class Ui {
     public void showWelcome() {
         showSeparator();
         printLine("🌿 Welcome to HomeHub. " + Moss.NAME + " is on duty.");
-        printLine("Let's keep the household fresh and accounted for. 🏡");
+        printLine("HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.");
+        printLine("Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.");
+        printLine("Type help anytime for the full command menu. 🏡");
         showSeparator();
     }
 
@@ -39,19 +41,23 @@ public class Ui {
 
     /** Displays the pantry commands and their accepted formats. */
     public void showHelp() {
-        printLine("📖 " + Moss.NAME + "'s pantry guide:");
+        printLine("📖 " + Moss.NAME + "'s pantry command menu (available anytime with help):");
+        printLine("Inventory:");
         printLine("add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> "
                 + "[/category <category>] [/location <location>] [/min <quantity>] - add pantry stock.");
         printLine("list - show every tracked pantry entry.");
         printLine("search <keyword> - find pantry entries by name.");
+        printLine("Stock updates:");
         printLine("restock <item number> <quantity> - increase available stock.");
         printLine("consume <item number> <quantity> - reduce available stock.");
+        printLine("Stock health and storage:");
         printLine("expiring <yyyy-MM-dd> - show entries expiring by a cutoff date.");
         printLine("lowstock - show entries at or below their minimum stock level.");
         printLine("summary - show a stock health summary.");
         printLine("move <item number> <location> - move an entry to another storage location.");
         printLine("delete <item number> - remove an entry from the pantry.");
-        printLine("help - show this pantry guide.");
+        printLine("Other:");
+        printLine("help - show this command menu.");
         printLine("bye - close HomeHub.");
         printLine("Date format: yyyy-MM-dd. Example: 2026-09-30.");
     }

@@ -32,7 +32,9 @@ Expected output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 Pantry secured. See you soon! 👋
@@ -56,7 +58,9 @@ Expected output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 ✨ Added to the pantry:
@@ -92,7 +96,9 @@ Expected output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 ✨ Added to the pantry:
@@ -142,7 +148,9 @@ Expected output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 Moss says: 💬 Moss does not recognise that command yet. Try add, list, search, restock, consume, expiring, lowstock, summary, move, delete, or help.
@@ -181,21 +189,27 @@ Expected output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
-📖 Moss's pantry guide:
+📖 Moss's pantry command menu (available anytime with help):
+Inventory:
 add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>] - add pantry stock.
 list - show every tracked pantry entry.
 search <keyword> - find pantry entries by name.
+Stock updates:
 restock <item number> <quantity> - increase available stock.
 consume <item number> <quantity> - reduce available stock.
+Stock health and storage:
 expiring <yyyy-MM-dd> - show entries expiring by a cutoff date.
 lowstock - show entries at or below their minimum stock level.
 summary - show a stock health summary.
 move <item number> <location> - move an entry to another storage location.
 delete <item number> - remove an entry from the pantry.
-help - show this pantry guide.
+Other:
+help - show this command menu.
 bye - close HomeHub.
 Date format: yyyy-MM-dd. Example: 2026-09-30.
 ____________________________________________________________
@@ -229,7 +243,9 @@ Expected output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 ✨ Added to the pantry:
@@ -287,7 +303,9 @@ Expected output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 ✨ Added to the pantry:
@@ -349,7 +367,9 @@ Expected output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 Moss says: 💬 Use: add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>].
@@ -394,7 +414,9 @@ Expected output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 ✨ Added to the pantry:
@@ -432,6 +454,7 @@ ____________________________________________________________
 - Working-directory setup: a fresh temporary directory for each case.
 - Output comparison: exact stdout after CRLF-to-LF normalisation; stderr was empty.
 - Overall result: PASS. UI-001 through UI-009 passed with exit status 0.
+- This session was rerun after the help-menu and greeting update; all nine cases still matched exactly.
 
 ### UI-001 console record
 
@@ -446,7 +469,9 @@ Actual output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 Pantry secured. See you soon! 👋
@@ -470,21 +495,27 @@ Actual output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
-📖 Moss's pantry guide:
+📖 Moss's pantry command menu (available anytime with help):
+Inventory:
 add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>] - add pantry stock.
 list - show every tracked pantry entry.
 search <keyword> - find pantry entries by name.
+Stock updates:
 restock <item number> <quantity> - increase available stock.
 consume <item number> <quantity> - reduce available stock.
+Stock health and storage:
 expiring <yyyy-MM-dd> - show entries expiring by a cutoff date.
 lowstock - show entries at or below their minimum stock level.
 summary - show a stock health summary.
 move <item number> <location> - move an entry to another storage location.
 delete <item number> - remove an entry from the pantry.
-help - show this pantry guide.
+Other:
+help - show this command menu.
 bye - close HomeHub.
 Date format: yyyy-MM-dd. Example: 2026-09-30.
 ____________________________________________________________
@@ -518,7 +549,9 @@ Actual output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 ✨ Added to the pantry:
@@ -576,7 +609,9 @@ Actual output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 ✨ Added to the pantry:
@@ -638,7 +673,9 @@ Actual output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 Moss says: 💬 Use: add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>].
@@ -683,7 +720,9 @@ Actual output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 ✨ Added to the pantry:
@@ -730,7 +769,9 @@ Actual output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 ✨ Added to the pantry:
@@ -766,7 +807,9 @@ Actual output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 ✨ Added to the pantry:
@@ -816,7 +859,9 @@ Actual output:
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 Moss says: 💬 Moss does not recognise that command yet. Try add, list, search, restock, consume, expiring, lowstock, summary, move, delete, or help.

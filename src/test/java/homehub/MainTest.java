@@ -86,7 +86,7 @@ class MainTest {
         assertTrue(fxml.contains("styleClass=\"welcome-card\""));
         assertTrue(fxml.contains("Moss · your calm household concierge"));
         assertTrue(fxml.contains("Ask Moss:"));
-        assertTrue(fxml.contains("🌿 Hello, I'm Moss. I'll keep your pantry fresh"));
+        assertTrue(fxml.contains("🌿 Hello, I'm Moss. I track pantry stock, expiry dates"));
     }
 
     @Test

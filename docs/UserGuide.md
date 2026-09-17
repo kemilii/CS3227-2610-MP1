@@ -48,7 +48,9 @@ character.
 ```text
 ____________________________________________________________
 🌿 Welcome to HomeHub. Moss is on duty.
-Let's keep the household fresh and accounted for. 🏡
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type help anytime for the full command menu. 🏡
 ____________________________________________________________
 ____________________________________________________________
 ✨ Added to the pantry:
