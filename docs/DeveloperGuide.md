@@ -99,6 +99,9 @@ defaults (`general`, `pantry`, and minimum `0`) and rewritten in the new format
 on the next save. Records from the former task-oriented format or malformed
 pantry records are ignored. Duplicate pantry entries cause a load or save error
 rather than silently merging quantities.
+Saves are written to a temporary sibling file and moved into place, using an
+atomic move when the file system supports it, so a failed write does not
+truncate the previous inventory.
 
 ## User interface
 

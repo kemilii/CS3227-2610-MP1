@@ -1,9 +1,11 @@
 package homehub.storage;
 
 import java.io.IOException;
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 import homehub.exception.HomeHubException;
@@ -51,13 +53,31 @@ public class Storage {
             lines.add(item.toStorageString());
         }
         try {
-            Path parent = filePath.toAbsolutePath().normalize().getParent();
-            if (parent != null) {
-                Files.createDirectories(parent);
-            }
-            Files.write(filePath, lines);
+            writeAtomically(lines);
         } catch (IOException | SecurityException exception) {
             throw new HomeHubException("I couldn't save your pantry inventory to disk.");
+        }
+    }
+
+    /** Writes the inventory to a temporary sibling file before replacing the target. */
+    private void writeAtomically(ArrayList<String> lines) throws IOException {
+        Path targetPath = filePath.toAbsolutePath().normalize();
+        Path parent = targetPath.getParent();
+        Path directory = parent == null ? Path.of(".").toAbsolutePath().normalize() : parent;
+        Files.createDirectories(directory);
+        String fileName = targetPath.getFileName() == null ? "pantry" : targetPath.getFileName().toString();
+        String temporaryPrefix = fileName.length() < 3 ? "pantry" : fileName;
+        Path temporaryFile = Files.createTempFile(directory, temporaryPrefix, ".tmp");
+        try {
+            Files.write(temporaryFile, lines);
+            try {
+                Files.move(temporaryFile, targetPath, StandardCopyOption.ATOMIC_MOVE,
+                        StandardCopyOption.REPLACE_EXISTING);
+            } catch (AtomicMoveNotSupportedException exception) {
+                Files.move(temporaryFile, targetPath, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } finally {
+            Files.deleteIfExists(temporaryFile);
         }
     }
 
@@ -136,7 +156,8 @@ public class Storage {
     }
 
     private boolean containsInvalidText(PantryItem item) {
-        return containsInvalidText(item.getName()) || containsInvalidText(item.getUnit());
+        return containsInvalidText(item.getName()) || containsInvalidText(item.getUnit())
+                || containsInvalidText(item.getCategory()) || containsInvalidText(item.getLocation());
     }
 
     private boolean containsInvalidText(String value) {

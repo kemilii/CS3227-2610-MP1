@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
@@ -86,6 +87,32 @@ class HomeHubTest {
         HomeHub reopenedSession = new HomeHub(storage);
 
         assertTrue(reopenedSession.getResponse("list").contains("oats — 1 bag"));
+    }
+
+    @Test
+    void getResponse_storageFailure_rollsBackAddMutation() throws Exception {
+        Path blockedParent = temporaryDirectory.resolve("blocked");
+        Files.writeString(blockedParent, "not a directory");
+        HomeHub homeHub = new HomeHub(new Storage(blockedParent.resolve("pantry.txt").toString()));
+
+        assertTrue(homeHub.getResponse("add rice /qty 2 /unit kg /expires 2026-09-30").contains("couldn't save"));
+        assertEquals("🧺 Keke's pantry inventory:", homeHub.getResponse("list"));
+    }
+
+    @Test
+    void getResponse_storageFailure_rollsBackQuantityMutation() throws Exception {
+        Path storageDirectory = temporaryDirectory.resolve("storage");
+        Path storageFile = storageDirectory.resolve("pantry.txt");
+        Files.createDirectories(storageDirectory);
+        Files.writeString(storageFile, "P | rice | 2 | kg | 2026-09-30 | general | pantry | 0\n");
+        HomeHub homeHub = new HomeHub(new Storage(storageFile.toString()));
+
+        Files.delete(storageFile);
+        Files.delete(storageDirectory);
+        Files.writeString(storageDirectory, "not a directory");
+
+        assertTrue(homeHub.getResponse("consume 1 1").contains("couldn't save"));
+        assertTrue(homeHub.getResponse("list").contains("rice — 2 kg"));
     }
 
     private HomeHub homeHubAt(String fileName) {
