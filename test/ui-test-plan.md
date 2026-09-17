@@ -583,7 +583,7 @@ ____________________________________________________________
 ⚠️ Use: add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>].
 ____________________________________________________________
 ____________________________________________________________
-⚠️ Use: add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>].
+⚠️ Minimum stock must be zero or a positive whole number.
 ____________________________________________________________
 ____________________________________________________________
 🧺 Keke's pantry inventory:
@@ -719,6 +719,56 @@ Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
 
+### UI-015: Independent optional metadata
+
+Aim: Verify category, location, and minimum stock can each be supplied without
+the other optional metadata fields.
+
+Inputs:
+
+```text
+add rice /qty 2 /unit kg /expires 2099-12-31 /location freezer
+add sugar /qty 1 /unit bag /expires 2099-12-31 /category baking
+add oats /qty 1 /unit bag /expires 2099-12-31 /min 2
+list
+bye
+```
+
+Expected output:
+
+```text
+____________________________________________________________
+🌿 Welcome to HomeHub. Keke is on duty.
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type 'help' anytime for the full command menu. 🏡
+____________________________________________________________
+____________________________________________________________
+✨ Added to the pantry:
+  [P] rice — 2 kg (expires: Dec 31 2099; category: general; location: freezer; min: 0)
+There are 1 pantry entries tracked. 🧺
+____________________________________________________________
+____________________________________________________________
+✨ Added to the pantry:
+  [P] sugar — 1 bag (expires: Dec 31 2099; category: baking; location: pantry; min: 0)
+There are 2 pantry entries tracked. 🧺
+____________________________________________________________
+____________________________________________________________
+✨ Added to the pantry:
+  [P] oats — 1 bag (expires: Dec 31 2099; category: general; location: pantry; min: 2)
+There are 3 pantry entries tracked. 🧺
+____________________________________________________________
+____________________________________________________________
+🧺 Keke's pantry inventory:
+1.[P] rice — 2 kg (expires: Dec 31 2099; category: general; location: freezer; min: 0)
+2.[P] sugar — 1 bag (expires: Dec 31 2099; category: baking; location: pantry; min: 0)
+3.[P] oats — 1 bag (expires: Dec 31 2099; category: general; location: pantry; min: 2)
+____________________________________________________________
+____________________________________________________________
+Pantry secured. See you soon! 👋
+____________________________________________________________
+```
+
 ## Test session record — 2026-09-17
 
 - Java runtime: OpenJDK 25.0.3 (Zulu25.34+17-CA).
@@ -726,9 +776,9 @@ ____________________________________________________________
 - Launch command: `java -Dfile.encoding=UTF-8 -Duser.language=en -Duser.country=SG -cp <compiled-classes> homehub.HomeHub`.
 - Working-directory setup: a fresh temporary directory for each case.
 - Output comparison: exact stdout after CRLF-to-LF normalisation; stderr was empty.
-- Overall result: PASS. UI-001 through UI-014 passed with exit status 0.
-- This session was rerun after adding happy-path, edge-case, and negative-case coverage; all fourteen cases matched exactly.
-- Additional `test-ui` skill run: UI-001 through UI-014 passed in documented order,
+- Overall result: PASS. UI-001 through UI-015 passed with exit status 0.
+- This session was rerun after adding happy-path, edge-case, and negative-case coverage; all fifteen cases matched exactly.
+- Additional `test-ui` skill run: UI-001 through UI-015 passed in documented order,
   with empty stderr and exit status 0 for every case.
 
 ### UI-001 console record
@@ -747,6 +797,55 @@ ____________________________________________________________
 HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
 Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
 Type 'help' anytime for the full command menu. 🏡
+____________________________________________________________
+____________________________________________________________
+Pantry secured. See you soon! 👋
+____________________________________________________________
+```
+
+Result: PASS; stderr empty; exit status 0.
+
+### UI-015 console record
+
+Inputs:
+
+```text
+add rice /qty 2 /unit kg /expires 2099-12-31 /location freezer
+add sugar /qty 1 /unit bag /expires 2099-12-31 /category baking
+add oats /qty 1 /unit bag /expires 2099-12-31 /min 2
+list
+bye
+```
+
+Actual output:
+
+```text
+____________________________________________________________
+🌿 Welcome to HomeHub. Keke is on duty.
+HomeHub tracks pantry stock, expiry dates, locations, and low-stock levels.
+Commands: add, list, search, restock, consume, expiring, lowstock, summary, move, delete.
+Type 'help' anytime for the full command menu. 🏡
+____________________________________________________________
+____________________________________________________________
+✨ Added to the pantry:
+  [P] rice — 2 kg (expires: Dec 31 2099; category: general; location: freezer; min: 0)
+There are 1 pantry entries tracked. 🧺
+____________________________________________________________
+____________________________________________________________
+✨ Added to the pantry:
+  [P] sugar — 1 bag (expires: Dec 31 2099; category: baking; location: pantry; min: 0)
+There are 2 pantry entries tracked. 🧺
+____________________________________________________________
+____________________________________________________________
+✨ Added to the pantry:
+  [P] oats — 1 bag (expires: Dec 31 2099; category: general; location: pantry; min: 2)
+There are 3 pantry entries tracked. 🧺
+____________________________________________________________
+____________________________________________________________
+🧺 Keke's pantry inventory:
+1.[P] rice — 2 kg (expires: Dec 31 2099; category: general; location: freezer; min: 0)
+2.[P] sugar — 1 bag (expires: Dec 31 2099; category: baking; location: pantry; min: 0)
+3.[P] oats — 1 bag (expires: Dec 31 2099; category: general; location: pantry; min: 2)
 ____________________________________________________________
 ____________________________________________________________
 Pantry secured. See you soon! 👋
@@ -882,7 +981,7 @@ ____________________________________________________________
 ⚠️ Use: add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>].
 ____________________________________________________________
 ____________________________________________________________
-⚠️ Use: add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>].
+⚠️ Minimum stock must be zero or a positive whole number.
 ____________________________________________________________
 ____________________________________________________________
 🧺 Keke's pantry inventory:

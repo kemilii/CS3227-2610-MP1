@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import homehub.exception.HomeHubException;
+import homehub.model.PantryItem;
 import homehub.model.PantryList;
 import homehub.storage.Storage;
 import homehub.ui.Ui;
@@ -44,6 +45,23 @@ class PantryCommandsTest {
     }
 
     @Test
+    void addItem_partialOptionalMetadata_appliesDefaultsToMissingFields() throws Exception {
+        PantryList pantry = new PantryList();
+        PantryCommands commands = new PantryCommands(storageAt("partial-metadata.txt"), new Ui());
+
+        commands.addItem(pantry, "rice /qty 2 /unit kg /expires 2026-12-01 /location freezer");
+        commands.addItem(pantry, "sugar /qty 1 /unit bag /expires 2026-12-01 /category baking");
+        commands.addItem(pantry, "oats /qty 1 /unit bag /expires 2026-12-01 /min 2");
+
+        assertEquals(PantryItem.DEFAULT_CATEGORY, pantry.get(0).getCategory());
+        assertEquals("freezer", pantry.get(0).getLocation());
+        assertEquals(0, pantry.get(0).getMinimumQuantity());
+        assertEquals("baking", pantry.get(1).getCategory());
+        assertEquals(PantryItem.DEFAULT_LOCATION, pantry.get(1).getLocation());
+        assertEquals(2, pantry.get(2).getMinimumQuantity());
+    }
+
+    @Test
     void addItem_invalidSyntaxDateAndDuplicate_rejectWithoutChangingPantry() throws Exception {
         PantryList pantry = new PantryList();
         PantryCommands commands = new PantryCommands(storageAt("pantry.txt"), new Ui());
@@ -51,6 +69,8 @@ class PantryCommandsTest {
         assertThrows(HomeHubException.class, () -> commands.addItem(pantry, "rice /qty 2 /unit kg"));
         assertThrows(HomeHubException.class, () ->
                 commands.addItem(pantry, "rice /qty 2 /unit kg /expires 2026-02-30"));
+        assertThrows(HomeHubException.class, () -> commands.addItem(pantry,
+                "rice /qty 2 /unit kg /expires 2026-09-30 /location freezer /category baking"));
         commands.addItem(pantry, "rice /qty 2 /unit kg /expires 2026-09-30");
         assertThrows(HomeHubException.class, () ->
                 commands.addItem(pantry, "RICE /qty 5 /unit KG /expires 2026-09-30"));

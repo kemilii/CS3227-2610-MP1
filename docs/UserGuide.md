@@ -26,23 +26,199 @@ run `./gradlew shadowJar` and copy `build/libs/homehub.jar` to
 
 ## Command reference
 
-Item numbers are the one-based numbers shown by `list`. Replace angle-bracketed
-values with your own text; do not type the brackets.
+Item numbers are the one-based numbers displayed by `list`. Replace
+angle-bracketed values with your own text; do not type the brackets. Commands
+must be entered in lowercase.
 
-| Command | Description | Example |
-| --- | --- | --- |
-| `add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>]` | Adds a pantry entry with optional stock metadata. | `add flour /qty 1 /unit bag /expires 2026-12-01 /category baking /location cabinet /min 2` |
-| `list` | Shows every tracked entry. | `list` |
-| `search <keyword>` | Finds entries by name, ignoring case. | `search rice` |
-| `restock <item number> <quantity>` | Increases an entry's stock. | `restock 1 3` |
-| `consume <item number> <quantity>` | Reduces an entry's stock. | `consume 1 1` |
-| `expiring <yyyy-MM-dd>` | Shows entries expiring on or before a cutoff date. | `expiring 2026-10-01` |
-| `lowstock` | Shows entries at or below their minimum quantity. | `lowstock` |
-| `summary` | Shows stock counts and expired-entry count. | `summary` |
-| `move <item number> <location>` | Moves an entry to another storage location. | `move 1 freezer` |
-| `delete <item number>` | Removes an entry. | `delete 2` |
-| `help` | Shows the command guide. | `help` |
-| `bye` | Closes HomeHub. | `bye` |
+### Inventory commands
+
+#### `add`
+
+Adds a new pantry entry. The command requires a name, current quantity,
+measurement unit, and expiry date. Category, storage location, and minimum
+stock level are optional.
+
+**Usage**
+
+```text
+add <name> /qty <number> /unit <unit> /expires <yyyy-MM-dd> [/category <category>] [/location <location>] [/min <quantity>]
+```
+
+**Example**
+
+```text
+add flour /qty 1 /unit bag /expires 2026-12-01 /category baking /location cabinet /min 2
+```
+
+The quantity must be a positive whole number. The minimum stock level may be
+zero. Names, units, categories, and locations cannot be empty or contain `|`.
+
+#### `list`
+
+Displays every pantry entry in the order it was added. The displayed number is
+used by commands such as `restock`, `consume`, `move`, and `delete`.
+
+**Example**
+
+```text
+list
+```
+
+#### `search`
+
+Finds pantry entries whose names contain the supplied keyword. Matching is
+case-insensitive, so `search rice` also finds an entry named `Rice`.
+
+**Usage**
+
+```text
+search <keyword>
+```
+
+**Example**
+
+```text
+search rice
+```
+
+### Stock update commands
+
+#### `restock`
+
+Increases the available quantity of an entry. The item number must refer to an
+entry shown by `list`, and the quantity must be positive.
+
+**Usage**
+
+```text
+restock <item number> <quantity>
+```
+
+**Example**
+
+```text
+restock 1 3
+```
+
+#### `consume`
+
+Decreases the available quantity of an entry. HomeHub rejects the command if
+the requested amount is greater than the available stock, so quantities cannot
+become negative.
+
+**Usage**
+
+```text
+consume <item number> <quantity>
+```
+
+**Example**
+
+```text
+consume 1 1
+```
+
+### Stock health and storage commands
+
+#### `expiring`
+
+Displays entries whose expiry date is on or before the supplied cutoff date.
+The cutoff must use the strict `yyyy-MM-dd` format.
+
+**Usage**
+
+```text
+expiring <yyyy-MM-dd>
+```
+
+**Example**
+
+```text
+expiring 2026-10-01
+```
+
+#### `lowstock`
+
+Displays entries whose current quantity is at or below their configured
+minimum stock level. Entries with a minimum level of zero are not treated as
+low stock.
+
+**Example**
+
+```text
+lowstock
+```
+
+#### `summary`
+
+Displays the total number of tracked entries, the number of low-stock entries,
+and the number of entries that have expired as of today.
+
+**Example**
+
+```text
+summary
+```
+
+#### `move`
+
+Changes the storage location of an entry. The location must not be empty or
+contain `|`. Use a single-word location, such as `pantry`, `cabinet`, or
+`freezer`.
+
+**Usage**
+
+```text
+move <item number> <location>
+```
+
+**Example**
+
+```text
+move 1 freezer
+```
+
+#### `delete`
+
+Removes an entry permanently from the pantry. The item number must refer to an
+entry shown by `list`.
+
+**Usage**
+
+```text
+delete <item number>
+```
+
+**Example**
+
+```text
+delete 2
+```
+
+### Other commands
+
+#### `help`
+
+Displays the complete command reference inside HomeHub. It is useful when you
+need to check a command's syntax while using the application.
+
+**Example**
+
+```text
+help
+```
+
+#### `bye`
+
+Closes HomeHub after displaying a goodbye message. Inventory changes are saved
+immediately, so the latest successful changes are available the next time the
+application starts.
+
+**Example**
+
+```text
+bye
+```
 
 Quantities must be positive whole numbers. Minimum stock can be zero or a
 positive whole number. Expiry dates must be valid dates in `yyyy-MM-dd` format.
@@ -106,9 +282,3 @@ ____________________________________________________________
 Pantry secured. See you soon! 👋
 ____________________________________________________________
 ```
-
-## Testing
-
-Run `./gradlew test` for the automated tests and `./gradlew check` for tests
-plus Checkstyle. The end-to-end command-line scenarios are documented in
-[`test/ui-test-plan.md`](../test/ui-test-plan.md).

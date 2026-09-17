@@ -44,9 +44,9 @@ public class PantryCommands {
         PantryItem item;
         try {
             int quantity = Integer.parseInt(values.get(0));
-            int minimumQuantity = values.size() == 7 ? Integer.parseInt(values.get(6)) : 0;
-            String category = values.size() == 7 ? values.get(4) : PantryItem.DEFAULT_CATEGORY;
-            String location = values.size() == 7 ? values.get(5) : PantryItem.DEFAULT_LOCATION;
+            int minimumQuantity = Integer.parseInt(values.get(6));
+            String category = values.get(4);
+            String location = values.get(5);
             item = new PantryItem(values.get(3), quantity, values.get(1), values.get(2), category, location,
                     minimumQuantity);
         } catch (NumberFormatException exception) {
@@ -76,8 +76,7 @@ public class PantryCommands {
             starts.add(matcher.start());
             ends.add(matcher.end());
         }
-        if ((fieldNames.size() != REQUIRED_FIELDS.length
-                && fieldNames.size() != REQUIRED_FIELDS.length + OPTIONAL_FIELDS.length) || starts.get(0) == 0) {
+        if (fieldNames.size() < REQUIRED_FIELDS.length || starts.isEmpty() || starts.get(0) == 0) {
             throw usageError();
         }
         for (int index = 0; index < REQUIRED_FIELDS.length; index++) {
@@ -85,24 +84,48 @@ public class PantryCommands {
                 throw usageError();
             }
         }
-        for (int index = 0; index < OPTIONAL_FIELDS.length && fieldNames.size() > REQUIRED_FIELDS.length; index++) {
-            if (!OPTIONAL_FIELDS[index].equals(fieldNames.get(REQUIRED_FIELDS.length + index))) {
+        int nextOptionalIndex = 0;
+        for (int index = REQUIRED_FIELDS.length; index < fieldNames.size(); index++) {
+            while (nextOptionalIndex < OPTIONAL_FIELDS.length
+                    && !OPTIONAL_FIELDS[nextOptionalIndex].equals(fieldNames.get(index))) {
+                nextOptionalIndex++;
+            }
+            if (nextOptionalIndex == OPTIONAL_FIELDS.length) {
                 throw usageError();
             }
+            nextOptionalIndex++;
         }
-        ArrayList<String> values = new ArrayList<>();
+        ArrayList<String> fieldValues = new ArrayList<>();
         for (int index = 0; index < fieldNames.size(); index++) {
             int valueEnd = index + 1 < starts.size() ? starts.get(index + 1) : content.length();
-            values.add(content.substring(ends.get(index), valueEnd).trim());
+            fieldValues.add(content.substring(ends.get(index), valueEnd).trim());
         }
         String itemName = content.substring(0, starts.get(0)).trim();
-        String quantity = values.get(0);
-        String unit = values.get(1);
-        String expiryDate = values.get(2);
-        values.set(0, quantity);
-        values.set(1, unit);
-        values.set(2, expiryDate);
-        values.add(3, itemName);
+        ArrayList<String> values = new ArrayList<>();
+        values.add(fieldValues.get(0));
+        values.add(fieldValues.get(1));
+        values.add(fieldValues.get(2));
+        values.add(itemName);
+        values.add(PantryItem.DEFAULT_CATEGORY);
+        values.add(PantryItem.DEFAULT_LOCATION);
+        values.add("0");
+        for (int index = REQUIRED_FIELDS.length; index < fieldNames.size(); index++) {
+            String fieldName = fieldNames.get(index);
+            String value = fieldValues.get(index);
+            switch (fieldName) {
+                case "category":
+                    values.set(4, value);
+                    break;
+                case "location":
+                    values.set(5, value);
+                    break;
+                case "min":
+                    values.set(6, value);
+                    break;
+                default:
+                    throw usageError();
+            }
+        }
         for (String value : values) {
             if (value.isEmpty() || value.contains("|") || containsControlCharacters(value)) {
                 throw usageError();
