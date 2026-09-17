@@ -47,6 +47,12 @@ Run the test suite with:
 ./gradlew test
 ```
 
+Run the JavaFX end-to-end smoke test on a desktop environment with:
+
+```bash
+./gradlew guiSmokeTest
+```
+
 Build the executable fat JAR with its JavaFX dependencies included:
 
 ```bash

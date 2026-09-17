@@ -42,7 +42,9 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags 'gui'
+    }
     enableAssertions = true
 
     testLogging {
@@ -54,6 +56,17 @@ test {
         showStackTraces = true
         showStandardStreams = false
     }
+}
+
+tasks.register('guiSmokeTest', Test) {
+    description = 'Runs the JavaFX end-to-end smoke test on a desktop environment.'
+    group = 'verification'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        includeTags 'gui'
+    }
+    enableAssertions = true
 }
 
 application {

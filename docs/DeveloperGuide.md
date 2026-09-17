@@ -118,6 +118,7 @@ JDK 25 is required. Useful commands are:
 ./gradlew run
 ./gradlew test
 ./gradlew check
+./gradlew guiSmokeTest
 ./gradlew shadowJar
 ```
 
@@ -125,6 +126,9 @@ The unit tests focus on parser behavior, inventory invariants, command parsing,
 quantity changes, persistence round trips, malformed input, and coordinator
 behavior. The exact CLI scenarios are maintained in
 [`test/ui-test-plan.md`](../test/ui-test-plan.md).
+The `guiSmokeTest` task launches the JavaFX window and exercises the main
+conversation flow on a desktop environment: adding and listing stock, opening
+help, rejecting invalid input, and exiting.
 
 When adding a command, update `CommandType`, `HomeHub`, `Ui`, `DialogBox`, the
 unit tests, the user guide, and the relevant UI test-plan case together.
